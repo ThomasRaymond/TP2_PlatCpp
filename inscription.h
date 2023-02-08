@@ -14,6 +14,10 @@ public:
     Inscription(QWidget *parent = nullptr);
     ~Inscription();
 
+private slots:
+    void on_boutonAnnuler_clicked();
+    std::vector<QString>* on_boutonValider_clicked();
+
 private:
     Ui::Inscription *ui;
 };
