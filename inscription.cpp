@@ -32,6 +32,10 @@ std::vector<QString>* Inscription::clickBoutonValider(){
         QMessageBox::warning(0, "Avertissement", "Veuillez renseigner tous les champs");
         return nullptr;
     }
+    else if (!mail.contains('@')) {
+        QMessageBox::critical(0, "Erreur", "Veuillez renseigner un bon format d'adresse mail");
+        return nullptr;
+    }
     else if (pswd == confPswd) {
         std::vector<QString>* fields = new std::vector<QString>(4);
 
