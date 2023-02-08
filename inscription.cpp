@@ -7,8 +7,8 @@ Inscription::Inscription(QWidget *parent)
     , ui(new Ui::Inscription)
 {
     ui->setupUi(this);
-    connect(ui->boutonValider, SIGNAL(clicked()), SLOT(on_boutonValider_clicked()));
-    connect(ui->boutonAnnuler, SIGNAL(clicked()), SLOT(on_boutonAnnuler_clicked()));
+    connect(ui->boutonValider, SIGNAL(clicked()), SLOT(clickBoutonValider()));
+    connect(ui->boutonAnnuler, SIGNAL(clicked()), SLOT(clickBoutonAnnuler()));
 }
 
 Inscription::~Inscription()
@@ -16,11 +16,11 @@ Inscription::~Inscription()
     delete ui;
 }
 
-void Inscription::on_boutonAnnuler_clicked(){
+void Inscription::clickBoutonAnnuler(){
 
 }
 
-std::vector<QString>* Inscription::on_boutonValider_clicked(){
+std::vector<QString>* Inscription::clickBoutonValider(){
 
     QString name = ui->inputNom->toPlainText();
     QString surname = ui->inputPrenom->toPlainText();
@@ -28,7 +28,11 @@ std::vector<QString>* Inscription::on_boutonValider_clicked(){
     QString pswd = ui->inputMDP->text();
     QString confPswd = ui->inputConfirmationMDP->text();
 
-    if (pswd == confPswd) {
+    if (name.isEmpty() || surname.isEmpty() || mail.isEmpty() || pswd.isEmpty() || confPswd.isEmpty()){
+        QMessageBox::warning(0, "Avertissement", "Veuillez renseigner tous les champs");
+        return nullptr;
+    }
+    else if (pswd == confPswd) {
         std::vector<QString>* fields = new std::vector<QString>(4);
 
         fields->push_back(name);
@@ -39,6 +43,7 @@ std::vector<QString>* Inscription::on_boutonValider_clicked(){
         return fields;
     }
     else {
+        QMessageBox::critical(0, "Erreur", "Les mots de passe ne correspondent pas");
         return nullptr;
     }
 }
