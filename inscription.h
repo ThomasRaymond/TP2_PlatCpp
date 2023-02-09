@@ -21,5 +21,6 @@ private slots:
 
 private:
     Ui::Inscription *ui;
+
 };
 #endif // INSCRIPTION_H

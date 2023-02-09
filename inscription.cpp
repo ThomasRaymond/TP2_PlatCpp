@@ -17,7 +17,13 @@ Inscription::~Inscription()
 }
 
 void Inscription::clickBoutonAnnuler(){
-
+    if (this->parent() == nullptr){
+        QMessageBox::warning(0, "Avertissement", "Vous ne pouvez revenir en arrière");
+    }
+    else {
+        this->close();
+        QCoreApplication::quit();
+    }
 }
 
 std::vector<QString>* Inscription::clickBoutonValider(){
