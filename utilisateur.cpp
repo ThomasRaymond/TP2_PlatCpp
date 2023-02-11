@@ -1,4 +1,5 @@
 #include "utilisateur.h"
+#include <algorithm>
 
 Utilisateur::Utilisateur()
 {
@@ -10,6 +11,9 @@ Utilisateur::Utilisateur(std::string nom, std::string prenom, std::string mail, 
     this->prenom = prenom;
     this->mail = mail;
     this->permissions = std::vector<DroitsUtilisateurs>(permissions);
+}
+
+Utilisateur::~Utilisateur(){
 }
 
 std::string Utilisateur::getNom(){
@@ -35,3 +39,20 @@ void Utilisateur::setNom(std::string nom){
 void Utilisateur::setPrenom(std::string prenom){
     this->prenom = prenom;
 }
+
+void Utilisateur::setMail(std::string mail){
+    this->mail = mail;
+}
+
+void Utilisateur::addPermission(DroitsUtilisateurs permission) {
+    if (std::find(this->permissions.begin(), this->permissions.end(), permission) != this->permissions.end()){
+        this->permissions.push_back(permission);
+    }
+}
+
+void Utilisateur::removePermission(DroitsUtilisateurs permission){
+    if (std::find(this->permissions.begin(), this->permissions.end(), permission) == this->permissions.end()){
+        remove(this->permissions.begin(), this->permissions.end(), permission);
+    }
+}
+

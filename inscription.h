@@ -2,6 +2,7 @@
 #define INSCRIPTION_H
 #include <QWidget>
 #include <QMessageBox>
+#include "controleurbdd.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Inscription; }
@@ -17,7 +18,7 @@ public:
 
 private slots:
     void clickBoutonAnnuler();
-    std::vector<QString>* clickBoutonValider();
+    void clickBoutonValider();
 
 private:
     Ui::Inscription *ui;

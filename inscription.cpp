@@ -26,7 +26,7 @@ void Inscription::clickBoutonAnnuler(){
     }
 }
 
-std::vector<QString>* Inscription::clickBoutonValider(){
+void Inscription::clickBoutonValider(){
 
     QString name = ui->inputNom->toPlainText();
     QString surname = ui->inputPrenom->toPlainText();
@@ -36,11 +36,11 @@ std::vector<QString>* Inscription::clickBoutonValider(){
 
     if (name.isEmpty() || surname.isEmpty() || mail.isEmpty() || pswd.isEmpty() || confPswd.isEmpty()){
         QMessageBox::warning(0, "Avertissement", "Veuillez renseigner tous les champs");
-        return nullptr;
+        return;
     }
     else if (!mail.contains('@')) {
         QMessageBox::critical(0, "Erreur", "Veuillez renseigner un bon format d'adresse mail");
-        return nullptr;
+        return;
     }
     else if (pswd == confPswd) {
         std::vector<QString>* fields = new std::vector<QString>(4);
@@ -50,10 +50,14 @@ std::vector<QString>* Inscription::clickBoutonValider(){
         fields->push_back(mail);
         fields->push_back(pswd);
 
-        return fields;
+        ControleurBDD::inscriptionUtilisateur(fields);
+
+        this->close();
+        //Connection.show
+        return;
     }
     else {
         QMessageBox::critical(0, "Erreur", "Les mots de passe ne correspondent pas");
-        return nullptr;
+        return;
     }
 }

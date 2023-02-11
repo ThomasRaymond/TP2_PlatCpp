@@ -15,6 +15,7 @@ private:
 public:
     Utilisateur();
     Utilisateur(std::string nom, std::string prenom, std::string mail, std::vector<DroitsUtilisateurs> permissions);
+    ~Utilisateur();
 
     std::string getNom();
     std::string getPrenom();
