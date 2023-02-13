@@ -7,10 +7,11 @@
 
 
 
-namespace ControleurBDD {
+class ControleurBDD {
+public :
     int connexionUtilisateur(std::vector<QString>* credentials);
     void inscriptionUtilisateur(std::vector<QString>* credentials);
     int nombreUtilisateurs();
-}
+};
 
 #endif // CONTROLEURBDD_H

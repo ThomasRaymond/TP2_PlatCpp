@@ -2,10 +2,11 @@
 #define CONNEXION_H
 
 #include <QWidget>
+#include <QMessageBox>
 
-namespace Ui {
-class Connexion;
-}
+QT_BEGIN_NAMESPACE
+namespace Ui { class Connexion; }
+QT_END_NAMESPACE
 
 class Connexion : public QWidget
 {
@@ -14,6 +15,10 @@ class Connexion : public QWidget
 public:
     explicit Connexion(QWidget *parent = nullptr);
     ~Connexion();
+
+private slots:
+    void clickBoutonAnnuler();
+    //void clickBoutonValider();
 
 private:
     Ui::Connexion *ui;

@@ -2,6 +2,7 @@
 #define INSCRIPTION_H
 #include <QWidget>
 #include <QMessageBox>
+#include <QRegularExpression>
 #include "controleurbdd.h"
 
 QT_BEGIN_NAMESPACE

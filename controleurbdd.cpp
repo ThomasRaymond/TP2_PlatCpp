@@ -12,7 +12,7 @@ void ControleurBDD::inscriptionUtilisateur(std::vector<QString>* credentials){
     // TODO
 
     delete(credentials);
-    // Connexion.show
+    // Connexion.show (return true et c'est l'autre controleur qui affiche connexion)
     return;
 }
 int ControleurBDD::nombreUtilisateurs(){

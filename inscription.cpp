@@ -1,4 +1,3 @@
-
 #include "inscription.h"
 #include "ui_inscription.h"
 
@@ -34,30 +33,35 @@ void Inscription::clickBoutonValider(){
     QString pswd = ui->inputMDP->text();
     QString confPswd = ui->inputConfirmationMDP->text();
 
+    static QRegularExpression mailRegex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", QRegularExpression::CaseInsensitiveOption);
+
+    /* --- Vérifications --- */
+
     if (name.isEmpty() || surname.isEmpty() || mail.isEmpty() || pswd.isEmpty() || confPswd.isEmpty()){
         QMessageBox::warning(0, "Avertissement", "Veuillez renseigner tous les champs");
         return;
     }
-    else if (!mail.contains('@')) {
+    else if (!mailRegex.match(mail).hasMatch()) {
         QMessageBox::critical(0, "Erreur", "Veuillez renseigner un bon format d'adresse mail");
         return;
     }
-    else if (pswd == confPswd) {
-        std::vector<QString>* fields = new std::vector<QString>(4);
-
-        fields->push_back(name);
-        fields->push_back(surname);
-        fields->push_back(mail);
-        fields->push_back(pswd);
-
-        ControleurBDD::inscriptionUtilisateur(fields);
-
-        this->close();
-        //Connection.show
-        return;
-    }
-    else {
+    else if (pswd != confPswd) {
         QMessageBox::critical(0, "Erreur", "Les mots de passe ne correspondent pas");
         return;
     }
+
+    /* --- Ajout de l'utilisateur dans la BDD --- */
+
+    std::vector<QString>* fields = new std::vector<QString>(4);
+
+    fields->push_back(name);
+    fields->push_back(surname);
+    fields->push_back(mail);
+    fields->push_back(pswd);
+
+    //ControleurBDD::inscriptionUtilisateur(fields);
+
+    this->close();
+    //Connexion
+    return;
 }
