@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    connexion.cpp \
     controleurbdd.cpp \
     inscription.cpp \
     main.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
     utilisateur.cpp
 
 HEADERS += \
+    connexion.h \
     controleurbdd.h \
     droitsutilisateurs.h \
     inscription.h \
@@ -25,6 +27,7 @@ HEADERS += \
     utilisateur.h
 
 FORMS += \
+    connexion.ui \
     inscription.ui \
     mainwindow.ui
 
