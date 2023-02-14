@@ -31,9 +31,7 @@ void Connexion::clickBoutonValider(){
     QString mail = ui->inputMail->toPlainText();
     QString pswd = ui->inputMDP->text();
 
-    std::cout << mail.toStdString() << std::flush;
-
-    static QRegularExpression mailRegex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression mailRegex("[\\w]+[@]{1}[\\w]+([.][\\w]{2,})+");
 
     /* --- Vérifications --- */
 
@@ -54,7 +52,7 @@ void Connexion::clickBoutonValider(){
     fields->push_back(pswd);
 
     ControleurBDD controleurBDD;
-    bool utilisateurExiste = controleurBDD.inscriptionUtilisateur(fields);
+    bool utilisateurExiste = controleurBDD.connexionUtilisateur(fields);
 
     if (!utilisateurExiste) {
         QMessageBox::warning(0, "Avertissement", "Cet utilisateur n'existe pas !");

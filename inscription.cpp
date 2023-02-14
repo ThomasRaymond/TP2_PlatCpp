@@ -35,7 +35,7 @@ void Inscription::clickBoutonValider(){
     QString pswd = ui->inputMDP->text();
     QString confPswd = ui->inputConfirmationMDP->text();
 
-    static QRegularExpression mailRegex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    static QRegularExpression mailRegex("[\\w]+[@]{1}[\\w]+([.][\\w]{2,})+");
 
     /* --- Vérifications --- */
 
@@ -61,8 +61,13 @@ void Inscription::clickBoutonValider(){
     fields->push_back(mail);
     fields->push_back(pswd);
 
-    //ControleurBDD::inscriptionUtilisateur(fields);
-    // Gérer cas erreur
+    ControleurBDD controleurBDD;
+    bool success = controleurBDD.inscriptionUtilisateur(fields);
+
+    if (!success) {
+        QMessageBox::warning(0, "Avertissement", "Cet utilisateur existe sûrement déjà !");
+        return;
+    }
 
     this->close();
     //Connexion
