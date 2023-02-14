@@ -8,6 +8,7 @@ Connexion::Connexion(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->boutonValider, SIGNAL(clicked()), SLOT(clickBoutonValider()));
+    connect(ui->boutonInscription, SIGNAL(clicked()), SLOT(clickBoutonInscription()));
 }
 
 Connexion::~Connexion()
@@ -15,7 +16,15 @@ Connexion::~Connexion()
     delete ui;
 }
 
-void Connexion::clickBoutonValider(){
+void Connexion::clickBoutonInscription()
+{
+    this->close();
+    Inscription i(this);
+    i.show();
+}
+
+void Connexion::clickBoutonValider()
+{
 
     QString mail = ui->inputMail->toPlainText();
     QString pswd = ui->inputMDP->text();

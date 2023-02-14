@@ -37,9 +37,6 @@ int main(int argc, char *argv[])
     }
     */
 
-    Connexion c;
-    c.show();
-
     Inscription i;
     i.show();
 

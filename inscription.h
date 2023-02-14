@@ -5,6 +5,7 @@
 #include <QRegularExpression>
 #include "controleurbdd.h"
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Inscription; }
 QT_END_NAMESPACE
@@ -19,6 +20,7 @@ public:
 
 private slots:
     void clickBoutonValider();
+    void clickBoutonConnexion();
 
 private:
     Ui::Inscription *ui;

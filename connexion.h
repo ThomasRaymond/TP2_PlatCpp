@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QRegularExpression>
 #include "controleurbdd.h"
+#include "inscription.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Connexion; }
@@ -20,6 +21,7 @@ public:
 
 private slots:
     void clickBoutonValider();
+    void clickBoutonInscription();
 
 private:
     Ui::Connexion *ui;

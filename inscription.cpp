@@ -1,6 +1,6 @@
 #include "inscription.h"
 #include "ui_inscription.h"
-
+#include "connexion.h"
 #include <iostream>
 
 Inscription::Inscription(QWidget *parent)
@@ -9,11 +9,19 @@ Inscription::Inscription(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->boutonValider, SIGNAL(clicked()), SLOT(clickBoutonValider()));
+    connect(ui->boutonConnexion, SIGNAL(clicked()), SLOT(clickBoutonConnexion()));
 }
 
 Inscription::~Inscription()
 {
     delete ui;
+}
+
+void Inscription::clickBoutonConnexion()
+{
+    Connexion c(this);
+    c.show();
+    return;
 }
 
 void Inscription::clickBoutonValider(){
