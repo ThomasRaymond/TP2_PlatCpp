@@ -26,16 +26,6 @@
     <string>Annuler</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="inputMail">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>90</y>
-     <width>361</width>
-     <height>41</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
@@ -144,6 +134,16 @@
    </property>
    <property name="text">
     <string>Inscription</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="inputMail">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>90</y>
+     <width>361</width>
+     <height>41</height>
+    </rect>
    </property>
   </widget>
  </widget>

@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QMessageBox>
+#include <QRegularExpression>
+#include "controleurbdd.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Connexion; }
@@ -18,7 +20,7 @@ public:
 
 private slots:
     void clickBoutonAnnuler();
-    //void clickBoutonValider();
+    void clickBoutonValider();
 
 private:
     Ui::Connexion *ui;

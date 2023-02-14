@@ -1,6 +1,8 @@
 #include "inscription.h"
 #include "ui_inscription.h"
 
+#include <iostream>
+
 Inscription::Inscription(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Inscription)
@@ -33,7 +35,7 @@ void Inscription::clickBoutonValider(){
     QString pswd = ui->inputMDP->text();
     QString confPswd = ui->inputConfirmationMDP->text();
 
-    static QRegularExpression mailRegex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression mailRegex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
     /* --- Vérifications --- */
 
@@ -60,6 +62,7 @@ void Inscription::clickBoutonValider(){
     fields->push_back(pswd);
 
     //ControleurBDD::inscriptionUtilisateur(fields);
+    // Gérer cas erreur
 
     this->close();
     //Connexion

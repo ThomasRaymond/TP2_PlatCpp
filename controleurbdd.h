@@ -9,8 +9,8 @@
 
 class ControleurBDD {
 public :
-    int connexionUtilisateur(std::vector<QString>* credentials);
-    void inscriptionUtilisateur(std::vector<QString>* credentials);
+    bool connexionUtilisateur(std::vector<QString>* credentials);
+    bool inscriptionUtilisateur(std::vector<QString>* credentials);
     int nombreUtilisateurs();
 };
 
