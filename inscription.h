@@ -18,7 +18,6 @@ public:
     ~Inscription();
 
 private slots:
-    void clickBoutonAnnuler();
     void clickBoutonValider();
 
 private:

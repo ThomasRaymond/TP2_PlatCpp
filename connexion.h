@@ -19,7 +19,6 @@ public:
     ~Connexion();
 
 private slots:
-    void clickBoutonAnnuler();
     void clickBoutonValider();
 
 private:
