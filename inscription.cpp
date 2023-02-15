@@ -4,7 +4,7 @@
 #include <iostream>
 
 Inscription::Inscription(QWidget *parent)
-    : QWidget(parent)
+    : QDialog(parent)
     , ui(new Ui::Inscription)
 {
     ui->setupUi(this);
@@ -19,8 +19,9 @@ Inscription::~Inscription()
 
 void Inscription::clickBoutonConnexion()
 {
+    this->hide();
     Connexion c(this);
-    c.show();
+    c.exec();
     return;
 }
 

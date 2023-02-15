@@ -11,7 +11,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class Connexion; }
 QT_END_NAMESPACE
 
-class Connexion : public QWidget
+class Connexion : public QDialog
 {
     Q_OBJECT
 

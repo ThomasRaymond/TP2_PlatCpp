@@ -3,7 +3,7 @@
 #include <iostream>
 
 Connexion::Connexion(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::Connexion)
 {
     ui->setupUi(this);
@@ -20,12 +20,11 @@ void Connexion::clickBoutonInscription()
 {
     this->close();
     Inscription i(this);
-    i.show();
+    i.exec();
 }
 
 void Connexion::clickBoutonValider()
 {
-
     QString mail = ui->inputMail->toPlainText();
     QString pswd = ui->inputMDP->text();
 

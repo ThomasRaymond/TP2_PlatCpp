@@ -1,6 +1,8 @@
 #include "inscription.h"
 #include "controleurbdd.h"
 #include "connexion.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -11,7 +13,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    /*
+
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale : uiLanguages) {
@@ -22,23 +24,19 @@ int main(int argc, char *argv[])
         }
     }
 
-    ControleurBDD BDDc = ControleurBDD();
 
-    std::cout << "start" << std::endl;
+    MainWindow main;
+    main.show();
 
-    if (BDDc.nombreUtilisateurs() > 1) {
-        std::cout << "1";
-        Connexion c;
-        c.show();
-    }else{
-        std::cout << "2";
-        Inscription i;
-        i.show();
+    ControleurBDD cBDD;
+    if (cBDD.nombreUtilisateurs()>1){
+        Connexion conn(main);
+        conn.exec();
     }
-    */
-
-    Inscription i;
-    i.show();
+    else {
+        Inscription i(main);
+        i.exec();
+    }
 
     return a.exec();
 }
