@@ -1,5 +1,6 @@
 #include "connexion.h"
 #include "ui_connexion.h"
+#include "mainwindow.h"
 #include <iostream>
 
 Connexion::Connexion(QWidget *parent) :
@@ -45,18 +46,10 @@ void Connexion::clickBoutonValider()
 
     std::vector<QString>* fields = new std::vector<QString>(2);
 
-    fields->push_back(mail);
-    fields->push_back(pswd);
+    fields->insert(fields->begin(), mail);
+    fields->insert(fields->begin() + 1, pswd);
 
-    ControleurBDD controleurBDD;
-    bool utilisateurExiste = controleurBDD.connexionUtilisateur(fields);
-
-    if (!utilisateurExiste) {
-        QMessageBox::warning(0, "Avertissement", "Cet utilisateur n'existe pas !");
-        return;
-    }
-
-    this->close();
+    static_cast<MainWindow*>(this->parent())->validerConnexion(fields, this);
     //Connexion
 
     return;
