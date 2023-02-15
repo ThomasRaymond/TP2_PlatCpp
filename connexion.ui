@@ -3,7 +3,7 @@
  <class>Connexion</class>
  <widget class="QWidget" name="Connexion">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
