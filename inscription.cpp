@@ -27,9 +27,9 @@ void Inscription::clickBoutonConnexion()
 
 void Inscription::clickBoutonValider(){
 
-    QString name = ui->inputNom->toPlainText();
-    QString surname = ui->inputPrenom->toPlainText();
-    QString mail = ui->inputMail->toPlainText();
+    QString name = ui->inputNom->text();
+    QString surname = ui->inputPrenom->text();
+    QString mail = ui->inputMail->text();
     QString pswd = ui->inputMDP->text();
     QString confPswd = ui->inputConfirmationMDP->text();
 

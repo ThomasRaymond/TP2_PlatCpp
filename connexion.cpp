@@ -25,7 +25,7 @@ void Connexion::clickBoutonInscription()
 
 void Connexion::clickBoutonValider()
 {
-    QString mail = ui->inputMail->toPlainText();
+    QString mail = ui->inputMail->text();
     QString pswd = ui->inputMDP->text();
 
     static QRegularExpression mailRegex("[\\w]+[@]{1}[\\w]+([.][\\w]{2,})+");

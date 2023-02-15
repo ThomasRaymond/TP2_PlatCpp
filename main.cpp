@@ -30,11 +30,11 @@ int main(int argc, char *argv[])
 
     ControleurBDD cBDD;
     if (cBDD.nombreUtilisateurs()>1){
-        Connexion conn(main);
+        Connexion conn;
         conn.exec();
     }
     else {
-        Inscription i(main);
+        Inscription i;
         i.exec();
     }
 
