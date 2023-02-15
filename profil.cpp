@@ -1,32 +1,33 @@
 #include "profil.h"
+#include "utilisateur.h"
 
 Profil::Profil()
 {
     this->nomProfil = "";
-    this->utilisateur = nullptr;
 }
 
-Profil::Profil(Utilisateur* utilisateur, std::string nomProfil) {
+Profil::Profil(std::string nomProfil) {
     this->nomProfil = nomProfil;
-    this->utilisateur = utilisateur;
 }
 
 Profil::~Profil() {
-    this->utilisateur = nullptr;
 }
 
 std::string Profil::getNomProfil() {
     return this->nomProfil;
 }
 
-Utilisateur* Profil::getUtilisateur(){
-    return this->utilisateur;
-}
 
 void Profil::setNomProfil(std::string nomProfil){
     this->nomProfil = nomProfil;
 }
 
-void Profil::setUtilisateur(Utilisateur* utilisateur) {
-    this->utilisateur = utilisateur;
+bool Profil::operator==(const Profil &profil){
+    if(this->getNomProfil() == profil.getNomProfil()){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
+
