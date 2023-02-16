@@ -61,6 +61,10 @@ void Inscription::clickBoutonValider(){
     fields->insert(fields->begin() + 2, mail);
     fields->insert(fields->begin() + 3, pswd);
 
+    for (auto i = 0; i< fields->size(); i++){
+        std::cout << (*fields)[i].toStdString() << " ";
+    }
+
     static_cast<MainWindow*>(this->parent())->validerInscription(fields, this);
 
     return;

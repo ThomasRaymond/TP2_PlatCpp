@@ -25,16 +25,16 @@ int main(int argc, char *argv[])
     }
 
 
-    MainWindow main;
-    main.show();
+    MainWindow* main = new MainWindow();
+    main->show();
 
     ControleurBDD cBDD;
     if (cBDD.nombreUtilisateurs()>1){
-        Connexion conn(&main);
+        Connexion conn(main);
         conn.exec();
     }
     else {
-        Inscription i(&main);
+        Inscription i(main);
         i.exec();
     }
 

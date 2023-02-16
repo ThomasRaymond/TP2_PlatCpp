@@ -45,8 +45,6 @@ void MainWindow::validerConnexion(std::vector<QString>* credentials, QDialog* fe
         QMessageBox::warning(0, "Avertissement", "Cet utilisateur n'existe pas !");
         return;
     }
-
-    delete credentials;
     fermerFenetre(fenetre);
     lancerApplication();
 
@@ -62,7 +60,6 @@ void MainWindow::validerInscription(std::vector<QString>* credentials, QDialog* 
         return;
     }
 
-    delete credentials;
     fermerFenetre(fenetre);
     lancerConnexion();
 
@@ -70,6 +67,5 @@ void MainWindow::validerInscription(std::vector<QString>* credentials, QDialog* 
 }
 
 void MainWindow::fermerFenetre(QDialog* fenetre){
-    fenetre->hide();
-    delete fenetre;
+    fenetre->close();
 }
