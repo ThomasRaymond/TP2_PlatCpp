@@ -1,6 +1,4 @@
-#include "inscription.h"
-#include "controleurbdd.h"
-#include "connexion.h"
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -27,16 +25,8 @@ int main(int argc, char *argv[])
 
     MainWindow* main = new MainWindow();
     main->show();
+    main->init();
 
-    ControleurBDD cBDD;
-    if (cBDD.nombreUtilisateurs()>1){
-        Connexion conn(main);
-        conn.exec();
-    }
-    else {
-        Inscription i(main);
-        i.exec();
-    }
 
     return a.exec();
 }

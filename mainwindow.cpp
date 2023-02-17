@@ -1,4 +1,7 @@
 #include "mainwindow.h"
+#include "inscription.h"
+#include "controleurbdd.h"
+#include "connexion.h"
 #include "ui_mainwindow.h"
 
 #include "connexion.h"
@@ -17,7 +20,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::init(){
     // TO DO : CHECK NOMBRE D'UTILISATEURS
-    lancerConnexion();
+    ControleurBDD cBDD;
+    if (cBDD.nombreUtilisateurs()>1){
+        lancerConnexion();
+    }
+    else {
+        lancerInscription();
+    }
 }
 
 void MainWindow::lancerConnexion()
