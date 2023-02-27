@@ -22,14 +22,58 @@ std::vector<Utilisateur> ControleurXML::parseFile()
         userComponent = userComponent.nextSibling().toElement();
     }
 
-    return users; // TODO
+    return users;
 }
 
 
-bool ControleurXML::writeFile(std::vector<Utilisateur>)
+bool ControleurXML::writeFile(std::vector<Utilisateur> users)
 {
-    return true; // TODO
+    // Create a document to write XML
+    QDomDocument document;
 
+    // Making the root element
+    QDomElement root = document.createElement("USERDATABASE");
+
+    for (auto it = users.begin() ; it < users.end() ; it++) {
+        QDomElement user = document.createElement("USER");
+
+        QDomElement prenom = document.createElement("FIRSTNAME");
+        QDomElement nom = document.createElement("LASTNAME");
+        QDomElement mail = document.createElement("MAIL");
+        QDomElement mdp = document.createElement("PASSWORD");
+
+        prenom.appendChild(document.createTextNode(it->getPrenom().c_str()));
+        nom.appendChild(document.createTextNode(it->getNom().c_str()));
+        mail.appendChild(document.createTextNode(it->getMail().c_str()));
+        mdp.appendChild(document.createTextNode(it->getPassword().c_str()));
+
+        user.appendChild(prenom);
+        user.appendChild(nom);
+        user.appendChild(mail);
+        user.appendChild(mdp);
+
+        root.appendChild(user);
+    }
+
+
+    // Adding the root element to the docuemnt
+    document.appendChild(root);
+
+    // Writing to a file
+    QFile file("/Users/thomasraymond/Documents/Etudes/DI4/S8/Plateformes logicielles/Plateformes logicielles C++/TP2/usersWrite.xml");
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Open the file for writing failed";
+    }
+    else
+    {
+        QTextStream stream(&file);
+        stream << document.toString();
+        file.close();
+        qDebug() << "Writing is done";
+    }
+
+    return true; // TODO
 }
 
 
@@ -52,7 +96,7 @@ Utilisateur ControleurXML::createUserFromXMLComponent(QDomElement component)
             user.setMail(userAttribute.firstChild().toText().data().toStdString());
 
         if (userAttribute.tagName() == "PASSWORD")
-            user.setMail(userAttribute.firstChild().toText().data().toStdString());
+            user.setPassword(userAttribute.firstChild().toText().data().toStdString());
 
         userAttribute = userAttribute.nextSibling().toElement();
     }

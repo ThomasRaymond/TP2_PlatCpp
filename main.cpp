@@ -14,10 +14,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     auto users = ControleurXML::parseFile();
+    ControleurXML::writeFile(users);
 
-    for (auto user: users) {
-        std::cout << "user : " <<user.getPrenom() << std::endl;
-    }
 
     return a.exec();
 }
