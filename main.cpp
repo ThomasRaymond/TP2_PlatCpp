@@ -2,6 +2,7 @@
 #include "controleurbdd.h"
 #include "connexion.h"
 #include "controleurxml.h"
+#include "mainwindow.h"
 
 
 #include <QApplication>
@@ -23,7 +24,6 @@ int main(int argc, char *argv[])
             break;
         }
     }
-
 
     MainWindow* main = new MainWindow();
     main->show();
