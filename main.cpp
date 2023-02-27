@@ -1,16 +1,18 @@
+#include "inscription.h"
+#include "controleurbdd.h"
+#include "connexion.h"
+#include "controleurxml.h"
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
 #include <iostream>
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -26,7 +28,6 @@ int main(int argc, char *argv[])
     MainWindow* main = new MainWindow();
     main->show();
     main->init();
-
 
     return a.exec();
 }

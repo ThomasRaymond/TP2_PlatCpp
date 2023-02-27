@@ -1,0 +1,14 @@
+<USERDATABASE>
+   <USER>
+      <FIRSTNAME>Tim</FIRSTNAME>
+      <LASTNAME>Auffret</LASTNAME>
+      <MAIL>timleda@jaimelanature.fr</MAIL>
+      <PASSWORD>feuille</PASSWORD>
+   </USER>
+   <USER>
+      <FIRSTNAME>Lucas</FIRSTNAME>
+      <LASTNAME>Senlecque</LASTNAME>
+      <MAIL>lucaspetitcoeur@jaimemargot.fr</MAIL>
+      <PASSWORD>margot</PASSWORD>
+   </USER>
+</USERDATABASE>

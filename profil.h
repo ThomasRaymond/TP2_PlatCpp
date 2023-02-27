@@ -19,6 +19,8 @@ public:
 
     void setNomProfil(std::string nomProfil);
     void setUtilisateur(Utilisateur* utilisateur);
+
+    bool operator==(const Profil &other) const;
 };
 
 #endif // PROFIL_H

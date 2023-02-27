@@ -28,6 +28,10 @@ std::string Utilisateur::getMail(){
     return this->mail;
 }
 
+std::string Utilisateur::getPassword(){
+    return this->mdp;
+}
+
 std::vector<DroitsUtilisateurs> Utilisateur::getPermissions(){
     return this->permissions;
 }
@@ -42,6 +46,10 @@ void Utilisateur::setPrenom(std::string prenom){
 
 void Utilisateur::setMail(std::string mail){
     this->mail = mail;
+}
+
+void Utilisateur::setPassword(std::string mdp){
+    this->mdp = mdp;
 }
 
 void Utilisateur::addPermission(DroitsUtilisateurs permission) {
