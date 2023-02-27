@@ -15,6 +15,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void init();
+    void lancerApplication();
+    void lancerConnexion();
+    void lancerInscription();
+
+    void validerConnexion(std::vector<QString>* credentials, QDialog* fenetre);
+    void validerInscription(std::vector<QString>* credentials, QDialog* fenetre);
+
+    void fermerFenetre(QDialog* fenetre);
+
 private:
     Ui::MainWindow *ui;
 };

@@ -10,7 +10,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class Inscription; }
 QT_END_NAMESPACE
 
-class Inscription : public QWidget
+class Inscription : public QDialog
 {
     Q_OBJECT
 

@@ -1,10 +1,11 @@
 #include "inscription.h"
 #include "ui_inscription.h"
 #include "connexion.h"
+#include "mainwindow.h"
 #include <iostream>
 
 Inscription::Inscription(QWidget *parent)
-    : QWidget(parent)
+    : QDialog(parent)
     , ui(new Ui::Inscription)
 {
     ui->setupUi(this);
@@ -19,16 +20,17 @@ Inscription::~Inscription()
 
 void Inscription::clickBoutonConnexion()
 {
+    this->hide();
     Connexion c(this);
-    c.show();
+    c.exec();
     return;
 }
 
 void Inscription::clickBoutonValider(){
 
-    QString name = ui->inputNom->toPlainText();
-    QString surname = ui->inputPrenom->toPlainText();
-    QString mail = ui->inputMail->toPlainText();
+    QString name = ui->inputNom->text();
+    QString surname = ui->inputPrenom->text();
+    QString mail = ui->inputMail->text();
     QString pswd = ui->inputMDP->text();
     QString confPswd = ui->inputConfirmationMDP->text();
 
@@ -53,20 +55,12 @@ void Inscription::clickBoutonValider(){
 
     std::vector<QString>* fields = new std::vector<QString>(4);
 
-    fields->push_back(name);
-    fields->push_back(surname);
-    fields->push_back(mail);
-    fields->push_back(pswd);
 
-    ControleurBDD controleurBDD;
-    bool success = controleurBDD.inscriptionUtilisateur(fields);
+    fields->insert(fields->begin(), name);
+    fields->insert(fields->begin() + 1, surname);
+    fields->insert(fields->begin() + 2, mail);
+    fields->insert(fields->begin() + 3, pswd);
+    static_cast<MainWindow*>(this->parent())->validerInscription(fields, this);
 
-    if (!success) {
-        QMessageBox::warning(0, "Avertissement", "Cet utilisateur existe sûrement déjà !");
-        return;
-    }
-
-    this->close();
-    //Connexion
     return;
 }
