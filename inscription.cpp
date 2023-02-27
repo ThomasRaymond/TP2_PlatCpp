@@ -2,6 +2,8 @@
 #include "ui_inscription.h"
 #include "connexion.h"
 #include "mainwindow.h"
+#include "utilisateur.h"
+#include "controleurxml.h"
 #include <iostream>
 
 Inscription::Inscription(QWidget *parent)
@@ -51,16 +53,25 @@ void Inscription::clickBoutonValider(){
         return;
     }
 
-    /* --- Ajout de l'utilisateur dans la BDD --- */
+    /* --- Creation d'un utilisateur --- */
 
-    std::vector<QString>* fields = new std::vector<QString>(4);
+    Utilisateur user;
 
+    user.setPrenom(surname.toStdString());
+    user.setNom(name.toStdString());
+    user.setMail(mail.toStdString());
+    user.setPassword(pswd.toStdString());
 
-    fields->insert(fields->begin(), name);
-    fields->insert(fields->begin() + 1, surname);
-    fields->insert(fields->begin() + 2, mail);
-    fields->insert(fields->begin() + 3, pswd);
-    static_cast<MainWindow*>(this->parent())->validerInscription(fields, this);
+    /* --- Ajout de l'utilisateur dans le fichier XML --- */
+
+    // Récupèration des utilisateurs existants
+    std::vector<Utilisateur> users = ControleurXML::parseFile();
+
+    // Ajout du nouvel utilisateur aux utilisateurs existants
+    users.push_back(user);
+
+    // Ecriture du fichier
+    ControleurXML::writeFile(users);
 
     return;
 }
