@@ -32,6 +32,7 @@ bool ControleurXML::writeFile(std::vector<Utilisateur>)
 
 }
 
+
 Utilisateur ControleurXML::createUserFromXMLComponent(QDomElement component)
 {
     Utilisateur user;

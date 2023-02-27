@@ -30,3 +30,7 @@ void Profil::setNomProfil(std::string nomProfil){
 void Profil::setUtilisateur(Utilisateur* utilisateur) {
     this->utilisateur = utilisateur;
 }
+
+bool Profil::operator==(const Profil &other) const {
+    return this->nomProfil == other.nomProfil;
+}
