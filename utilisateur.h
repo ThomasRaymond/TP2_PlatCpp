@@ -30,6 +30,8 @@ public:
     void setPassword(std::string mdp);
     void addPermission(DroitsUtilisateurs permission);
     void removePermission(DroitsUtilisateurs permissions);
+
+    bool operator==(Utilisateur other);
 };
 
 #endif // UTILISATEUR_H

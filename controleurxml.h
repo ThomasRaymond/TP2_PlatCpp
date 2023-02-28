@@ -11,6 +11,8 @@ class ControleurXML
 public:
     static std::vector<Utilisateur> parseFile();
     static bool writeFile(std::vector<Utilisateur>);
+    static bool addUser(Utilisateur user);
+    static bool verifyUser(Utilisateur user);
 private:
     static QDomDocument openDocument(std::string path);
     static Utilisateur createUserFromXMLComponent(QDomElement child);

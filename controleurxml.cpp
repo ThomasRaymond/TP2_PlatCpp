@@ -60,7 +60,7 @@ bool ControleurXML::writeFile(std::vector<Utilisateur> users)
     document.appendChild(root);
 
     // Writing to a file
-    QFile file("/Users/thomasraymond/Documents/Etudes/DI4/S8/Plateformes logicielles/Plateformes logicielles C++/TP2/usersWrite.xml");
+    QFile file("/Users/thomasraymond/Documents/Etudes/DI4/S8/Plateformes logicielles/Plateformes logicielles C++/TP2/users.xml");
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         qDebug() << "Open the file for writing failed";
@@ -101,8 +101,6 @@ Utilisateur ControleurXML::createUserFromXMLComponent(QDomElement component)
         userAttribute = userAttribute.nextSibling().toElement();
     }
 
-
-
     return user;
 }
 
@@ -122,4 +120,50 @@ QDomDocument ControleurXML::openDocument(std::string path)
     f.close();
 
     return xmlBOM;
+}
+
+bool ControleurXML::addUser(Utilisateur user)
+{
+    // Récupèration des utilisateurs existants
+    std::vector<Utilisateur> users = ControleurXML::parseFile();
+
+    // Vérification
+    for (auto it = users.begin() ; it < users.end() ; it++)
+    {
+        if (*it == user) // Si il existe déjà
+        {
+            return false;
+        }
+    }
+
+    // Il n'existe pas déjà
+    // Ajout du nouvel utilisateur aux utilisateurs existants
+    users.push_back(user);
+
+    // Ecriture du fichier
+    if (!ControleurXML::writeFile(users))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+
+bool ControleurXML::verifyUser(Utilisateur user)
+{
+    // Récupèration des utilisateurs existants
+    std::vector<Utilisateur> users = ControleurXML::parseFile();
+
+    // Vérification
+    for (auto it = users.begin() ; it < users.end() ; it++)
+    {
+        if (*it == user) // Si il y a une correspondance
+        {
+            return true;
+        }
+    }
+
+    return false;
+
 }

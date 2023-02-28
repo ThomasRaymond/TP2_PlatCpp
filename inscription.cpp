@@ -1,7 +1,6 @@
 #include "inscription.h"
 #include "ui_inscription.h"
 #include "connexion.h"
-#include "mainwindow.h"
 #include "utilisateur.h"
 #include "controleurxml.h"
 #include <iostream>
@@ -63,15 +62,14 @@ void Inscription::clickBoutonValider(){
     user.setPassword(pswd.toStdString());
 
     /* --- Ajout de l'utilisateur dans le fichier XML --- */
-
-    // Récupèration des utilisateurs existants
-    std::vector<Utilisateur> users = ControleurXML::parseFile();
-
-    // Ajout du nouvel utilisateur aux utilisateurs existants
-    users.push_back(user);
-
-    // Ecriture du fichier
-    ControleurXML::writeFile(users);
+    if (ControleurXML::addUser(user))
+    {
+        QMessageBox::information(0, "Succès", "L'utilisateur a bien été ajouté");
+    }
+    else
+    {
+        QMessageBox::critical(0, "Erreur", "Ajout impossible");
+    }
 
     return;
 }
