@@ -65,23 +65,11 @@ void Utilisateur::removePermission(DroitsUtilisateurs permission){
 }
 
 bool Utilisateur::operator==(Utilisateur other) {
-    if (this->getPrenom() != other.getPrenom())
-    {
-        return false;
-    }
-    if (this->getNom() != other.getNom())
-    {
-        return false;
-    }
     if (this->getMail() != other.getMail())
     {
         return false;
     }
     if (this->getPassword() != other.getPassword())
-    {
-        return false;
-    }
-    if(this->getPermissions() != other.getPermissions())
     {
         return false;
     }

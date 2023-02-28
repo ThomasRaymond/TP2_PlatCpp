@@ -4,8 +4,6 @@
 #include <QWidget>
 #include <QMessageBox>
 #include <QRegularExpression>
-#include "controleurbdd.h"
-#include "inscription.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Connexion; }

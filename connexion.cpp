@@ -1,6 +1,9 @@
 #include "connexion.h"
 #include "ui_connexion.h"
 #include "mainwindow.h"
+#include "utilisateur.h"
+#include "controleurxml.h"
+#include "inscription.h"
 #include <iostream>
 
 Connexion::Connexion(QWidget *parent) :
@@ -44,13 +47,19 @@ void Connexion::clickBoutonValider()
 
     /* --- Connexion --- */
 
-    std::vector<QString>* fields = new std::vector<QString>(2);
+    Utilisateur user;
 
-    fields->insert(fields->begin(), mail);
-    fields->insert(fields->begin() + 1, pswd);
+    user.setMail(mail.toStdString());
+    user.setPassword(pswd.toStdString());
 
-    static_cast<MainWindow*>(this->parent())->validerConnexion(fields, this);
-    //Connexion
+    if (ControleurXML::verifyUser(user))
+    {
+        QMessageBox::information(0, "Succès", "Vous êtes connecté !");
+    }
+    else
+    {
+        QMessageBox::critical(0, "Erreur", "Connexion impossible !");
+    }
 
     return;
 }

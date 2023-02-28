@@ -104,6 +104,7 @@ Utilisateur ControleurXML::createUserFromXMLComponent(QDomElement component)
     return user;
 }
 
+
 QDomDocument ControleurXML::openDocument(std::string path)
 {
     QDomDocument xmlBOM;
@@ -121,6 +122,7 @@ QDomDocument ControleurXML::openDocument(std::string path)
 
     return xmlBOM;
 }
+
 
 bool ControleurXML::addUser(Utilisateur user)
 {
