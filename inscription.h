@@ -4,7 +4,10 @@
 #include <QWidget>
 #include <QMessageBox>
 #include <QRegularExpression>
-#include "controleurbdd.h"
+
+#include "ui_inscription.h"
+#include "utilisateur.h"
+#include "controleurxml.h"
 
 
 QT_BEGIN_NAMESPACE

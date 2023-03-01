@@ -1,9 +1,9 @@
 #include "inscription.h"
+
 #include "ui_inscription.h"
 #include "connexion.h"
 #include "utilisateur.h"
 #include "controleurxml.h"
-#include <iostream>
 
 Inscription::Inscription(QWidget *parent)
     : QDialog(parent)

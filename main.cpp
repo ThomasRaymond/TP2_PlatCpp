@@ -1,14 +1,8 @@
-#include "controleurbdd.h"
-#include "connexion.h"
-#include "controleurxml.h"
 #include "mainwindow.h"
-
 
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
-#include <iostream>
-#include <QtXml>
 
 int main(int argc, char *argv[])
 {
