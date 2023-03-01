@@ -3,17 +3,16 @@
 
 Utilisateur::Utilisateur()
 {
-    this->permissions = std::vector<DroitsUtilisateurs>(3);
+    this->profils = std::vector<Profil>();
+    this->permissions = std::vector<bool>(3, false);
 }
 
-Utilisateur::Utilisateur(std::string nom, std::string prenom, std::string mail, std::vector<DroitsUtilisateurs> permissions){
+Utilisateur::Utilisateur(std::string nom, std::string prenom, std::string mail, std::string mdp)
+{
     this->nom = nom;
     this->prenom = prenom;
     this->mail = mail;
-    this->permissions = std::vector<DroitsUtilisateurs>(permissions);
-}
-
-Utilisateur::~Utilisateur(){
+    this->mdp = mdp;
 }
 
 std::string Utilisateur::getNom(){
@@ -32,36 +31,81 @@ std::string Utilisateur::getPassword(){
     return this->mdp;
 }
 
-std::vector<DroitsUtilisateurs> Utilisateur::getPermissions(){
+std::vector<Profil> Utilisateur::getProfils()
+{
+    return this->profils;
+}
+
+std::vector<bool> Utilisateur::getPermissions()
+{
     return this->permissions;
 }
 
-void Utilisateur::setNom(std::string nom){
+bool Utilisateur::can(int droit)
+{
+    return this->permissions.at(droit) == true;
+}
+
+void Utilisateur::setNom(std::string nom)
+{
     this->nom = nom;
 }
 
-void Utilisateur::setPrenom(std::string prenom){
+void Utilisateur::setPrenom(std::string prenom)
+{
     this->prenom = prenom;
 }
 
-void Utilisateur::setMail(std::string mail){
+void Utilisateur::setMail(std::string mail)
+{
     this->mail = mail;
 }
 
-void Utilisateur::setPassword(std::string mdp){
+void Utilisateur::setPassword(std::string mdp)
+{
     this->mdp = mdp;
 }
 
-void Utilisateur::addPermission(DroitsUtilisateurs permission) {
-    if (std::find(this->permissions.begin(), this->permissions.end(), permission) != this->permissions.end()){
-        this->permissions.push_back(permission);
+bool Utilisateur::addProfil(Profil profil)
+{
+    auto pos = std::find(this->profils.begin(), this->profils.end(), profil);
+
+    if (pos == this->profils.end())
+    {
+        this->profils.push_back(profil);
+        return true;
     }
+    return false;
 }
 
-void Utilisateur::removePermission(DroitsUtilisateurs permission){
-    if (std::find(this->permissions.begin(), this->permissions.end(), permission) == this->permissions.end()){
-        remove(this->permissions.begin(), this->permissions.end(), permission);
+bool Utilisateur::removeProfil(Profil profil)
+{
+    auto pos = std::find(this->profils.begin(), this->profils.end(), profil);
+
+    if (pos != this->profils.end())
+    {
+        this->profils.erase(pos);
+        return true;
     }
+    return false;
+}
+
+bool Utilisateur::addPermission(int permission) {
+    if (!this->can(permission))
+    {
+        this->permissions.at(permission) = true;
+        return true;
+    }
+    return false;
+}
+
+bool Utilisateur::removePermission(int permission){
+    if (this->can(permission))
+    {
+        this->permissions.at(permission) = false;
+        return true;
+    }
+    return false;
 }
 
 bool Utilisateur::operator==(Utilisateur other) {
@@ -75,4 +119,3 @@ bool Utilisateur::operator==(Utilisateur other) {
     }
     return true;
 }
-

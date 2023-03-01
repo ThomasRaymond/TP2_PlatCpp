@@ -1,4 +1,3 @@
-#include "inscription.h"
 #include "controleurbdd.h"
 #include "connexion.h"
 #include "controleurxml.h"
