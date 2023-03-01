@@ -13,6 +13,7 @@ public:
     static bool writeFile(std::vector<Utilisateur>);
     static bool addUser(Utilisateur user);
     static bool verifyUser(Utilisateur user);
+    static int nombreUtilisateurs();
 private:
     static QDomDocument openDocument(std::string path);
     static Utilisateur createUserFromXMLComponent(QDomElement child);

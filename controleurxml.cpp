@@ -169,3 +169,11 @@ bool ControleurXML::verifyUser(Utilisateur user)
     return false;
 
 }
+
+int ControleurXML::nombreUtilisateurs()
+{
+    // Récupèration des utilisateurs existants
+    std::vector<Utilisateur> users = ControleurXML::parseFile();
+
+    return users.size();
+}
