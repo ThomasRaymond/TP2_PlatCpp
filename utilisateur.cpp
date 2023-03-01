@@ -1,5 +1,6 @@
 #include "utilisateur.h"
 #include <algorithm>
+#include <iostream>
 
 Utilisateur::Utilisateur()
 {
@@ -13,6 +14,7 @@ Utilisateur::Utilisateur(std::string nom, std::string prenom, std::string mail, 
     this->prenom = prenom;
     this->mail = mail;
     this->mdp = mdp;
+    this->permissions = std::vector<bool>(3, false);
 }
 
 std::string Utilisateur::getNom(){

@@ -1,14 +1,13 @@
 <USERDATABASE>
    <USER>
-      <FIRSTNAME>Tim</FIRSTNAME>
-      <LASTNAME>Auffret</LASTNAME>
-      <MAIL>timleda@jaimelanature.fr</MAIL>
-      <PASSWORD>feuille</PASSWORD>
-   </USER>
-   <USER>
-      <FIRSTNAME>Lucas</FIRSTNAME>
-      <LASTNAME>Senlecque</LASTNAME>
-      <MAIL>lucaspetitcoeur@jaimemargot.fr</MAIL>
-      <PASSWORD>margot</PASSWORD>
+      <FIRSTNAME>Admin</FIRSTNAME>
+      <LASTNAME>Admin</LASTNAME>
+      <MAIL>admin@admin.admin</MAIL>
+      <PASSWORD>admin</PASSWORD>
+      <PERMISSIONS read="1" write="1" delete="1"/>
+      <PROFILS>
+         <PROFIL name="Profil1"/>
+         <PROFIL name="Profil2"/>
+      </PROFILS>
    </USER>
 </USERDATABASE>

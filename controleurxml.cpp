@@ -35,22 +35,40 @@ bool ControleurXML::writeFile(std::vector<Utilisateur> users)
     QDomElement root = document.createElement("USERDATABASE");
 
     for (auto it = users.begin() ; it < users.end() ; it++) {
+
         QDomElement user = document.createElement("USER");
 
         QDomElement prenom = document.createElement("FIRSTNAME");
         QDomElement nom = document.createElement("LASTNAME");
         QDomElement mail = document.createElement("MAIL");
         QDomElement mdp = document.createElement("PASSWORD");
+        QDomElement permissions = document.createElement("PERMISSIONS");
+        QDomElement profils = document.createElement("PROFILS");
 
         prenom.appendChild(document.createTextNode(it->getPrenom().c_str()));
         nom.appendChild(document.createTextNode(it->getNom().c_str()));
         mail.appendChild(document.createTextNode(it->getMail().c_str()));
         mdp.appendChild(document.createTextNode(it->getPassword().c_str()));
+        permissions.setAttribute("read", QString::number(it->can(READ)));
+        permissions.setAttribute("write", QString::number(it->can(WRITE)));
+        permissions.setAttribute("delete", QString::number(it->can(DELETE)));
+
+        std::vector<Profil> userProfils = it->getProfils();
+
+        for (auto it2 = userProfils.begin() ; it2 < userProfils.end() ; it2++)
+        {
+            std::string nomProfil = it2->getNomProfil();
+            QDomElement profilComponent = document.createElement("PROFIL");
+            profilComponent.setAttribute("name", QString::fromStdString(nomProfil));
+            profils.appendChild(profilComponent);
+        }
 
         user.appendChild(prenom);
         user.appendChild(nom);
         user.appendChild(mail);
         user.appendChild(mdp);
+        user.appendChild(permissions);
+        user.appendChild(profils);
 
         root.appendChild(user);
     }
@@ -91,12 +109,43 @@ Utilisateur ControleurXML::createUserFromXMLComponent(QDomElement component)
         if (userAttribute.tagName() == "FIRSTNAME")
             user.setNom(userAttribute.firstChild().toText().data().toStdString());
 
-
         if (userAttribute.tagName() == "MAIL")
             user.setMail(userAttribute.firstChild().toText().data().toStdString());
 
         if (userAttribute.tagName() == "PASSWORD")
             user.setPassword(userAttribute.firstChild().toText().data().toStdString());
+
+        if (userAttribute.tagName() == "PERMISSIONS")
+        {
+            if (userAttribute.attribute("read") == "1")
+            {
+                user.addPermission(READ);
+            }
+            if (userAttribute.attribute("write") == "1")
+            {
+                user.addPermission(WRITE);
+            }
+            if (userAttribute.attribute("delete") == "1")
+            {
+                user.addPermission(DELETE);
+            }
+        }
+
+        if (userAttribute.tagName() == "PROFILS")
+        {
+            QDomElement profilComponent = userAttribute.firstChild().toElement();
+
+            while(!profilComponent.isNull())
+            {
+                if (userAttribute.tagName() == "PROFIL")
+                {
+                    Profil profil(profilComponent.attribute("name").toStdString());
+                    user.addProfil(profil);
+                }
+                profilComponent = profilComponent.nextSibling().toElement();
+            }
+        }
+
 
         userAttribute = userAttribute.nextSibling().toElement();
     }
@@ -172,7 +221,7 @@ bool ControleurXML::verifyUser(Utilisateur user)
 
 int ControleurXML::nombreUtilisateurs()
 {
-    // Récupèration des utilisateurs existants
+    // Récupération des utilisateurs existants
     std::vector<Utilisateur> users = ControleurXML::parseFile();
 
     return users.size();

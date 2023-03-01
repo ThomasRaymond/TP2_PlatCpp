@@ -28,7 +28,5 @@ int main(int argc, char *argv[])
     main->show();
     main->init();
 
-    std::cout << ControleurXML::nombreUtilisateurs() << std::endl;
-
     return a.exec();
 }
