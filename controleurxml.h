@@ -6,6 +6,8 @@
 #include <QtXml>
 #include <iostream>
 
+#define FILENAME "users.xml"
+
 class ControleurXML
 {
 public:

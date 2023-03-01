@@ -19,11 +19,12 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::init(){
-    // TO DO : CHECK NOMBRE D'UTILISATEURS
-    if (ControleurXML::nombreUtilisateurs() > 1){
+    if (ControleurXML::nombreUtilisateurs() > 1)
+    {
         lancerConnexion();
     }
-    else {
+    else
+    {
         lancerInscription();
     }
 }
@@ -40,10 +41,12 @@ void MainWindow::lancerInscription()
     inscription->exec();
 }
 
-void MainWindow::lancerApplication(){
+void MainWindow::lancerApplication()
+{
     QMessageBox::warning(0, "Avertissement", "Vous êtes connecté !");
 }
 
-void MainWindow::fermerFenetre(QDialog* fenetre){
+void MainWindow::fermerFenetre(QDialog* fenetre)
+{
     fenetre->close();
 }

@@ -4,7 +4,12 @@ std::vector<Utilisateur> ControleurXML::parseFile()
 {
     std::vector<Utilisateur> users;
 
-    QDomDocument xmlBOM = openDocument("/Users/thomasraymond/Documents/Etudes/DI4/S8/Plateformes logicielles/Plateformes logicielles C++/TP2/users.xml");
+    QFile file(FILENAME);
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        qDebug() << "File opening failed !";
+    }
+
+    QDomDocument xmlBOM = openDocument(FILENAME);
 
     // Extract the root markup
     QDomElement root=xmlBOM.documentElement();
@@ -21,6 +26,22 @@ std::vector<Utilisateur> ControleurXML::parseFile()
         // Next component
         userComponent = userComponent.nextSibling().toElement();
     }
+
+    // TODO : MAYBE MOVE ADMIN CREATION =========
+    if (users.size() == 0)
+    {
+        Utilisateur admin("admin","admin","admin@admin.admin","admin");
+        admin.addPermission(READ);
+        admin.addPermission(WRITE);
+        admin.addPermission(DELETE);
+        admin.addProfil(Profil("Profil_1"));
+        admin.addProfil(Profil("Profil_2"));
+
+        users.push_back(admin);
+        ControleurXML::writeFile(users);
+    }
+    // =========  END OF ADMIN CREATION =========
+
 
     return users;
 }
@@ -78,7 +99,7 @@ bool ControleurXML::writeFile(std::vector<Utilisateur> users)
     document.appendChild(root);
 
     // Writing to a file
-    QFile file("/Users/thomasraymond/Documents/Etudes/DI4/S8/Plateformes logicielles/Plateformes logicielles C++/TP2/users.xml");
+    QFile file(FILENAME);
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         qDebug() << "Open the file for writing failed";

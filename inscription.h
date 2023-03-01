@@ -1,5 +1,6 @@
 #ifndef INSCRIPTION_H
 #define INSCRIPTION_H
+
 #include <QWidget>
 #include <QMessageBox>
 #include <QRegularExpression>
