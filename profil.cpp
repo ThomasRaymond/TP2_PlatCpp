@@ -3,6 +3,7 @@
 Profil::Profil()
 {
     this->nomProfil = "";
+    this->databases.clear();
 }
 
 Profil::Profil(std::string nomProfil) {
@@ -11,6 +12,21 @@ Profil::Profil(std::string nomProfil) {
 
 std::string Profil::getNomProfil() {
     return this->nomProfil;
+}
+
+QSqlDatabase* Profil::getDbByName(QString& name){
+    for (auto it = databases.begin(); it != databases.end(); it++){
+        if ((*it)->databaseName() == name){
+            return (*it);
+        }
+    }
+    return nullptr;
+}
+
+void Profil::addDataBase(QString& chemin){
+    QSqlDatabase* _db = new QSqlDatabase();
+    _db->setDatabaseName(chemin);
+    databases.push_back(_db);
 }
 
 void Profil::setNomProfil(std::string nomProfil){
