@@ -42,6 +42,8 @@ TRANSLATIONS += \
 CONFIG += lrelease
 CONFIG += embed_translations
 
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

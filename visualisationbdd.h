@@ -2,6 +2,11 @@
 #define VISUALISATIONBDD_H
 
 #include <QWidget>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <filesystem>
+
+#include "profil.h"
 
 namespace Ui {
 class VisualisationBDD;
@@ -15,8 +20,17 @@ public:
     explicit VisualisationBDD(QWidget *parent = nullptr);
     ~VisualisationBDD();
 
+    void attachProfile(Profil* profil);
+
+private slots:
+    void clickSelectionFichier();
+    void clickEffacer();
+    void clickExecuter();
+
 private:
     Ui::VisualisationBDD *ui;
+    Profil* profil;
+    QSqlDatabase* currentDatabase;
 };
 
 #endif // VISUALISATIONBDD_H
