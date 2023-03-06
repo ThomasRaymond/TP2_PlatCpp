@@ -12,13 +12,13 @@ private:
 public:
     Profil();
     Profil(std::string nomProfil);
+    ~Profil();
 
     std::string getNomProfil();
-    QSqlDatabase* getDbByName(QString& name);
+    QSqlDatabase* getDbByName(QString& nom);
 
     void addDataBase(QString& chemin);
     void removeDbByName(QString& nom);
-    void removeDbByPath(QString& chemin);
 
     void setNomProfil(std::string nomProfil);
 
