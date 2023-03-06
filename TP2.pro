@@ -17,7 +17,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     profil.cpp \
-    utilisateur.cpp
+    utilisateur.cpp \
+    visualisationbdd.cpp
 
 HEADERS += \
     connexion.h \
@@ -27,12 +28,14 @@ HEADERS += \
     inscription.h \
     mainwindow.h \
     profil.h \
-    utilisateur.h
+    utilisateur.h \
+    visualisationbdd.h
 
 FORMS += \
     connexion.ui \
     inscription.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    visualisationbdd.ui
 
 TRANSLATIONS += \
     TP2_fr_FR.ts
