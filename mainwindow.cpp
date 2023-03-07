@@ -1,7 +1,5 @@
 #include "mainwindow.h"
-#include "inscription.h"
 #include "controleurxml.h"
-#include "connexion.h"
 #include "ui_mainwindow.h"
 
 #include "connexion.h"
@@ -16,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     fenetreConnexion = new Connexion(this);
     fenetreInscription = new Inscription(this);
     fenetreVisualisationBDD = new VisualisationBDD(this);
+    fenetreChoixProfil = new ChoixProfil(this);
 
 }
 
@@ -26,6 +25,7 @@ MainWindow::~MainWindow()
     delete(fenetreConnexion);
     delete(fenetreInscription);
     delete(fenetreVisualisationBDD);
+    delete(fenetreChoixProfil);
 }
 
 Utilisateur* MainWindow::getUtilisateur(){
@@ -40,6 +40,18 @@ Inscription* MainWindow::getFenetreInscription(){
 }
 VisualisationBDD* MainWindow::getFenetreVisualisationBDD(){
     return this->fenetreVisualisationBDD;
+}
+
+Profil MainWindow::getProfilByName(QString nomProfil){
+
+    std::vector<Profil> listeProfils = this->utilisateur->getProfils();
+
+    for (auto it = listeProfils.begin(); it != listeProfils.end(); it++){
+        if(QString::fromStdString(it->getNomProfil()) == nomProfil){
+            return *it;
+        }
+    }
+    return Profil("");
 }
 
 void MainWindow::setUtilisateur(Utilisateur* utilisateur){
@@ -69,14 +81,22 @@ void MainWindow::lancerInscription()
     this->fenetreInscription->show();
 }
 
-void MainWindow::lancerApplication(Utilisateur* utilisateur)
+void MainWindow::lancerApplication(QString nomProfil)
 {
-    setUtilisateur(utilisateur);
+    Profil profil;
 
-    // Choix profil
+    this->getProfilByName(nomProfil);
 
+    fenetreVisualisationBDD->attachProfile(&profil);
 
     this->fenetreVisualisationBDD->show();
+}
+
+void MainWindow::lancerChoixProfil(Utilisateur* utilisateur){
+    setUtilisateur(utilisateur);
+    this->fenetreChoixProfil->clearfields();
+    this->fenetreChoixProfil->addListProfiles(this->utilisateur->getProfils());
+    this->fenetreChoixProfil->show();
 }
 
 void MainWindow::deconnexion(){

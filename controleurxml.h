@@ -14,7 +14,7 @@ public:
     static std::vector<Utilisateur> parseFile();
     static bool writeFile(std::vector<Utilisateur>);
     static bool addUser(Utilisateur user);
-    static bool verifyUser(Utilisateur user);
+    static Utilisateur* verifyUser(std::string login, std::string password);
     static int nombreUtilisateurs();
 private:
     static QDomDocument openDocument(std::string path);

@@ -50,16 +50,14 @@ void Connexion::clickBoutonValider()
 
     /* --- Connexion --- */
 
-    Utilisateur* user = new Utilisateur();
 
-    user->setMail(mail.toStdString());
-    user->setPassword(pswd.toStdString());
+    Utilisateur* user = ControleurXML::verifyUser(mail.toStdString(), pswd.toStdString());
 
-    if (ControleurXML::verifyUser(*user))
+    if (user != nullptr)
     {
         QMessageBox::information(0, "Succès", "Vous êtes connecté !");
         this->hide();
-        static_cast<MainWindow*>(this->parent())->lancerApplication(user);
+        static_cast<MainWindow*>(this->parent())->lancerChoixProfil(user);
     }
     else
     {

@@ -5,6 +5,9 @@
   <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
   </property>
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,6 +18,9 @@
   </property>
   <property name="windowTitle">
    <string>Chargement du profil Utilisateur</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <widget class="QComboBox" name="inputProfil">
    <property name="geometry">
@@ -55,7 +61,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="inputAnnuler">
+  <widget class="QPushButton" name="boutonAnnuler">
    <property name="geometry">
     <rect>
      <x>40</x>

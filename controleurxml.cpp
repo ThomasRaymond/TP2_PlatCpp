@@ -222,7 +222,7 @@ bool ControleurXML::addUser(Utilisateur user)
 }
 
 
-bool ControleurXML::verifyUser(Utilisateur user)
+Utilisateur* ControleurXML::verifyUser(std::string login, std::string password)
 {
     // Récupèration des utilisateurs existants
     std::vector<Utilisateur> users = ControleurXML::parseFile();
@@ -230,13 +230,13 @@ bool ControleurXML::verifyUser(Utilisateur user)
     // Vérification
     for (auto it = users.begin() ; it < users.end() ; it++)
     {
-        if (*it == user) // Si il y a une correspondance
+        if (it->getMail() == login && it->getPassword() == password) // Si il y a une correspondance
         {
-            return true;
+            return new Utilisateur(*it);
         }
     }
 
-    return false;
+    return nullptr;
 
 }
 

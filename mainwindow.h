@@ -6,6 +6,7 @@
 #include "connexion.h"
 #include "inscription.h"
 #include "visualisationbdd.h"
+#include "choixprofil.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,13 +24,16 @@ public:
     Connexion* getFenetreConnexion();
     Inscription* getFenetreInscription();
     VisualisationBDD* getFenetreVisualisationBDD();
+    ChoixProfil* getFenetreChoixProfil();
+    Profil getProfilByName(QString nomProfil);
 
     void setUtilisateur(Utilisateur* utilisateur);
 
     void init();
-    void lancerApplication(Utilisateur* utilisateur);
+    void lancerApplication(QString nomProfil);
     void lancerConnexion();
     void lancerInscription();
+    void lancerChoixProfil(Utilisateur* utilisateur);
     void deconnexion();
 
     void fermerFenetre(QDialog* fenetre);
@@ -42,5 +46,6 @@ private:
     Connexion* fenetreConnexion;
     Inscription* fenetreInscription;
     VisualisationBDD* fenetreVisualisationBDD;
+    ChoixProfil* fenetreChoixProfil;
 };
 #endif // MAINWINDOW_H
