@@ -2,7 +2,7 @@
 #include "ui_visualisationbdd.h"
 
 VisualisationBDD::VisualisationBDD(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::VisualisationBDD)
 {
     profil = nullptr;

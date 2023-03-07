@@ -16,6 +16,7 @@ class Connexion : public QDialog
 public:
     explicit Connexion(QWidget *parent = nullptr);
     ~Connexion();
+    void clearfields();
 
 private slots:
     void clickBoutonValider();

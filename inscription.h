@@ -21,6 +21,7 @@ class Inscription : public QDialog
 public:
     Inscription(QWidget *parent = nullptr);
     ~Inscription();
+    void clearfields();
 
 private slots:
     void clickBoutonValider();

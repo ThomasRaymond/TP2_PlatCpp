@@ -19,6 +19,11 @@ Connexion::~Connexion()
     delete ui;
 }
 
+void Connexion::clearfields(){
+    ui->inputMail->clear();
+    ui->inputMDP->clear();
+}
+
 void Connexion::clickBoutonInscription()
 {
     this->hide();
@@ -53,14 +58,11 @@ void Connexion::clickBoutonValider()
     if (ControleurXML::verifyUser(*user))
     {
         QMessageBox::information(0, "Succès", "Vous êtes connecté !");
+        this->hide();
+        static_cast<MainWindow*>(this->parent())->lancerApplication(user);
     }
     else
     {
         QMessageBox::critical(0, "Erreur", "Connexion impossible !");
     }
-
-    this->hide();
-    static_cast<MainWindow*>(this->parent())->lancerApplication(user);
-
-    return;
 }

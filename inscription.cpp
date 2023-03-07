@@ -19,6 +19,14 @@ Inscription::~Inscription()
     delete ui;
 }
 
+void Inscription::clearfields(){
+    ui->inputNom->clear();
+    ui->inputPrenom->clear();
+    ui->inputMail->clear();
+    ui->inputMDP->clear();
+    ui->inputConfirmationMDP->clear();
+}
+
 void Inscription::clickBoutonConnexion()
 {
     this->hide();

@@ -59,11 +59,13 @@ void MainWindow::init(){
 
 void MainWindow::lancerConnexion()
 {
+    this->fenetreConnexion->clearfields();
     this->fenetreConnexion->show();
 }
 
 void MainWindow::lancerInscription()
 {
+    this->fenetreInscription->clearfields();
     this->fenetreInscription->show();
 }
 

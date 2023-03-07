@@ -12,7 +12,7 @@ namespace Ui {
 class VisualisationBDD;
 }
 
-class VisualisationBDD : public QWidget
+class VisualisationBDD : public QDialog
 {
     Q_OBJECT
 
