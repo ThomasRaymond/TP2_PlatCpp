@@ -14,6 +14,7 @@ VisualisationBDD::VisualisationBDD(QWidget *parent) :
     connect(ui->boutonSelection, SIGNAL(clicked()), SLOT(clickSelectionFichier()));
     connect(ui->boutonEffacer, SIGNAL(clicked()), SLOT(clickEffacer()));
     connect(ui->boutonExec, SIGNAL(clicked()), SLOT(clickExecuter()));
+    connect(ui->boutonDeconnexion, SIGNAL(clicked()), SLOT(clickDeconnexion()));
 }
 
 VisualisationBDD::~VisualisationBDD()
@@ -63,5 +64,21 @@ void VisualisationBDD::clickExecuter(){
     else{
         QMessageBox::warning(0, "Erreur d'accès", "Veuillez connecter une base de données");
     }
+}
 
+void VisualisationBDD::clickDeconnexion(){
+    QMessageBox confirmation;
+    confirmation.setText("Vous allez être déconnecté.");
+    confirmation.setInformativeText("Êtes-vous sûr de vouloir procéder à la déconnexion ?");
+    confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+    confirmation.setDefaultButton(QMessageBox::Cancel);
+
+    int reponse = confirmation.exec();
+
+    if (reponse == QMessageBox::Yes){
+        // TODO
+    }
+    else{
+        return;
+    }
 }

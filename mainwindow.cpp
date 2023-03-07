@@ -11,11 +11,20 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    utilisateur = nullptr;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+Utilisateur* MainWindow::getUtilisateur(){
+    return this->utilisateur;
+}
+
+void MainWindow::setUtilisateur(Utilisateur* utilisateur){
+    this->utilisateur=utilisateur;
 }
 
 void MainWindow::init(){
@@ -44,6 +53,12 @@ void MainWindow::lancerInscription()
 void MainWindow::lancerApplication()
 {
     QMessageBox::warning(0, "Avertissement", "Vous êtes connecté !");
+}
+
+void MainWindow::deconnexion(){
+    delete(this->utilisateur);
+    this->utilisateur = nullptr;
+    lancerConnexion();
 }
 
 void MainWindow::fermerFenetre(QDialog* fenetre)

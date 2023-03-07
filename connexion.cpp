@@ -47,12 +47,12 @@ void Connexion::clickBoutonValider()
 
     /* --- Connexion --- */
 
-    Utilisateur user;
+    Utilisateur* user = new Utilisateur();
 
-    user.setMail(mail.toStdString());
-    user.setPassword(pswd.toStdString());
+    user->setMail(mail.toStdString());
+    user->setPassword(pswd.toStdString());
 
-    if (ControleurXML::verifyUser(user))
+    if (ControleurXML::verifyUser(*user))
     {
         QMessageBox::information(0, "Succès", "Vous êtes connecté !");
     }
@@ -60,6 +60,8 @@ void Connexion::clickBoutonValider()
     {
         QMessageBox::critical(0, "Erreur", "Connexion impossible !");
     }
+
+    static_cast<MainWindow*>(this->parent())->setUtilisateur(user);
 
     return;
 }

@@ -26,6 +26,7 @@ private slots:
     void clickSelectionFichier();
     void clickEffacer();
     void clickExecuter();
+    void clickDeconnexion();
 
 private:
     Ui::VisualisationBDD *ui;
