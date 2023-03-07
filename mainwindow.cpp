@@ -70,7 +70,10 @@ void MainWindow::lancerInscription()
 void MainWindow::lancerApplication(Utilisateur* utilisateur)
 {
     setUtilisateur(utilisateur);
-    // choix profil
+
+    // Choix profil
+
+
     this->fenetreVisualisationBDD->show();
 }
 

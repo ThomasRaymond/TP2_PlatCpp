@@ -31,14 +31,17 @@ void VisualisationBDD::clickSelectionFichier(){
     QString cwd = QString::fromStdString(std::filesystem::current_path().string());
     QString chemin = QFileDialog::getOpenFileName(this, tr("Sélection d'une base de données"), cwd, tr("Fichiers de bases de données (*.sqlite)"));
 
-    QSqlDatabase* db_ptr = profil->getDbByName(chemin);
+    if (chemin != ""){
+        QSqlDatabase* db_ptr = profil->getDbByName(chemin);
 
-    if (db_ptr != nullptr){
-        ui->inputPath->setText(chemin);
-        currentDatabase = db_ptr;
-    }
-    else{
-        QMessageBox::warning(0, "Erreur d'accès", "Votre profil n'est pas autorisé à accéder à cette base");
+        if (db_ptr != nullptr){
+            ui->inputPath->setText(chemin);
+            currentDatabase = db_ptr;
+        }
+        else{
+            QMessageBox::warning(0, "Erreur d'accès", "Votre profil n'est pas autorisé à accéder à cette base");
+        }
+
     }
 
 }
