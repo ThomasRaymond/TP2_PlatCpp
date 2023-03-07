@@ -59,12 +59,12 @@ void MainWindow::init(){
 
 void MainWindow::lancerConnexion()
 {
-    this->fenetreConnexion->exec();
+    this->fenetreConnexion->show();
 }
 
 void MainWindow::lancerInscription()
 {
-    this->fenetreInscription->exec();
+    this->fenetreInscription->show();
 }
 
 void MainWindow::lancerApplication(Utilisateur* utilisateur)
