@@ -90,6 +90,8 @@ void VisualisationBDD::clickDeconnexion(){
 
     if (reponse == QMessageBox::Yes){
         this->hide();
+        delete(profil);
+        profil = nullptr;
         static_cast<MainWindow*>(this->parent())->deconnexion();
     }
 }
