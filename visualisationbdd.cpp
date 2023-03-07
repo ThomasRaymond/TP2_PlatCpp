@@ -1,5 +1,6 @@
-#include "visualisationbdd.h"
+#include "mainwindow.h"
 #include "ui_visualisationbdd.h"
+#include "visualisationbdd.h"
 
 VisualisationBDD::VisualisationBDD(QWidget *parent) :
     QDialog(parent),
@@ -25,6 +26,21 @@ VisualisationBDD::~VisualisationBDD()
 
 void VisualisationBDD::attachProfile(Profil* profil){
     this->profil = profil;
+}
+
+int VisualisationBDD::fenetreConfirmation(QString titre, QString description){
+    QMessageBox confirmation;
+    confirmation.setText(titre);
+    confirmation.setInformativeText(description);
+    confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+    confirmation.button(QMessageBox::Yes)->setText("Oui");
+    confirmation.button(QMessageBox::Cancel)->setText("Annuler");
+    confirmation.setDefaultButton(QMessageBox::Cancel);
+
+    int maxSize = std::max(titre.size(), description.size()) * 6;
+    confirmation.setStyleSheet("QLabel{min-width:" + QString::number(maxSize) + ";  } ");
+
+    return confirmation.exec();
 }
 
 void VisualisationBDD::clickSelectionFichier(){
@@ -70,18 +86,10 @@ void VisualisationBDD::clickExecuter(){
 }
 
 void VisualisationBDD::clickDeconnexion(){
-    QMessageBox confirmation;
-    confirmation.setText("Vous allez être déconnecté.");
-    confirmation.setInformativeText("Êtes-vous sûr de vouloir procéder à la déconnexion ?");
-    confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-    confirmation.setDefaultButton(QMessageBox::Cancel);
-
-    int reponse = confirmation.exec();
+    int reponse = fenetreConfirmation("Vous allez être déconnecté.", "Êtes-vous sûr de vouloir procéder à la déconnexion ?");
 
     if (reponse == QMessageBox::Yes){
-        // TODO
-    }
-    else{
-        return;
+        this->hide();
+        static_cast<MainWindow*>(this->parent())->deconnexion();
     }
 }

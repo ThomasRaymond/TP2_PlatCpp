@@ -21,6 +21,7 @@ public:
     ~VisualisationBDD();
 
     void attachProfile(Profil* profil);
+    int fenetreConfirmation(QString titre, QString description);
 
 private slots:
     void clickSelectionFichier();
