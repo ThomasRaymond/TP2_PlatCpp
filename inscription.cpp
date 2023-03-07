@@ -1,7 +1,7 @@
 #include "inscription.h"
 
 #include "ui_inscription.h"
-#include "connexion.h"
+#include "mainwindow.h"
 #include "utilisateur.h"
 #include "controleurxml.h"
 
@@ -22,8 +22,7 @@ Inscription::~Inscription()
 void Inscription::clickBoutonConnexion()
 {
     this->hide();
-    Connexion c(this);
-    c.exec();
+    static_cast<MainWindow*>(this->parent())->lancerConnexion();
     return;
 }
 

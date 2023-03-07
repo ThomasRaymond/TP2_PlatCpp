@@ -12,15 +12,34 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     utilisateur = nullptr;
+
+    fenetreConnexion = new Connexion(this);
+    fenetreInscription = new Inscription(this);
+    fenetreVisualisationBDD = new VisualisationBDD(this);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete(utilisateur);
+    delete(fenetreConnexion);
+    delete(fenetreInscription);
+    delete(fenetreVisualisationBDD);
 }
 
 Utilisateur* MainWindow::getUtilisateur(){
     return this->utilisateur;
+}
+
+Connexion* MainWindow::getFenetreConnexion(){
+    return this->fenetreConnexion;
+}
+Inscription* MainWindow::getFenetreInscription(){
+    return this->fenetreInscription;
+}
+VisualisationBDD* MainWindow::getFenetreVisualisationBDD(){
+    return this->fenetreVisualisationBDD;
 }
 
 void MainWindow::setUtilisateur(Utilisateur* utilisateur){
@@ -40,19 +59,19 @@ void MainWindow::init(){
 
 void MainWindow::lancerConnexion()
 {
-    QDialog* conn = new Connexion(this);
-    conn->exec();
+    this->fenetreConnexion->exec();
 }
 
 void MainWindow::lancerInscription()
 {
-    QDialog* inscription = new Inscription(this);
-    inscription->exec();
+    this->fenetreInscription->exec();
 }
 
-void MainWindow::lancerApplication()
+void MainWindow::lancerApplication(Utilisateur* utilisateur)
 {
-    QMessageBox::warning(0, "Avertissement", "Vous êtes connecté !");
+    setUtilisateur(utilisateur);
+    // choix profil
+    this->fenetreVisualisationBDD->show();
 }
 
 void MainWindow::deconnexion(){

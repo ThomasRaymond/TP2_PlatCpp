@@ -3,7 +3,6 @@
 #include "mainwindow.h"
 #include "utilisateur.h"
 #include "controleurxml.h"
-#include "inscription.h"
 #include <iostream>
 
 Connexion::Connexion(QWidget *parent) :
@@ -22,9 +21,8 @@ Connexion::~Connexion()
 
 void Connexion::clickBoutonInscription()
 {
-    this->close();
-    Inscription i(this);
-    i.exec();
+    this->hide();
+    static_cast<MainWindow*>(this->parent())->lancerInscription();
 }
 
 void Connexion::clickBoutonValider()
@@ -61,7 +59,8 @@ void Connexion::clickBoutonValider()
         QMessageBox::critical(0, "Erreur", "Connexion impossible !");
     }
 
-    static_cast<MainWindow*>(this->parent())->setUtilisateur(user);
+    this->hide();
+    static_cast<MainWindow*>(this->parent())->lancerApplication(user);
 
     return;
 }

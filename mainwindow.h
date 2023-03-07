@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include "utilisateur.h"
+#include "connexion.h"
+#include "inscription.h"
+#include "visualisationbdd.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,10 +20,14 @@ public:
     ~MainWindow();
 
     Utilisateur* getUtilisateur();
+    Connexion* getFenetreConnexion();
+    Inscription* getFenetreInscription();
+    VisualisationBDD* getFenetreVisualisationBDD();
+
     void setUtilisateur(Utilisateur* utilisateur);
 
     void init();
-    void lancerApplication();
+    void lancerApplication(Utilisateur* utilisateur);
     void lancerConnexion();
     void lancerInscription();
     void deconnexion();
@@ -30,5 +37,10 @@ public:
 private:
     Ui::MainWindow *ui;
     Utilisateur* utilisateur;
+
+    // Fenêtres
+    Connexion* fenetreConnexion;
+    Inscription* fenetreInscription;
+    VisualisationBDD* fenetreVisualisationBDD;
 };
 #endif // MAINWINDOW_H
