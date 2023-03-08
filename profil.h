@@ -16,6 +16,7 @@ public:
 
     std::string getNomProfil();
     QSqlDatabase* getDbByName(QString& nom);
+    std::vector<QSqlDatabase*> getDbList();
 
     void addDataBase(QString& chemin);
     void removeDbByName(QString& nom);

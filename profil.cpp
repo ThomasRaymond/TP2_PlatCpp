@@ -32,6 +32,10 @@ QSqlDatabase* Profil::getDbByName(QString& nom){
     return nullptr;
 }
 
+std::vector<QSqlDatabase*> Profil::getDbList(){
+    return this->databases;
+}
+
 void Profil::addDataBase(QString& chemin){
     QSqlDatabase* _db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
     _db->setDatabaseName(chemin);

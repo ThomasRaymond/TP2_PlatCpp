@@ -1,5 +1,6 @@
 #include "choixprofil.h"
 #include "ui_choixprofil.h"
+#include "creationprofil.h"
 #include "mainwindow.h"
 
 ChoixProfil::ChoixProfil(QWidget *parent) :
@@ -9,6 +10,7 @@ ChoixProfil::ChoixProfil(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->boutonValider, SIGNAL(clicked()), SLOT(clickValider()));
     connect(ui->boutonAnnuler, SIGNAL(clicked()), SLOT(clickAnnuler()));
+    connect(ui->boutonNvProfil, SIGNAL(clicked()), SLOT(creerProfil()));
 }
 
 ChoixProfil::~ChoixProfil()
@@ -40,4 +42,15 @@ void ChoixProfil::clickValider(){
 void ChoixProfil::clickAnnuler(){
     this->hide();
     static_cast<MainWindow*>(this->parent())->deconnexion();
+}
+
+void ChoixProfil::creerProfil(){
+    CreationProfil fenetreCreationProfil(this);
+    fenetreCreationProfil.exec();
+
+}
+
+void ChoixProfil::enregistrerProfil(QString nomProfil){
+    static_cast<MainWindow*>(this->parent())->getUtilisateur()->addProfil(Profil(nomProfil.toStdString()));
+    ui->inputProfil->addItem(nomProfil);
 }

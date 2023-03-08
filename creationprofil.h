@@ -2,6 +2,7 @@
 #define CREATIONPROFIL_H
 
 #include <QDialog>
+#include "choixprofil.h"
 
 namespace Ui {
 class CreationProfil;
@@ -14,6 +15,10 @@ class CreationProfil : public QDialog
 public:
     explicit CreationProfil(QWidget *parent = nullptr);
     ~CreationProfil();
+
+private slots:
+    void clickAnnuler();
+    void clickValider();
 
 private:
     Ui::CreationProfil *ui;

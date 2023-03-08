@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "profil.h"
+#include <filesystem>
 
 
 namespace Ui {
@@ -19,10 +20,12 @@ public:
 
     void addListProfiles(std::vector<Profil> list);
     void clearfields();
-
+    void enregistrerProfil(QString nomProfil);
 private slots:
     void clickValider();
     void clickAnnuler();
+    void creerProfil();
+
 
 private:
     Ui::ChoixProfil *ui;
