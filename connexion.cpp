@@ -55,7 +55,6 @@ void Connexion::clickBoutonValider()
 
     if (user != nullptr)
     {
-        QMessageBox::information(0, "Succès", "Vous êtes connecté !");
         this->hide();
         static_cast<MainWindow*>(this->parent())->lancerChoixProfil(user);
     }
