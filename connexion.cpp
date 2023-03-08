@@ -50,7 +50,6 @@ void Connexion::clickBoutonValider()
 
     /* --- Connexion --- */
 
-
     Utilisateur* user = ControleurXML::verifyUser(mail.toStdString(), pswd.toStdString());
 
     if (user != nullptr)

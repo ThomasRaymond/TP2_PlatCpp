@@ -33,6 +33,7 @@ private:
     Ui::VisualisationBDD *ui;
     Profil* profil;
     QSqlDatabase* currentDatabase;
+    std::vector<QSqlDatabase> profilDatabases;
 };
 
 #endif // VISUALISATIONBDD_H

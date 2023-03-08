@@ -8,17 +8,15 @@ class Profil
 {
 private:
     std::string nomProfil;
-    std::vector<QSqlDatabase*> databases;
+    std::vector<QSqlDatabase> databases;
 public:
     Profil();
     Profil(std::string nomProfil);
-    ~Profil();
 
     std::string getNomProfil();
-    QSqlDatabase* getDbByName(QString& nom);
 
-    void addDataBase(QString& chemin);
-    void removeDbByName(QString& nom);
+    std::vector<QSqlDatabase> & getDatabases() {return databases;}
+    const std::vector<QSqlDatabase> & getDatabases() const {return databases;}
 
     void setNomProfil(std::string nomProfil);
 

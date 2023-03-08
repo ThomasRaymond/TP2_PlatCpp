@@ -24,11 +24,13 @@ VisualisationBDD::~VisualisationBDD()
     profil = nullptr;
 }
 
-void VisualisationBDD::attachProfile(Profil* profil){
+void VisualisationBDD::attachProfile(Profil* profil)
+{
     this->profil = profil;
 }
 
-int VisualisationBDD::fenetreConfirmation(QString titre, QString description){
+int VisualisationBDD::fenetreConfirmation(QString titre, QString description)
+{
     QMessageBox confirmation;
     confirmation.setText(titre);
     confirmation.setInformativeText(description);
@@ -43,7 +45,8 @@ int VisualisationBDD::fenetreConfirmation(QString titre, QString description){
     return confirmation.exec();
 }
 
-void VisualisationBDD::clickSelectionFichier(){
+void VisualisationBDD::clickSelectionFichier()
+{
     QString cwd = QString::fromStdString(std::filesystem::current_path().string());
     QString chemin = QFileDialog::getOpenFileName(this, tr("Sélection d'une base de données"), cwd, tr("Fichiers de bases de données (*.sqlite)"));
 
@@ -57,6 +60,7 @@ void VisualisationBDD::clickSelectionFichier(){
 
     // TODO : changer pour ce qui est au dessus
 
+    /*
     if (chemin != ""){
         QSqlDatabase* db_ptr = profil->getDbByName(chemin);
 
@@ -68,9 +72,7 @@ void VisualisationBDD::clickSelectionFichier(){
             QMessageBox::warning(0, "Erreur d'accès", "Votre profil n'est pas autorisé à accéder à cette base");
         }
 
-    }
-
-
+    }*/
 }
 
 void VisualisationBDD::clickEffacer(){
@@ -80,19 +82,20 @@ void VisualisationBDD::clickEffacer(){
 void VisualisationBDD::clickExecuter(){
     QString commande = ui->inputSQL->text();
 
-    if (currentDatabase != nullptr){
-        QSqlQuery retourRequete = currentDatabase->exec(commande);
+    // Aucune BDD n'est sélectionnée
+    if (currentDatabase == nullptr) {
+        QMessageBox::warning(0, "Erreur d'accès", "Veuillez connecter une base de données");
+        return;
+    }
 
-        if (retourRequete.size() == 0){
-            ui->vueTable->clear();
-            QMessageBox::information(0, "Information", "Le jeu de données retourné est vide.");
-        }
-        else{
-            // TODO: Assigner la TableView
-        }
+    QSqlQuery retourRequete = currentDatabase->exec(commande);
+
+    if (retourRequete.size() == 0){
+        ui->vueTable->clear();
+        QMessageBox::information(0, "Information", "Le jeu de données retourné est vide.");
     }
     else{
-        QMessageBox::warning(0, "Erreur d'accès", "Veuillez connecter une base de données");
+        // TODO: Assigner la TableView
     }
 }
 

@@ -1,4 +1,5 @@
 #include "controleurxml.h"
+#include "droitsutilisateurs.h"
 
 std::vector<Utilisateur> ControleurXML::parseFile()
 {
@@ -156,11 +157,24 @@ Utilisateur ControleurXML::createUserFromXMLComponent(QDomElement component)
         {
             QDomElement profilComponent = userAttribute.firstChild().toElement();
 
-            while(!profilComponent.isNull())
+            while (!profilComponent.isNull())
             {
-                if (userAttribute.tagName() == "PROFIL")
+                if (profilComponent.tagName() == "PROFIL")
                 {
                     Profil profil(profilComponent.attribute("name").toStdString());
+
+                    QDomElement dbComponent = profilComponent.firstChild().toElement();
+
+                    while (!dbComponent.isNull())
+                    {
+                        if (dbComponent.tagName() == "DB")
+                        {
+                            QSqlDatabase database;
+                            database.setDatabaseName(dbComponent.attribute("name"));
+                            profil.getDatabases().push_back(database);
+                        }
+                    }
+
                     user.addProfil(profil);
                 }
                 profilComponent = profilComponent.nextSibling().toElement();
