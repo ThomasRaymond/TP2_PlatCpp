@@ -14,6 +14,7 @@ SOURCES += \
     connexion.cpp \
     controleurbdd.cpp \
     controleurxml.cpp \
+    creationprofil.cpp \
     inscription.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     connexion.h \
     controleurbdd.h \
     controleurxml.h \
+    creationprofil.h \
     droitsutilisateurs.h \
     inscription.h \
     mainwindow.h \
@@ -36,6 +38,7 @@ HEADERS += \
 FORMS += \
     choixprofil.ui \
     connexion.ui \
+    creationprofil.ui \
     inscription.ui \
     mainwindow.ui \
     visualisationbdd.ui
