@@ -47,6 +47,16 @@ void VisualisationBDD::clickSelectionFichier(){
     QString cwd = QString::fromStdString(std::filesystem::current_path().string());
     QString chemin = QFileDialog::getOpenFileName(this, tr("Sélection d'une base de données"), cwd, tr("Fichiers de bases de données (*.sqlite)"));
 
+    // if bdd already in listbdd :
+    //      QMessageBox::warning(0, "Erreur", "Une bdd avec ce nom existe déjà");
+    //      return;
+    //
+    // listbdd.append(bdd)
+    // user.add(bdd)
+    // return;
+
+    // TODO : changer pour ce qui est au dessus
+
     if (chemin != ""){
         QSqlDatabase* db_ptr = profil->getDbByName(chemin);
 
@@ -59,6 +69,7 @@ void VisualisationBDD::clickSelectionFichier(){
         }
 
     }
+
 
 }
 
