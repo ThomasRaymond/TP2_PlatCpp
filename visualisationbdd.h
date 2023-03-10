@@ -35,6 +35,7 @@ private:
     QSqlDatabase* currentDatabase;
 
     bool checkRightToExecute(QString requete);
+    void UpdateTree(Profil profil);
 };
 
 #endif // VISUALISATIONBDD_H

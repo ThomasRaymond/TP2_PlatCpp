@@ -16,6 +16,25 @@ VisualisationBDD::VisualisationBDD(QWidget *parent) :
     connect(ui->boutonEffacer, SIGNAL(clicked()), SLOT(clickEffacer()));
     connect(ui->boutonExec, SIGNAL(clicked()), SLOT(clickExecuter()));
     connect(ui->boutonDeconnexion, SIGNAL(clicked()), SLOT(clickDeconnexion()));
+
+    Profil profil;
+    QSqlDatabase db_test = QSqlDatabase::addDatabase("QSQLITE");
+    db_test.setHostName("root");
+    db_test.setDatabaseName("db2");
+    db_test.setUserName("root");
+    db_test.setPassword("password");
+    db_test.tables().append("table1");
+    db_test.tables().append("test2");
+
+    QSqlDatabase db_test2 = QSqlDatabase::addDatabase("QSQLITE");
+    db_test2.setHostName("root");
+    db_test2.setDatabaseName("db1");
+    db_test2.setUserName("root");
+    db_test2.setPassword("password");
+
+    profil.getDatabases().push_back(db_test);
+    profil.getDatabases().push_back(db_test2);
+    UpdateTree(profil);
 }
 
 VisualisationBDD::~VisualisationBDD()
@@ -143,5 +162,30 @@ bool VisualisationBDD::checkRightToExecute(QString requete)
     return false;
 }
 
+void VisualisationBDD::UpdateTree(Profil profil)
+{
+    ui->vueArborescence->setColumnCount(1);
+    QList<QTreeWidgetItem*> elements;
+    for (int i = 0 ; i < profil.getDatabases().size() ; i++)
+    {
+        elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString(profil.getDatabases().at(i).databaseName()))));
+        for (int j = 0 ; j < profil.getDatabases().at(i).tables().size() ; j++)
+        {
+            //prendre les noms des tables et les ajouter à l'arbre
+        }
 
+    }
+    /*for (int i = 0 ; i < 3 ; i++)
+    {
+        elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString("database %1").arg(i))));
+    }
+    for (int j = 0 ; j < 3 ; j++)
+    {
+        for (int k = 0 ; k < 3-j ; k++)
+        {
+            elements.append(new QTreeWidgetItem(elements.at(j), QStringList(QString("table %1").arg(k))));
+        }
+    }*/
+    ui->vueArborescence->insertTopLevelItems(0, elements);
+}
 
