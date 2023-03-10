@@ -34,7 +34,7 @@ private:
     Profil* profil;
     QSqlDatabase* currentDatabase;
 
-    void updateTableView(QSqlQuery requete);
+    bool checkRightToExecute(QString requete);
 };
 
 #endif // VISUALISATIONBDD_H
