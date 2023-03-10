@@ -57,16 +57,6 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1" colspan="3">
-    <widget class="QTableWidget" name="vueTable">
-     <property name="frameShape">
-      <enum>QFrame::HLine</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-    </widget>
-   </item>
    <item row="5" column="3">
     <widget class="QPushButton" name="boutonExec">
      <property name="sizePolicy">
@@ -110,7 +100,8 @@
       <string>Déconnexion</string>
      </property>
      <property name="icon">
-      <iconset theme="application-exit"/>
+      <iconset theme="application-exit">
+       <normaloff>.</normaloff>.</iconset>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -120,6 +111,16 @@
      </property>
      <property name="flat">
       <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="3">
+    <widget class="QTableView" name="vueTable">
+     <property name="frameShape">
+      <enum>QFrame::HLine</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
      </property>
     </widget>
    </item>

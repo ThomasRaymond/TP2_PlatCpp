@@ -33,6 +33,8 @@ private:
     Ui::VisualisationBDD *ui;
     Profil* profil;
     QSqlDatabase* currentDatabase;
+
+    void updateTableView(QSqlQuery requete);
 };
 
 #endif // VISUALISATIONBDD_H

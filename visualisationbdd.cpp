@@ -78,14 +78,15 @@ void VisualisationBDD::clickExecuter()
 
         if (retourRequete.size() == 0)
         {
-            ui->vueTable->clear();
+            ui->vueTable->clearSpans();
             QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete.lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
 
         }
         else{
             QMessageBox::information(0, "Information", "La requête a retourné " + QString::number(retourRequete.size()) + " résultat(s)");
-            // TODO: Assigner la TableView
-
+            QSqlQueryModel modele;
+            modele.setQuery(std::move(retourRequete));
+            ui->vueTable->setModel(&modele);
         }
     }
     else
@@ -103,3 +104,6 @@ void VisualisationBDD::clickDeconnexion()
         static_cast<MainWindow*>(this->parent())->deconnexion();
     }
 }
+
+
+
