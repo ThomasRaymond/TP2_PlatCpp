@@ -2,6 +2,7 @@
 #define CREATIONPROFIL_H
 
 #include <QDialog>
+#include <QMessageBox>
 #include "choixprofil.h"
 
 namespace Ui {

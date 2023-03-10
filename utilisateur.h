@@ -43,7 +43,6 @@ public:
     bool addPermission(int permission);
     bool removePermission(int permission);
 
-
     bool operator==(Utilisateur other);
 };
 

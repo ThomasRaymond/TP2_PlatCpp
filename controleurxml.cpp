@@ -247,3 +247,9 @@ int ControleurXML::nombreUtilisateurs()
 
     return users.size();
 }
+
+bool ControleurXML::updateUser(Utilisateur oldUser, Utilisateur newUser)
+{
+    // TODO
+    return true;
+}

@@ -37,40 +37,26 @@ int VisualisationBDD::fenetreConfirmation(QString titre, QString description){
     confirmation.button(QMessageBox::Cancel)->setText("Annuler");
     confirmation.setDefaultButton(QMessageBox::Cancel);
 
-    int maxSize = std::max(titre.size(), description.size()) * 6;
-    confirmation.setStyleSheet("QLabel{min-width:" + QString::number(maxSize) + ";  } ");
+    int maxSize = std::max(titre.size(), description.size()) * 6;                           // C'est quoi ce bordel ?
+    confirmation.setStyleSheet("QLabel{min-width:" + QString::number(maxSize) + ";  } ");   //           -
 
     return confirmation.exec();
 }
 
 void VisualisationBDD::clickSelectionFichier(){
     QString cwd = QString::fromStdString(std::filesystem::current_path().string());
+
+    // Generate a useless "+[CATransaction synchronize] called within transaction" warning on MacOS
     QString chemin = QFileDialog::getOpenFileName(this, tr("Sélection d'une base de données"), cwd, tr("Fichiers de bases de données (*.sqlite)"));
 
-    // if bdd already in listbdd :
-    //      QMessageBox::warning(0, "Erreur", "Une bdd avec ce nom existe déjà");
-    //      return;
-    //
-    // listbdd.append(bdd)
-    // user.add(bdd)
-    // return;
+    QMessageBox::information(0, "Information", chemin);
 
-    // TODO : changer pour ce qui est au dessus
+    if (chemin != "")
+    {
+        profil->getDatabases().push_back(QSqlDatabase::addDatabase(chemin));
 
-    if (chemin != ""){
-        QSqlDatabase* db_ptr = profil->getDbByName(chemin);
-
-        if (db_ptr != nullptr){
-            ui->inputPath->setText(chemin);
-            currentDatabase = db_ptr;
-        }
-        else{
-            QMessageBox::warning(0, "Erreur d'accès", "Votre profil n'est pas autorisé à accéder à cette base");
-        }
-
+        // TODO : Handle errors
     }
-
-
 }
 
 void VisualisationBDD::clickEffacer(){

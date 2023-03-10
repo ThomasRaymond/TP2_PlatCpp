@@ -24,11 +24,13 @@ void ChoixProfil::addListProfiles(std::vector<Profil> list){
     }
 }
 
-void ChoixProfil::clearfields(){
+void ChoixProfil::clearfields()
+{
     ui->inputProfil->clear();
 }
 
-void ChoixProfil::clickValider(){
+void ChoixProfil::clickValider()
+{
     QString profilSelectionne = ui->inputProfil->currentText();
     if(!profilSelectionne.isEmpty()){
         this->hide();
@@ -39,18 +41,21 @@ void ChoixProfil::clickValider(){
     }
 }
 
-void ChoixProfil::clickAnnuler(){
+void ChoixProfil::clickAnnuler()
+{
     this->hide();
     static_cast<MainWindow*>(this->parent())->deconnexion();
 }
 
-void ChoixProfil::creerProfil(){
+void ChoixProfil::creerProfil()
+{
     CreationProfil fenetreCreationProfil(this);
     fenetreCreationProfil.exec();
 
 }
 
-void ChoixProfil::enregistrerProfil(QString nomProfil){
+void ChoixProfil::enregistrerProfil(QString nomProfil)
+{
     static_cast<MainWindow*>(this->parent())->getUtilisateur()->addProfil(Profil(nomProfil.toStdString()));
     ui->inputProfil->addItem(nomProfil);
 }

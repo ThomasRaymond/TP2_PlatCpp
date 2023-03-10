@@ -16,6 +16,7 @@ public:
     static bool addUser(Utilisateur user);
     static Utilisateur* verifyUser(std::string login, std::string password);
     static int nombreUtilisateurs();
+    static bool updateUser(Utilisateur oldUser, Utilisateur newUser);
 private:
     static QDomDocument openDocument(std::string path);
     static Utilisateur createUserFromXMLComponent(QDomElement child);
