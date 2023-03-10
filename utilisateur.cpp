@@ -115,9 +115,5 @@ bool Utilisateur::operator==(Utilisateur other) {
     {
         return false;
     }
-    if (this->getPassword() != other.getPassword())
-    {
-        return false;
-    }
     return true;
 }

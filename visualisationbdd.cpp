@@ -24,7 +24,8 @@ VisualisationBDD::~VisualisationBDD()
     profil = nullptr;
 }
 
-void VisualisationBDD::attachProfile(Profil* profil){
+void VisualisationBDD::attachProfile(Profil* profil)
+{
     this->profil = profil;
 }
 
@@ -43,7 +44,8 @@ int VisualisationBDD::fenetreConfirmation(QString titre, QString description){
     return confirmation.exec();
 }
 
-void VisualisationBDD::clickSelectionFichier(){
+void VisualisationBDD::clickSelectionFichier()
+{
     QString cwd = QString::fromStdString(std::filesystem::current_path().string());
 
     // Generate a useless "+[CATransaction synchronize] called within transaction" warning on MacOS
@@ -54,22 +56,28 @@ void VisualisationBDD::clickSelectionFichier(){
     if (chemin != "")
     {
         profil->getDatabases().push_back(QSqlDatabase::addDatabase(chemin));
+        // TODO handle errors
 
-        // TODO : Handle errors
+        Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
+        ControleurXML::updateUser(current_user,current_user);
     }
 }
 
-void VisualisationBDD::clickEffacer(){
+void VisualisationBDD::clickEffacer()
+{
     ui->inputSQL->clear();
 }
 
-void VisualisationBDD::clickExecuter(){
+void VisualisationBDD::clickExecuter()
+{
     QString commande = ui->inputSQL->text();
 
-    if (currentDatabase != nullptr){
+    if (currentDatabase != nullptr)
+    {
         QSqlQuery retourRequete = currentDatabase->exec(commande);
 
-        if (retourRequete.size() == 0){
+        if (retourRequete.size() == 0)
+        {
             ui->vueTable->clear();
             QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete.lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
 
@@ -80,12 +88,14 @@ void VisualisationBDD::clickExecuter(){
 
         }
     }
-    else{
+    else
+    {
         QMessageBox::warning(0, "Erreur d'accès", "Veuillez connecter une base de données");
     }
 }
 
-void VisualisationBDD::clickDeconnexion(){
+void VisualisationBDD::clickDeconnexion()
+{
     int reponse = fenetreConfirmation("Vous allez être déconnecté.", "Êtes-vous sûr de vouloir procéder à la déconnexion ?");
 
     if (reponse == QMessageBox::Yes){
