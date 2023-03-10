@@ -19,6 +19,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     profil.cpp \
+    treeitem.cpp \
     utilisateur.cpp \
     visualisationbdd.cpp
 
@@ -32,6 +33,7 @@ HEADERS += \
     inscription.h \
     mainwindow.h \
     profil.h \
+    treeitem.h \
     utilisateur.h \
     visualisationbdd.h
 
