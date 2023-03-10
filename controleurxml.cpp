@@ -248,8 +248,22 @@ int ControleurXML::nombreUtilisateurs()
     return users.size();
 }
 
-bool ControleurXML::updateUser(Utilisateur oldUser, Utilisateur newUser)
+
+// Can use newUser for both if user.mail has not changed
+bool ControleurXML::updateUser(const Utilisateur & oldUser, const Utilisateur & newUser)
 {
-    // TODO
-    return true;
+    std::vector<Utilisateur> users = ControleurXML::parseFile();
+
+    for (std::vector<Utilisateur>::size_type i = 0 ; i < users.size() ; i++)
+    {
+        if (users.at(i) == oldUser)
+        {
+            users.erase(users.begin()+i);
+            users.push_back(newUser);
+            ControleurXML::writeFile(users);
+            return true;
+        }
+    }
+
+    return false;
 }
