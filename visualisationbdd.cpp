@@ -71,10 +71,13 @@ void VisualisationBDD::clickExecuter(){
 
         if (retourRequete.size() == 0){
             ui->vueTable->clear();
-            QMessageBox::information(0, "Information", "Le jeu de données retourné est vide.");
+            QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete.lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
+
         }
         else{
+            QMessageBox::information(0, "Information", "La requête a retourné " + QString::number(retourRequete.size()) + " résultat(s)");
             // TODO: Assigner la TableView
+
         }
     }
     else{
