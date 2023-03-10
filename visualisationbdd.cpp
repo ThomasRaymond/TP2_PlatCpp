@@ -72,7 +72,11 @@ void VisualisationBDD::clickExecuter()
 {
     QString commande = ui->inputSQL->text();
 
-    if (currentDatabase != nullptr)
+    if (currentDatabase != nullptr){
+        QMessageBox::warning(0, "Erreur d'accès", "Veuillez connecter une base de données");
+    }
+
+    if(checkRightToExecute(commande))
     {
         QSqlQuery retourRequete = currentDatabase->exec(commande);
 
@@ -91,7 +95,7 @@ void VisualisationBDD::clickExecuter()
     }
     else
     {
-        QMessageBox::warning(0, "Erreur d'accès", "Veuillez connecter une base de données");
+        QMessageBox::critical(0, "Erreur d'exécution", "Vous n'avez pas les droits nécéssaires pour exécuter cette requête");
     }
 }
 
@@ -103,6 +107,40 @@ void VisualisationBDD::clickDeconnexion()
         this->hide();
         static_cast<MainWindow*>(this->parent())->deconnexion();
     }
+}
+
+bool VisualisationBDD::checkRightToExecute(QString requete)
+{
+    if (requete.contains("ADD", Qt::CaseInsensitive) ||
+            requete.contains("ALTER", Qt::CaseInsensitive) ||
+            requete.contains("CREATE", Qt::CaseInsensitive) ||
+            requete.contains("UPDATE", Qt::CaseInsensitive) ||
+            requete.contains("INSERT", Qt::CaseInsensitive)){
+
+        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(WRITE)){
+            return true;
+        }
+
+    }
+    else if (requete.contains("DROP", Qt::CaseInsensitive) ||
+                requete.contains("TRUNCATE", Qt::CaseInsensitive) ||
+                requete.contains("DELETE", Qt::CaseInsensitive)){
+
+        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(DELETE)){
+            return true;
+        }
+
+    }
+    else{
+
+        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(READ)){
+            return true;
+        }
+
+    }
+
+
+    return false;
 }
 
 
