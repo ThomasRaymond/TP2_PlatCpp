@@ -75,11 +75,13 @@ void VisualisationBDD::clickExecuter()
 {
     QString commande = ui->inputSQL->text();
 
-    if (currentDatabase != nullptr){
+    if (currentDatabase == nullptr)
+    {
         QMessageBox::warning(0, "Erreur d'accès", "Veuillez connecter une base de données");
+        return;
     }
 
-    if(checkRightToExecute(commande))
+    if (checkRightToExecute(commande))
     {
         QSqlQuery retourRequete = currentDatabase->exec(commande);
 
@@ -89,7 +91,8 @@ void VisualisationBDD::clickExecuter()
             QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete.lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
 
         }
-        else{
+        else
+        {
             QMessageBox::information(0, "Information", "La requête a retourné " + QString::number(retourRequete.size()) + " résultat(s)");
             QSqlQueryModel modele;
             modele.setQuery(std::move(retourRequete));
@@ -99,6 +102,7 @@ void VisualisationBDD::clickExecuter()
     else
     {
         QMessageBox::critical(0, "Erreur d'exécution", "Vous n'avez pas les droits nécéssaires pour exécuter cette requête");
+        return;
     }
 }
 
@@ -106,7 +110,8 @@ void VisualisationBDD::clickDeconnexion()
 {
     int reponse = fenetreConfirmation("Vous allez être déconnecté.", "Êtes-vous sûr de vouloir procéder à la déconnexion ?");
 
-    if (reponse == QMessageBox::Yes){
+    if (reponse == QMessageBox::Yes)
+    {
         this->hide();
         static_cast<MainWindow*>(this->parent())->deconnexion();
     }
@@ -115,28 +120,33 @@ void VisualisationBDD::clickDeconnexion()
 bool VisualisationBDD::checkRightToExecute(QString requete)
 {
     if (requete.contains("ADD", Qt::CaseInsensitive) ||
-            requete.contains("ALTER", Qt::CaseInsensitive) ||
-            requete.contains("CREATE", Qt::CaseInsensitive) ||
-            requete.contains("UPDATE", Qt::CaseInsensitive) ||
-            requete.contains("INSERT", Qt::CaseInsensitive)){
+        requete.contains("ALTER", Qt::CaseInsensitive) ||
+        requete.contains("CREATE", Qt::CaseInsensitive) ||
+        requete.contains("UPDATE", Qt::CaseInsensitive) ||
+        requete.contains("INSERT", Qt::CaseInsensitive))
+    {
 
-        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(WRITE)){
+        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(WRITE))
+        {
             return true;
         }
 
     }
     else if (requete.contains("DROP", Qt::CaseInsensitive) ||
-                requete.contains("TRUNCATE", Qt::CaseInsensitive) ||
-                requete.contains("DELETE", Qt::CaseInsensitive)){
-
-        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(DELETE)){
+             requete.contains("TRUNCATE", Qt::CaseInsensitive) ||
+             requete.contains("DELETE", Qt::CaseInsensitive))
+    {
+        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(DELETE))
+        {
             return true;
         }
 
     }
-    else{
+    else
+    {
 
-        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(READ)){
+        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(READ))
+        {
             return true;
         }
 
@@ -150,7 +160,8 @@ void VisualisationBDD::CreateTree(Profil profil)
 {
     ui->vueArborescence->setColumnCount(1);
     QList<QTreeWidgetItem*> elements;
-    for (int i = 0 ; i < profil.getDatabases().size() ; i++)
+
+    for (std::vector<QSqlDatabase>::size_type i = 0 ; i < profil.getDatabases().size() ; i++)
     {
         //afficher le nom de chaque base de données
         std::string nom = profil.getDatabases().at(i).databaseName().toStdString();
@@ -161,12 +172,13 @@ void VisualisationBDD::CreateTree(Profil profil)
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE","connecCreate");
         db.setDatabaseName(profil.getDatabases().at(i).databaseName());
         bool ok = db.open();
-        if(ok)
+
+        if (ok)
         {
             std::cout << "c'est ouvert" << std::endl;
             QSqlQuery q(db);
             q.exec("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name");
-            int j = 0;
+            //int j = 0;
             while(q.next())
             {
                 QString name = q.value(0).toString();
@@ -180,15 +192,16 @@ void VisualisationBDD::CreateTree(Profil profil)
         db.close();
 
 
-
     }
     ui->vueArborescence->insertTopLevelItems(0, elements);
 }
 
-void VisualisationBDD::UpdateTree(QSqlDatabase db){
+void VisualisationBDD::UpdateTree(QSqlDatabase db)
+{
     QList<QTreeWidgetItem*> elements;
     bool ok = db.open();
-    if(ok)
+
+    if (ok)
     {
         std::string nom = db.databaseName().toStdString();
         elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString::fromStdString(std::filesystem::path(nom).stem().string()))));
