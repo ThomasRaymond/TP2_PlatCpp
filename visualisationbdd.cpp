@@ -16,25 +16,6 @@ VisualisationBDD::VisualisationBDD(QWidget *parent) :
     connect(ui->boutonEffacer, SIGNAL(clicked()), SLOT(clickEffacer()));
     connect(ui->boutonExec, SIGNAL(clicked()), SLOT(clickExecuter()));
     connect(ui->boutonDeconnexion, SIGNAL(clicked()), SLOT(clickDeconnexion()));
-
-    Profil profil;
-    QSqlDatabase db_test = QSqlDatabase::addDatabase("QSQLITE");
-    db_test.setHostName("root");
-    db_test.setDatabaseName("db2");
-    db_test.setUserName("root");
-    db_test.setPassword("password");
-    db_test.tables().append("table1");
-    db_test.tables().append("test2");
-
-    QSqlDatabase db_test2 = QSqlDatabase::addDatabase("QSQLITE");
-    db_test2.setHostName("root");
-    db_test2.setDatabaseName("db1");
-    db_test2.setUserName("root");
-    db_test2.setPassword("password");
-
-    profil.getDatabases().push_back(db_test);
-    profil.getDatabases().push_back(db_test2);
-    UpdateTree(profil);
 }
 
 VisualisationBDD::~VisualisationBDD()
@@ -74,9 +55,12 @@ void VisualisationBDD::clickSelectionFichier()
 
     if (chemin != "")
     {
-        profil->getDatabases().push_back(QSqlDatabase::addDatabase(chemin));
-        // TODO handle errors
+        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE","connecUpdate");
+        db.setDatabaseName(chemin);
+        UpdateTree(db);
 
+        QSqlDatabase::removeDatabase("connec");
+        // TODO handle errors
         Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
         ControleurXML::updateUser(current_user,current_user);
     }
@@ -162,30 +146,66 @@ bool VisualisationBDD::checkRightToExecute(QString requete)
     return false;
 }
 
-void VisualisationBDD::UpdateTree(Profil profil)
+void VisualisationBDD::CreateTree(Profil profil)
 {
     ui->vueArborescence->setColumnCount(1);
     QList<QTreeWidgetItem*> elements;
     for (int i = 0 ; i < profil.getDatabases().size() ; i++)
     {
-        elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString(profil.getDatabases().at(i).databaseName()))));
-        for (int j = 0 ; j < profil.getDatabases().at(i).tables().size() ; j++)
+        //afficher le nom de chaque base de données
+        std::string nom = profil.getDatabases().at(i).databaseName().toStdString();
+        elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString::fromStdString(std::filesystem::path(nom).stem().string()))));
+
+
+        //afficher les noms des tables dans chaque base de données
+        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE","connecCreate");
+        db.setDatabaseName(profil.getDatabases().at(i).databaseName());
+        bool ok = db.open();
+        if(ok)
         {
-            //prendre les noms des tables et les ajouter à l'arbre
+            std::cout << "c'est ouvert" << std::endl;
+            QSqlQuery q(db);
+            q.exec("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name");
+            int j = 0;
+            while(q.next())
+            {
+                QString name = q.value(0).toString();
+                elements.append(new QTreeWidgetItem(elements.at(i), QStringList(QString(name))));
+            }
         }
+        else
+        {
+            std::cout << "Erreur ouverture BDD" << std::endl;
+        }
+        db.close();
+
+
 
     }
-    /*for (int i = 0 ; i < 3 ; i++)
+    ui->vueArborescence->insertTopLevelItems(0, elements);
+}
+
+void VisualisationBDD::UpdateTree(QSqlDatabase db){
+    QList<QTreeWidgetItem*> elements;
+    bool ok = db.open();
+    if(ok)
     {
-        elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString("database %1").arg(i))));
-    }
-    for (int j = 0 ; j < 3 ; j++)
-    {
-        for (int k = 0 ; k < 3-j ; k++)
+        std::string nom = db.databaseName().toStdString();
+        elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString::fromStdString(std::filesystem::path(nom).stem().string()))));
+        QSqlQuery q(db);
+        q.exec("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name");
+        int i = 0;
+        while(q.next())
         {
-            elements.append(new QTreeWidgetItem(elements.at(j), QStringList(QString("table %1").arg(k))));
+            QString name = q.value(0).toString();
+            elements.append(new QTreeWidgetItem(elements.at(i), QStringList(QString(name))));
         }
-    }*/
+    }
+    else
+    {
+        std::cout << "Erreur ouverture bdd" << std::endl;
+    }
+    db.close();
     ui->vueArborescence->insertTopLevelItems(0, elements);
 }
 
