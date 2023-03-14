@@ -51,7 +51,7 @@ void VisualisationBDD::clickSelectionFichier()
 
     // Generate a useless "+[CATransaction synchronize] called within transaction" warning on MacOS
     QString chemin = QFileDialog::getOpenFileName(this, tr("Sélection d'une base de données"), cwd, tr("Fichiers de bases de données (*.sqlite)"));
-
+    ui->inputPath->setText(chemin);
     if (chemin != "")
     {
         QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate"));
@@ -111,7 +111,7 @@ void VisualisationBDD::clickExecuter()
         else
         {
             QSqlQueryModel* modele = new QSqlQueryModel();
-            modele->setQuery(*retourRequete);
+            modele->setQuery(std::move(*retourRequete));
             ui->vueTable->setModel(modele);
         }
 
