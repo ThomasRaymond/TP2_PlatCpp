@@ -140,8 +140,11 @@ void VisualisationBDD::clickDeconnexion()
 void VisualisationBDD::clickTableArborescence(QTreeWidgetItem* item,int column){
     QString nom = item->text(column);
 
-    ui->inputSQL->setText("SELECT * FROM " + nom);
-    clickExecuter();
+    if(item->parent() != nullptr){
+        ui->inputSQL->setText("SELECT * FROM " + nom);
+        clickExecuter();
+    }
+
 }
 
 bool VisualisationBDD::checkRightToExecute(QString requete)
