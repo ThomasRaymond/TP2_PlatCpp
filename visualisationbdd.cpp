@@ -12,12 +12,18 @@ VisualisationBDD::VisualisationBDD(QWidget *parent) :
     ui->setupUi(this);
     ui->inputPath->setReadOnly(true);
     ui->vueTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->vueArborescence->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    contextMenu = new QMenu("Menu",ui->vueArborescence);
+    delAction = new QAction("Supprimmer",this);
 
     connect(ui->boutonSelection, SIGNAL(clicked()), SLOT(clickSelectionFichier()));
     connect(ui->boutonEffacer, SIGNAL(clicked()), SLOT(clickEffacer()));
     connect(ui->boutonExec, SIGNAL(clicked()), SLOT(clickExecuter()));
     connect(ui->boutonDeconnexion, SIGNAL(clicked()), SLOT(clickDeconnexion()));
     connect(ui->vueArborescence, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), SLOT(clickTableArborescence(QTreeWidgetItem*,int)));
+    connect(ui->vueArborescence, SIGNAL(customContextMenuRequested(QPoint)), SLOT(rightClickOnTreeItem(QPoint)));
+    connect(delAction, SIGNAL(triggered(bool)), SLOT(removeCurrentItemFromTree()));
 }
 
 VisualisationBDD::~VisualisationBDD()
@@ -25,6 +31,7 @@ VisualisationBDD::~VisualisationBDD()
     delete ui;
     profil = nullptr;
     if (currentDatabase != nullptr) delete currentDatabase;
+    delete contextMenu;
 }
 
 void VisualisationBDD::attachProfile(Profil* profil)
@@ -145,6 +152,8 @@ void VisualisationBDD::clickTableArborescence(QTreeWidgetItem* item,int column){
         clickExecuter();
     }
 
+    // TODO : change current bdd
+
 }
 
 bool VisualisationBDD::checkRightToExecute(QString requete)
@@ -252,4 +261,22 @@ void VisualisationBDD::UpdateTree(QSqlDatabase* db)
     ui->vueArborescence->insertTopLevelItems(0, elements);
 }
 
+
+void VisualisationBDD::rightClickOnTreeItem(QPoint idx)
+{
+    QModelIndex index = ui->vueArborescence->indexAt(idx);
+    QTreeWidgetItem* item = ui->vueArborescence->itemFromIndex(index);
+
+    if(index.isValid() && item->parent() == nullptr) // Si on clique sur un item et que l'item est une bdd
+    {
+        contextMenu->addAction(delAction);
+        contextMenu->exec(QCursor::pos());
+    }
+}
+
+void VisualisationBDD::removeCurrentItemFromTree()
+{
+    qDebug() << "TODO : del item";
+    // TODO
+}
 

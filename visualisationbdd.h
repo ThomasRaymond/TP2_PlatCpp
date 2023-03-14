@@ -2,6 +2,7 @@
 #define VISUALISATIONBDD_H
 
 #include <QWidget>
+#include <QMenu>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <filesystem>
@@ -30,11 +31,15 @@ private slots:
     void clickExecuter();
     void clickDeconnexion();
     void clickTableArborescence(QTreeWidgetItem* item,int column);
+    void rightClickOnTreeItem(QPoint idx);
+    void removeCurrentItemFromTree();
 
 private:
     Ui::VisualisationBDD *ui;
     Profil* profil;
     QSqlDatabase* currentDatabase;
+    QMenu* contextMenu;
+    QAction* delAction;
 
     bool checkRightToExecute(QString requete);
     void CreateTree(Profil profil);
