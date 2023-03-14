@@ -12,10 +12,12 @@ VisualisationBDD::VisualisationBDD(QWidget *parent) :
     ui->setupUi(this);
     ui->inputPath->setReadOnly(true);
     ui->vueTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     connect(ui->boutonSelection, SIGNAL(clicked()), SLOT(clickSelectionFichier()));
     connect(ui->boutonEffacer, SIGNAL(clicked()), SLOT(clickEffacer()));
     connect(ui->boutonExec, SIGNAL(clicked()), SLOT(clickExecuter()));
     connect(ui->boutonDeconnexion, SIGNAL(clicked()), SLOT(clickDeconnexion()));
+    connect(ui->vueArborescence, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), SLOT(clickTableArborescence(QTreeWidgetItem*,int)));
 }
 
 VisualisationBDD::~VisualisationBDD()
@@ -135,6 +137,13 @@ void VisualisationBDD::clickDeconnexion()
     }
 }
 
+void VisualisationBDD::clickTableArborescence(QTreeWidgetItem* item,int column){
+    QString nom = item->text(column);
+
+    ui->inputSQL->setText("SELECT * FROM " + nom);
+    clickExecuter();
+}
+
 bool VisualisationBDD::checkRightToExecute(QString requete)
 {
     if (requete.contains("ADD", Qt::CaseInsensitive) ||
@@ -239,4 +248,5 @@ void VisualisationBDD::UpdateTree(QSqlDatabase* db)
     db->close();
     ui->vueArborescence->insertTopLevelItems(0, elements);
 }
+
 

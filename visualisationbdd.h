@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <filesystem>
 
+#include "QtWidgets/qtreewidget.h"
 #include "profil.h"
 
 namespace Ui {
@@ -28,6 +29,7 @@ private slots:
     void clickEffacer();
     void clickExecuter();
     void clickDeconnexion();
+    void clickTableArborescence(QTreeWidgetItem* item,int column);
 
 private:
     Ui::VisualisationBDD *ui;
