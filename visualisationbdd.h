@@ -36,7 +36,7 @@ private:
 
     bool checkRightToExecute(QString requete);
     void CreateTree(Profil profil);
-    void UpdateTree(QSqlDatabase db);
+    void UpdateTree(QSqlDatabase* db);
 };
 
 #endif // VISUALISATIONBDD_H

@@ -22,6 +22,7 @@ VisualisationBDD::~VisualisationBDD()
 {
     delete ui;
     profil = nullptr;
+    if (currentDatabase != nullptr) delete currentDatabase;
 }
 
 void VisualisationBDD::attachProfile(Profil* profil)
@@ -51,13 +52,17 @@ void VisualisationBDD::clickSelectionFichier()
     // Generate a useless "+[CATransaction synchronize] called within transaction" warning on MacOS
     QString chemin = QFileDialog::getOpenFileName(this, tr("Sélection d'une base de données"), cwd, tr("Fichiers de bases de données (*.sqlite)"));
 
-    QMessageBox::information(0, "Information", chemin);
-
     if (chemin != "")
     {
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE","connecUpdate");
-        db.setDatabaseName(chemin);
+        QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate"));
+
+        if(currentDatabase != nullptr) delete currentDatabase;
+
+        db->setDatabaseName(chemin);
+
+        this->currentDatabase = db;
         UpdateTree(db);
+
 
         QSqlDatabase::removeDatabase("connec");
         // TODO handle errors
@@ -73,37 +78,50 @@ void VisualisationBDD::clickEffacer()
 
 void VisualisationBDD::clickExecuter()
 {
-    QString commande = ui->inputSQL->text();
-
+    const QString& commande = ui->inputSQL->text();
     if (currentDatabase == nullptr)
     {
         QMessageBox::warning(0, "Erreur d'accès", "Veuillez connecter une base de données");
         return;
     }
+    if (commande == ""){
+        QMessageBox::warning(0, "Erreur d'exécution", "Le champ est vide !");
+        return;
+    }
+
+    bool ok = currentDatabase->open();
+
+    if (!ok){
+        std::cout << "Erreur ouverture bdd" << std::endl;
+        return;
+    }
 
     if (checkRightToExecute(commande))
     {
-        QSqlQuery retourRequete = currentDatabase->exec(commande);
+        QSqlQuery* retourRequete = new QSqlQuery(*currentDatabase);
+        retourRequete->exec(commande);
 
-        if (retourRequete.size() == 0)
+        if (retourRequete->size() == 0)
         {
             ui->vueTable->clearSpans();
-            QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete.lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
+            QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete->lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
 
         }
+
         else
         {
-            QMessageBox::information(0, "Information", "La requête a retourné " + QString::number(retourRequete.size()) + " résultat(s)");
-            QSqlQueryModel modele;
-            modele.setQuery(std::move(retourRequete));
-            ui->vueTable->setModel(&modele);
+            QSqlQueryModel* modele = new QSqlQueryModel();
+            modele->setQuery(*retourRequete);
+            ui->vueTable->setModel(modele);
         }
+
     }
     else
     {
         QMessageBox::critical(0, "Erreur d'exécution", "Vous n'avez pas les droits nécéssaires pour exécuter cette requête");
         return;
     }
+    currentDatabase->close();
 }
 
 void VisualisationBDD::clickDeconnexion()
@@ -196,16 +214,16 @@ void VisualisationBDD::CreateTree(Profil profil)
     ui->vueArborescence->insertTopLevelItems(0, elements);
 }
 
-void VisualisationBDD::UpdateTree(QSqlDatabase db)
+void VisualisationBDD::UpdateTree(QSqlDatabase* db)
 {
     QList<QTreeWidgetItem*> elements;
-    bool ok = db.open();
+    bool ok = db->open();
 
     if (ok)
     {
-        std::string nom = db.databaseName().toStdString();
+        std::string nom = db->databaseName().toStdString();
         elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString::fromStdString(std::filesystem::path(nom).stem().string()))));
-        QSqlQuery q(db);
+        QSqlQuery q(*db);
         q.exec("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name");
         int i = 0;
         while(q.next())
@@ -218,7 +236,7 @@ void VisualisationBDD::UpdateTree(QSqlDatabase db)
     {
         std::cout << "Erreur ouverture bdd" << std::endl;
     }
-    db.close();
+    db->close();
     ui->vueArborescence->insertTopLevelItems(0, elements);
 }
 
