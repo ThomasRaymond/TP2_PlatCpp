@@ -2,6 +2,7 @@
 #define BDDTREEITEM_H
 
 
+#include "QtCore/qdir.h"
 #include "QtSql/qsqldatabase.h"
 #include "QtWidgets/qtreewidget.h"
 
@@ -12,10 +13,14 @@ private:
     QSqlDatabase* database;
 
 public:
-    BDDTreeItem(QSqlDatabase* database) {setDatabase(database);}
+    BDDTreeItem(QSqlDatabase* database)
+        : QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(database->databaseName().split(QDir::separator()).last()))
+    {
+        setDatabase(database);
+    }
 
     QSqlDatabase* getDatabase() {return database;}
-    void setDatabase(QSqlDatabase* database) {this->database = database}
+    void setDatabase(QSqlDatabase* database) {this->database = database;}
 };
 
 #endif // BDDTREEITEM_H
