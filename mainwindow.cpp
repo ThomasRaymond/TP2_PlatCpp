@@ -88,12 +88,14 @@ void MainWindow::lancerApplication(QString nomProfil)
     this->getProfilByName(nomProfil);
 
     fenetreVisualisationBDD->attachProfile(&profil);
+    fenetreVisualisationBDD->init();
 
     this->fenetreVisualisationBDD->show();
 }
 
-void MainWindow::lancerChoixProfil(Utilisateur* utilisateur){
-    setUtilisateur(utilisateur);
+void MainWindow::lancerChoixProfil(Utilisateur* utilisateur , int contexte){
+    if (utilisateur != nullptr) setUtilisateur(utilisateur);
+    this->fenetreChoixProfil->setContexte(contexte);
     this->fenetreChoixProfil->clearfields();
     this->fenetreChoixProfil->addListProfiles(this->utilisateur->getProfils());
     this->fenetreChoixProfil->show();

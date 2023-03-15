@@ -33,7 +33,7 @@ public:
     void lancerApplication(QString nomProfil);
     void lancerConnexion();
     void lancerInscription();
-    void lancerChoixProfil(Utilisateur* utilisateur);
+    void lancerChoixProfil(Utilisateur* utilisateur, int contexte);
     void deconnexion();
 
     void fermerFenetre(QDialog* fenetre);

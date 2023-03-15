@@ -29,6 +29,14 @@ void ChoixProfil::clearfields()
     ui->inputProfil->clear();
 }
 
+int ChoixProfil::getContexte(){
+    return this->contexte;
+}
+
+void ChoixProfil::setContexte(int contexte){
+    this->contexte = contexte;
+}
+
 void ChoixProfil::clickValider()
 {
     QString profilSelectionne = ui->inputProfil->currentText();
@@ -44,7 +52,12 @@ void ChoixProfil::clickValider()
 void ChoixProfil::clickAnnuler()
 {
     this->hide();
-    static_cast<MainWindow*>(this->parent())->deconnexion();
+    if(getContexte() == CONTEXT_FIRST_ACCESS){
+        static_cast<MainWindow*>(this->parent())->deconnexion();
+    }
+    else if(getContexte() == CONTEXT_CHANGE_PROFILE){
+        return;
+    }
 }
 
 void ChoixProfil::creerProfil()

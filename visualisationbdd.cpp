@@ -21,6 +21,7 @@ VisualisationBDD::VisualisationBDD(QWidget *parent) :
     connect(ui->boutonEffacer, SIGNAL(clicked()), SLOT(clickEffacer()));
     connect(ui->boutonExec, SIGNAL(clicked()), SLOT(clickExecuter()));
     connect(ui->boutonDeconnexion, SIGNAL(clicked()), SLOT(clickDeconnexion()));
+    connect(ui->boutonChoixProfil, SIGNAL(clicked()), SLOT(clickChoixProfil()));
     connect(ui->vueArborescence, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), SLOT(clickTableArborescence(QTreeWidgetItem*,int)));
     connect(ui->vueArborescence, SIGNAL(customContextMenuRequested(QPoint)), SLOT(rightClickOnTreeItem(QPoint)));
     connect(delAction, SIGNAL(triggered(bool)), SLOT(removeCurrentItemFromTree()));
@@ -54,6 +55,15 @@ int VisualisationBDD::fenetreConfirmation(QString titre, QString description){
     return confirmation.exec();
 }
 
+void VisualisationBDD::init(){
+    ui->inputPath->clear();
+    ui->inputSQL->clear();
+    if(ui->vueTable->model() != nullptr) static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
+    ui->vueArborescence->clear();
+
+    CreateTree(this->profil);
+}
+
 void VisualisationBDD::clickSelectionFichier()
 {
     QString cwd = QString::fromStdString(std::filesystem::current_path().string());
@@ -76,6 +86,7 @@ void VisualisationBDD::clickSelectionFichier()
         QSqlDatabase::removeDatabase("connec");
         // TODO handle errors
         Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
+
         ControleurXML::updateUser(current_user,current_user);
     }
 }
@@ -121,6 +132,7 @@ void VisualisationBDD::clickExecuter()
         {
             QSqlQueryModel* modele = new QSqlQueryModel();
             modele->setQuery(std::move(*retourRequete));
+            if(ui->vueTable->model() != nullptr) static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
             ui->vueTable->setModel(modele);
         }
 
@@ -154,6 +166,10 @@ void VisualisationBDD::clickTableArborescence(QTreeWidgetItem* item,int column){
 
     // TODO : change current bdd
 
+}
+
+void VisualisationBDD::clickChoixProfil(){
+    static_cast<MainWindow*>(this->parent())->lancerChoixProfil(nullptr, CONTEXT_CHANGE_PROFILE);
 }
 
 bool VisualisationBDD::checkRightToExecute(QString requete)
@@ -195,21 +211,21 @@ bool VisualisationBDD::checkRightToExecute(QString requete)
     return false;
 }
 
-void VisualisationBDD::CreateTree(Profil profil)
+void VisualisationBDD::CreateTree(Profil* profil)
 {
     ui->vueArborescence->setColumnCount(1);
     QList<QTreeWidgetItem*> elements;
 
-    for (std::vector<QSqlDatabase>::size_type i = 0 ; i < profil.getDatabases().size() ; i++)
+    for (std::vector<QSqlDatabase>::size_type i = 0 ; i < profil->getDatabases().size() ; i++)
     {
         //afficher le nom de chaque base de données
-        std::string nom = profil.getDatabases().at(i).databaseName().toStdString();
+        std::string nom = profil->getDatabases().at(i).databaseName().toStdString();
         elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString::fromStdString(std::filesystem::path(nom).stem().string()))));
 
 
         //afficher les noms des tables dans chaque base de données
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE","connecCreate");
-        db.setDatabaseName(profil.getDatabases().at(i).databaseName());
+        db.setDatabaseName(profil->getDatabases().at(i).databaseName());
         bool ok = db.open();
 
         if (ok)

@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>948</width>
+    <width>1062</width>
     <height>520</height>
    </rect>
   </property>
@@ -17,47 +17,27 @@
    <string>Visualiseur de données</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="4" column="1" colspan="3">
-    <widget class="QLineEdit" name="inputSQL"/>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Ligne de commande SQL :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1" colspan="2">
+   <item row="1" column="4" colspan="2">
     <widget class="QLineEdit" name="inputPath"/>
    </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Choix de la base de données :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1" colspan="2" alignment="Qt::AlignRight">
-    <widget class="QPushButton" name="boutonEffacer">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>Effacer</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
+   <item row="1" column="6">
     <widget class="QPushButton" name="boutonSelection">
      <property name="text">
       <string>Sélectionner</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="3">
+   <item row="2" column="4" colspan="3">
+    <widget class="QTableView" name="vueTable">
+     <property name="frameShape">
+      <enum>QFrame::HLine</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="6">
     <widget class="QPushButton" name="boutonExec">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -73,11 +53,72 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0" rowspan="5">
+   <item row="3" column="4">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Ligne de commande SQL :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Choix de la base de données :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4" colspan="3">
+    <widget class="QLineEdit" name="inputSQL"/>
+   </item>
+   <item row="6" column="4" colspan="2" alignment="Qt::AlignRight">
+    <widget class="QPushButton" name="boutonEffacer">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Effacer</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="boutonChoixProfil">
+       <property name="text">
+        <string>Choix de profil</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="boutonDeconnexion">
+       <property name="text">
+        <string>Déconnexion</string>
+       </property>
+       <property name="icon">
+        <iconset theme="application-exit">
+         <normaloff>.</normaloff>.</iconset>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="2" rowspan="5">
     <widget class="QTreeWidget" name="vueArborescence">
      <property name="maximumSize">
       <size>
-       <width>200</width>
+       <width>260</width>
        <height>16777215</height>
       </size>
      </property>
@@ -103,36 +144,6 @@
        <string notr="true">2</string>
       </property>
      </column>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QPushButton" name="boutonDeconnexion">
-     <property name="text">
-      <string>Déconnexion</string>
-     </property>
-     <property name="icon">
-      <iconset theme="application-exit">
-       <normaloff>.</normaloff>.</iconset>
-     </property>
-     <property name="autoDefault">
-      <bool>false</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1" colspan="3">
-    <widget class="QTableView" name="vueTable">
-     <property name="frameShape">
-      <enum>QFrame::HLine</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
     </widget>
    </item>
   </layout>

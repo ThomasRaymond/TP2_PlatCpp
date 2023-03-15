@@ -56,7 +56,7 @@ void Connexion::clickBoutonValider()
     if (user != nullptr)
     {
         this->hide();
-        static_cast<MainWindow*>(this->parent())->lancerChoixProfil(user);
+        static_cast<MainWindow*>(this->parent())->lancerChoixProfil(user, CONTEXT_FIRST_ACCESS);
     }
     else
     {

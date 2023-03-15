@@ -5,6 +5,10 @@
 #include "profil.h"
 #include <filesystem>
 
+#define CONTEXT_FIRST_ACCESS 100
+#define CONTEXT_CHANGE_PROFILE 200
+
+
 
 namespace Ui {
 class ChoixProfil;
@@ -21,6 +25,9 @@ public:
     void addListProfiles(std::vector<Profil> list);
     void clearfields();
     void enregistrerProfil(QString nomProfil);
+
+    int getContexte();
+    void setContexte(int contexte);
 private slots:
     void clickValider();
     void clickAnnuler();
@@ -29,6 +36,7 @@ private slots:
 
 private:
     Ui::ChoixProfil *ui;
+    int contexte;
 };
 
 #endif // CHOIXPROFIL_H

@@ -24,12 +24,14 @@ public:
 
     void attachProfile(Profil* profil);
     int fenetreConfirmation(QString titre, QString description);
+    void init();
 
 private slots:
     void clickSelectionFichier();
     void clickEffacer();
     void clickExecuter();
     void clickDeconnexion();
+    void clickChoixProfil();
     void clickTableArborescence(QTreeWidgetItem* item,int column);
     void rightClickOnTreeItem(QPoint idx);
     void removeCurrentItemFromTree();
@@ -42,7 +44,7 @@ private:
     QAction* delAction;
 
     bool checkRightToExecute(QString requete);
-    void CreateTree(Profil profil);
+    void CreateTree(Profil* profil);
     void UpdateTree(QSqlDatabase* db);
 };
 
