@@ -14,7 +14,7 @@ private:
 
 public:
     BDDTreeItem(QSqlDatabase* database)
-        : QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(database->databaseName().split(QDir::separator()).last()))
+        : QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(database->databaseName().split('/').last().split('.').first()))
     {
         setDatabase(database);
     }

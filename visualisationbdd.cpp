@@ -1,3 +1,4 @@
+#include "bddtreeitem.h"
 #include "mainwindow.h"
 #include "ui_visualisationbdd.h"
 #include "visualisationbdd.h"
@@ -243,7 +244,7 @@ void VisualisationBDD::UpdateTree(QSqlDatabase* db)
     if (ok)
     {
         std::string nom = db->databaseName().toStdString();
-        elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString::fromStdString(std::filesystem::path(nom).stem().string()))));
+        elements.append(new BDDTreeItem(db));
         QSqlQuery q(*db);
         q.exec("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name");
         int i = 0;
