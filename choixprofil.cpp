@@ -40,9 +40,10 @@ void ChoixProfil::setContexte(int contexte){
 void ChoixProfil::clickValider()
 {
     QString profilSelectionne = ui->inputProfil->currentText();
+    int indexComboBox = ui->inputProfil->currentIndex();
     if(!profilSelectionne.isEmpty()){
         this->hide();
-        static_cast<MainWindow*>(this->parent())->lancerApplication(profilSelectionne);
+        static_cast<MainWindow*>(this->parent())->lancerApplication(indexComboBox);
     }
     else{
         QMessageBox::warning(0, "Erreur dans le choix du profil", "Veuillez choisir un profil valide");
