@@ -42,18 +42,6 @@ VisualisationBDD* MainWindow::getFenetreVisualisationBDD(){
     return this->fenetreVisualisationBDD;
 }
 
-Profil MainWindow::getProfilByName(QString nomProfil){
-
-    std::vector<Profil> listeProfils = this->utilisateur->getProfils();
-
-    for (auto it = listeProfils.begin(); it != listeProfils.end(); it++){
-        if(QString::fromStdString(it->getNomProfil()) == nomProfil){
-            return *it;
-        }
-    }
-    return Profil("");
-}
-
 void MainWindow::setUtilisateur(Utilisateur* utilisateur){
     this->utilisateur=utilisateur;
 }
@@ -105,15 +93,10 @@ void MainWindow::lancerInscription()
     this->fenetreInscription->show();
 }
 
-void MainWindow::lancerApplication(QString nomProfil)
+void MainWindow::lancerApplication(int index)
 {
-<<<<<<< Updated upstream
-    Profil profil;
 
-    this->getProfilByName(nomProfil);
-=======
     Profil& profil = getUtilisateur()->getProfils().at(index);
->>>>>>> Stashed changes
 
     fenetreVisualisationBDD->attachProfile(&profil);
     fenetreVisualisationBDD->init();

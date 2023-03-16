@@ -25,12 +25,11 @@ public:
     Inscription* getFenetreInscription();
     VisualisationBDD* getFenetreVisualisationBDD();
     ChoixProfil* getFenetreChoixProfil();
-    Profil getProfilByName(QString nomProfil);
 
     void setUtilisateur(Utilisateur* utilisateur);
 
     void init();
-    void lancerApplication(QString nomProfil);
+    void lancerApplication(int index);
     void lancerConnexion();
     void lancerInscription();
     void lancerChoixProfil(Utilisateur* utilisateur, int contexte);
