@@ -1,4 +1,5 @@
 #include "bddtreeitem.h"
+#include <algorithm>
 #include "mainwindow.h"
 #include "ui_visualisationbdd.h"
 #include "visualisationbdd.h"
@@ -223,7 +224,7 @@ void VisualisationBDD::CreateTree(Profil* profil)
     {
         //afficher le nom de chaque base de données
         std::string nom = profil->getDatabases().at(i).databaseName().toStdString();
-        elements.append(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(QString::fromStdString(std::filesystem::path(nom).stem().string()))));
+        elements.append(new BDDTreeItem(&(profil->getDatabases().at(i))));
 
 
         //afficher les noms des tables dans chaque base de données
@@ -297,5 +298,19 @@ void VisualisationBDD::removeCurrentItemFromTree()
 {
     qDebug() << "TODO : del item";
     // TODO
+    // 1 - le supprimer de l'arbre
+    QTreeWidgetItem* item = ui->vueArborescence->currentItem();
+    QSqlDatabase* db = static_cast<BDDTreeItem*>(item)->getDatabase();
+    QString itemName = item->text(0);
+    delete item;
+
+    for (auto db_iterator = profil->getDatabases().begin(); db_iterator != profil->getDatabases().end(); db_iterator++){
+        if (db->databaseName().compare(db_iterator->databaseName()) == 0){
+            profil->getDatabases().erase(db_iterator);
+            QMessageBox::information(0, "", "La base de données '" + itemName + "' a été supprimée de la liste attachée à votre profil.");
+            break;
+        }
+    }
+    delete db;
 }
 
