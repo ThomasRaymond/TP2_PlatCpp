@@ -27,7 +27,7 @@ public:
     std::string getPrenom();
     std::string getMail();
     std::string getPassword();
-    std::vector<Profil> getProfils();
+    std::vector<Profil> & getProfils();
     std::vector<bool> getPermissions();
 
     bool can(int droit);
@@ -44,6 +44,9 @@ public:
     bool removePermission(int permission);
 
     bool operator==(Utilisateur other);
+
+
+
 };
 
 #endif // UTILISATEUR_H

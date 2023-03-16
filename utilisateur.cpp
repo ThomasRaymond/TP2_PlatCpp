@@ -33,7 +33,7 @@ std::string Utilisateur::getPassword(){
     return this->mdp;
 }
 
-std::vector<Profil> Utilisateur::getProfils()
+std::vector<Profil> & Utilisateur::getProfils()
 {
     return this->profils;
 }
@@ -92,7 +92,8 @@ bool Utilisateur::removeProfil(Profil profil)
     return false;
 }
 
-bool Utilisateur::addPermission(int permission) {
+bool Utilisateur::addPermission(int permission)
+{
     if (!this->can(permission))
     {
         this->permissions.at(permission) = true;
@@ -101,7 +102,8 @@ bool Utilisateur::addPermission(int permission) {
     return false;
 }
 
-bool Utilisateur::removePermission(int permission){
+bool Utilisateur::removePermission(int permission)
+{
     if (this->can(permission))
     {
         this->permissions.at(permission) = false;
@@ -110,7 +112,8 @@ bool Utilisateur::removePermission(int permission){
     return false;
 }
 
-bool Utilisateur::operator==(Utilisateur other) {
+bool Utilisateur::operator==(Utilisateur other)
+{
     if (this->getMail() != other.getMail())
     {
         return false;

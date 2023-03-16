@@ -23,6 +23,7 @@ SOURCES += \
     visualisationbdd.cpp
 
 HEADERS += \
+    bddtreeitem.h \
     choixprofil.h \
     connexion.h \
     controleurbdd.h \

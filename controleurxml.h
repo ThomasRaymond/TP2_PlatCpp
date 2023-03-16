@@ -6,7 +6,8 @@
 #include <QtXml>
 #include <iostream>
 
-#define FILENAME "users.xml"
+//#define FILENAME "users.xml"
+#define FILENAME "test.xml"
 
 class ControleurXML
 {
@@ -19,7 +20,13 @@ public:
     static bool updateUser(const Utilisateur & oldUser, const Utilisateur & newUser);
 private:
     static QDomDocument openDocument(std::string path);
-    static Utilisateur createUserFromXMLComponent(QDomElement child);
+
+    static QDomElement QDomElemFromUtilisateur(Utilisateur & user, QDomDocument & document);
+    static Utilisateur UtilisateurFromQDom(QDomElement & qdom);
+    static QDomElement QDomElemFromProfil(Profil & profil, QDomDocument & document);
+    static Profil ProfilFromQDom(QDomElement & qdom);
+    static QDomElement QDomElemFromDatabase(QSqlDatabase & database, QDomDocument & document);
+    static QSqlDatabase DatabaseFromQDom(QDomElement & qdom);
 };
 
 #endif // CONTROLEURXML_H
