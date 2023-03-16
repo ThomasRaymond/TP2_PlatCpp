@@ -87,6 +87,11 @@ void VisualisationBDD::clickSelectionFichier()
         QSqlDatabase::removeDatabase("connec");
         // TODO handle errors
         Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
+<<<<<<< Updated upstream
+=======
+
+        profil->getDatabases().push_back(*db);
+>>>>>>> Stashed changes
 
         ControleurXML::updateUser(current_user,current_user);
     }

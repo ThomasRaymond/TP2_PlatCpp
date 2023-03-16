@@ -107,9 +107,13 @@ void MainWindow::lancerInscription()
 
 void MainWindow::lancerApplication(QString nomProfil)
 {
+<<<<<<< Updated upstream
     Profil profil;
 
     this->getProfilByName(nomProfil);
+=======
+    Profil& profil = getUtilisateur()->getProfils().at(index);
+>>>>>>> Stashed changes
 
     fenetreVisualisationBDD->attachProfile(&profil);
     fenetreVisualisationBDD->init();
