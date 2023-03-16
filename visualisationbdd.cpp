@@ -64,7 +64,7 @@ void VisualisationBDD::clickSelectionFichier()
     ui->inputPath->setText(chemin);
     if (chemin != "")
     {
-        QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate"));
+        QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate")); // where delete ?
 
         if(currentDatabase != nullptr) delete currentDatabase;
 

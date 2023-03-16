@@ -59,13 +59,37 @@ void MainWindow::setUtilisateur(Utilisateur* utilisateur){
 }
 
 void MainWindow::init(){
-    if (ControleurXML::nombreUtilisateurs() > 1)
+    switch (ControleurXML::nombreUtilisateurs())
     {
-        lancerConnexion();
-    }
-    else
-    {
-        lancerInscription();
+        // fichier vide
+        case 0:
+        {
+            // On ajoute l'admin
+            Utilisateur admin("admin","admin","admin@admin.admin","admin");
+            admin.addPermission(READ);
+            admin.addPermission(WRITE);
+            admin.addPermission(DELETE);
+            admin.addProfil(Profil("Profil_1"));
+            admin.addProfil(Profil("Profil_2"));
+            ControleurXML::addUser(admin);
+
+            lancerInscription();
+            break;
+        }
+
+        // 1 seul utilisateur dans l'XML (l'admin), on affiche l'inscription
+        case 1:
+        {
+            lancerInscription();
+            break;
+        }
+
+        // >= 2, on affiche la connexion
+        default:
+        {
+            lancerConnexion();
+            break;
+        }
     }
 }
 
