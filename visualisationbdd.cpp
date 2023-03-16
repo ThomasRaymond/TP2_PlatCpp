@@ -16,7 +16,7 @@ VisualisationBDD::VisualisationBDD(QWidget *parent) :
     ui->vueArborescence->setContextMenuPolicy(Qt::CustomContextMenu);
 
     contextMenu = new QMenu("Menu",ui->vueArborescence);
-    delAction = new QAction("Supprimmer",this);
+    delAction = new QAction("Supprimer",this);
 
     connect(ui->boutonSelection, SIGNAL(clicked()), SLOT(clickSelectionFichier()));
     connect(ui->boutonEffacer, SIGNAL(clicked()), SLOT(clickEffacer()));
