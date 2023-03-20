@@ -77,8 +77,6 @@ void VisualisationBDD::clickSelectionFichier()
     {
         QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate")); // where delete ?
 
-        if(currentDatabase != nullptr) delete currentDatabase;
-
         db->setDatabaseName(chemin);
 
         this->currentDatabase = db;
@@ -217,6 +215,7 @@ bool VisualisationBDD::checkRightToExecute(QString requete)
 
 void VisualisationBDD::CreateTree(Profil* profil)
 {
+    ui->vueArborescence->clear();
     ui->vueArborescence->setColumnCount(1);
     QList<QTreeWidgetItem*> elements;
 
@@ -285,9 +284,9 @@ void VisualisationBDD::UpdateTree(QSqlDatabase* db)
 void VisualisationBDD::rightClickOnTreeItem(QPoint idx)
 {
     QModelIndex index = ui->vueArborescence->indexAt(idx);
-    QTreeWidgetItem* item = ui->vueArborescence->itemFromIndex(index);
 
-    if(index.isValid() && item->parent() == nullptr) // Si on clique sur un item et que l'item est une bdd
+
+    if(index.isValid()) // Si on clique sur un item et que l'item est une bdd
     {
         contextMenu->addAction(delAction);
         contextMenu->exec(QCursor::pos());
@@ -297,20 +296,36 @@ void VisualisationBDD::rightClickOnTreeItem(QPoint idx)
 void VisualisationBDD::removeCurrentItemFromTree()
 {
     qDebug() << "TODO : del item";
+
     // TODO
     // 1 - le supprimer de l'arbre
     QTreeWidgetItem* item = ui->vueArborescence->currentItem();
-    QSqlDatabase* db = static_cast<BDDTreeItem*>(item)->getDatabase();
-    QString itemName = item->text(0);
-    delete item;
+    if (item->parent() == nullptr){
+        QSqlDatabase* db = static_cast<BDDTreeItem*>(item)->getDatabase();
+        QString itemName = item->text(0);
+        delete item;
 
-    for (auto db_iterator = profil->getDatabases().begin(); db_iterator != profil->getDatabases().end(); db_iterator++){
-        if (db->databaseName().compare(db_iterator->databaseName()) == 0){
-            profil->getDatabases().erase(db_iterator);
-            QMessageBox::information(0, "", "La base de données '" + itemName + "' a été supprimée de la liste attachée à votre profil.");
-            break;
+        for (auto db_iterator = profil->getDatabases().begin(); db_iterator != profil->getDatabases().end(); db_iterator++){
+            if (db->databaseName().compare(db_iterator->databaseName()) == 0){
+                profil->getDatabases().erase(db_iterator);
+                QMessageBox::information(0, "", "La base de données '" + itemName + "' a été supprimée de la liste attachée à votre profil.");
+                break;
+            }
+        }
+        delete db;
+    }
+    else{
+        if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(DELETE)){
+            QString nomTable = item->text(0);
+
+            int choix = fenetreConfirmation("Avertissement", "Êtes vous sur de vouloir supprimer (DROP) la table '" + nomTable + "' de la base de données ?");
+
+            if(choix == QMessageBox::Yes){
+                ui->inputSQL->setText("DROP TABLE " + nomTable);
+                clickExecuter();
+                delete item;
+            }
         }
     }
-    delete db;
 }
 
