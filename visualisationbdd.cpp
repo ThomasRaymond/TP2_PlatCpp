@@ -66,6 +66,18 @@ void VisualisationBDD::init(){
     CreateTree(this->profil);
 }
 
+void VisualisationBDD::setDatabase(BDDTreeItem* dbItem){
+    for (int i = 0; i < ui->vueArborescence->topLevelItemCount(); i++){
+        QTreeWidgetItem* it_item = ui->vueArborescence->topLevelItem(i);
+        it_item->setBackground(0, QColor(255, 255, 255));
+        it_item->setForeground(0, QColor(0, 0, 0));
+    }
+    dbItem->setBackground(0, QColor(255, 102, 0));
+    dbItem->setForeground(0, QColor(255, 255, 255));
+
+    this->currentDatabase = dbItem->getDatabase();
+}
+
 void VisualisationBDD::clickSelectionFichier()
 {
     QString cwd = QString::fromStdString(std::filesystem::current_path().string());
@@ -78,8 +90,6 @@ void VisualisationBDD::clickSelectionFichier()
         QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate")); // where delete ?
 
         db->setDatabaseName(chemin);
-
-        this->currentDatabase = db;
         UpdateTree(db);
 
 
@@ -178,12 +188,16 @@ void VisualisationBDD::clickDeconnexion()
 void VisualisationBDD::clickTableArborescence(QTreeWidgetItem* item,int column){
     QString nom = item->text(column);
 
-    if(item->parent() != nullptr){
-        ui->inputSQL->setText("SELECT * FROM " + nom);
-        clickExecuter();
+    if (item->parent() != nullptr)
+    {
+        setDatabase(static_cast<BDDTreeItem*>(item->parent()));
+        //ui->inputSQL->setText("SELECT * FROM " + nom);
+        //clickExecuter();
     }
-
-    // TODO : change current bdd
+    else if (item->parent() == nullptr)
+    {
+        setDatabase(static_cast<BDDTreeItem*>(item));
+    }
 
 }
 
@@ -269,6 +283,9 @@ void VisualisationBDD::CreateTree(Profil* profil)
 
     }
     ui->vueArborescence->insertTopLevelItems(0, elements);
+
+    BDDTreeItem* bddItem = static_cast<BDDTreeItem*>(ui->vueArborescence->topLevelItem(0));
+    setDatabase(bddItem);
 }
 
 void VisualisationBDD::UpdateTree(QSqlDatabase* db)
@@ -295,6 +312,8 @@ void VisualisationBDD::UpdateTree(QSqlDatabase* db)
     }
     db->close();
     ui->vueArborescence->insertTopLevelItems(0, elements);
+    BDDTreeItem* bddItem = static_cast<BDDTreeItem*>(ui->vueArborescence->topLevelItem(0));
+    setDatabase(bddItem);
 }
 
 

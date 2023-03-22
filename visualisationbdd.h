@@ -9,6 +9,7 @@
 
 #include "QtWidgets/qtreewidget.h"
 #include "profil.h"
+#include "bddtreeitem.h"
 
 namespace Ui {
 class VisualisationBDD;
@@ -46,6 +47,7 @@ private:
     int checkRightToExecute(QString requete);
     void CreateTree(Profil* profil);
     void UpdateTree(QSqlDatabase* db);
+    void setDatabase(BDDTreeItem* dbItem);
 };
 
 #endif // VISUALISATIONBDD_H
