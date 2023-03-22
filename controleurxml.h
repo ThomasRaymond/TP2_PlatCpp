@@ -7,7 +7,6 @@
 #include <iostream>
 
 #define FILENAME "users.xml"
-//#define FILENAME "test.xml"
 
 class ControleurXML
 {

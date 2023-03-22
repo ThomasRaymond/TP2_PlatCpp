@@ -85,22 +85,40 @@ void VisualisationBDD::clickSelectionFichier()
     // Generate a useless "+[CATransaction synchronize] called within transaction" warning on MacOS
     QString chemin = QFileDialog::getOpenFileName(this, tr("Sélection d'une base de données"), cwd, tr("Fichiers de bases de données (*.sqlite)"));
     ui->inputPath->setText(chemin);
-    if (chemin != "")
+
+    // Check if path is valid
+    if (!QFile::exists(chemin))
     {
-        QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate")); // where delete ?
-
-        db->setDatabaseName(chemin);
-        UpdateTree(db);
-
-
-        QSqlDatabase::removeDatabase("connec");
-        // TODO handle errors
-        Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
-
-        profil->getDatabases().push_back(*db);
-
-        ControleurXML::updateUser(current_user,current_user);
+        return;
     }
+
+    // Check if DB is already in TreeWidget
+    const std::vector<QSqlDatabase> & databases = profil->getDatabases();
+    for (auto it = databases.begin() ; it < databases.end() ; it++)
+    {
+        if (it->databaseName() == chemin)
+        {
+            QMessageBox::critical(0, "Erreur", "Cette base de données est déjà ouverte !");
+            return;
+        }
+    }
+
+
+    QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate")); // where delete ?
+
+    db->setDatabaseName(chemin);
+
+    this->currentDatabase = db;
+    UpdateTree(db);
+
+
+    QSqlDatabase::removeDatabase("connecUpdate");
+    // TODO handle errors
+    Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
+
+    profil->getDatabases().push_back(*db);
+
+    ControleurXML::updateUser(current_user,current_user);
 }
 
 void VisualisationBDD::clickEffacer()
@@ -121,56 +139,60 @@ void VisualisationBDD::clickExecuter()
         return;
     }
 
-    bool ok = currentDatabase->open();
-
-    if (!ok){
+    if (!currentDatabase->open()){
         std::cout << "Erreur ouverture bdd" << std::endl;
         return;
     }
 
+    // permission = READ, WRITE, DELETE depending on the query, -1 if user has no right to execute the query
     int permission = checkRightToExecute(commande);
-    if (permission < 3)
-    {
-        QSqlQuery* retourRequete = new QSqlQuery(*currentDatabase);
-        retourRequete->exec(commande);
-
-        if (retourRequete->size() == 0)
-        {
-            ui->vueTable->clearSpans();
-
-            QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete->lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
-
-        }
-
-        else
-        {
-            if (permission == READ){
-                QSqlQueryModel* modele = new QSqlQueryModel();
-                modele->setQuery(std::move(*retourRequete));
-                if(ui->vueTable->model() != nullptr) static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
-                ui->vueTable->setModel(modele);
-            }
-            else if (permission == DELETE) {
-                ui->vueTable->clearSpans();
-            }
-            else if (permission == WRITE) {
-                if (ui->vueArborescence->currentItem()->parent() != nullptr) {
-                    retourRequete->exec("SELECT * FROM " + ui->vueArborescence->currentItem()->text(0));
-                    QSqlQueryModel* modele = new QSqlQueryModel();
-                    modele->setQuery(std::move(*retourRequete));
-                    if(ui->vueTable->model() != nullptr) static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
-                    ui->vueTable->setModel(modele);
-                }
-                ui->vueTable->clearSpans();
-            }
-        }
-
-    }
-    else
+    if (permission == -1)
     {
         QMessageBox::critical(0, "Erreur d'exécution", "Vous n'avez pas les droits nécéssaires pour exécuter cette requête");
         return;
     }
+    
+    QSqlQuery* retourRequete = new QSqlQuery(*currentDatabase);
+    retourRequete->exec(commande);
+
+    if (retourRequete->size() == 0)
+    {
+        ui->vueTable->clearSpans();
+        QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete->lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
+    }
+    else
+    {
+        if (permission == READ)
+        {
+            QSqlQueryModel* modele = new QSqlQueryModel();
+            modele->setQuery(std::move(*retourRequete));
+            if(ui->vueTable->model() != nullptr)
+            {
+                static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
+            }
+            ui->vueTable->setModel(modele);
+        }
+        else if (permission == DELETE)
+        {
+            ui->vueTable->clearSpans();
+        }
+        else if (permission == WRITE)
+        {
+            if (ui->vueArborescence->currentItem()->parent() != nullptr)
+            {
+                retourRequete->exec("SELECT * FROM " + ui->vueArborescence->currentItem()->text(0));
+                QSqlQueryModel* modele = new QSqlQueryModel();
+                modele->setQuery(std::move(*retourRequete));
+                if(ui->vueTable->model() != nullptr)
+                {
+                    static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
+                }
+                ui->vueTable->setModel(modele);
+            }
+            ui->vueTable->clearSpans();
+        }
+    }
+
     currentDatabase->close();
 }
 
@@ -240,8 +262,7 @@ int VisualisationBDD::checkRightToExecute(QString requete)
 
     }
 
-
-    return 3;
+    return -1;
 }
 
 void VisualisationBDD::CreateTree(Profil* profil)
@@ -260,9 +281,8 @@ void VisualisationBDD::CreateTree(Profil* profil)
         //afficher les noms des tables dans chaque base de données
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE","connecCreate");
         db.setDatabaseName(profil->getDatabases().at(i).databaseName());
-        bool ok = db.open();
 
-        if (ok)
+        if (db.open())
         {
             std::cout << "c'est ouvert" << std::endl;
             QSqlQuery q(db);
@@ -335,7 +355,8 @@ void VisualisationBDD::removeCurrentItemFromTree()
     // TODO
     // 1 - le supprimer de l'arbre
     QTreeWidgetItem* item = ui->vueArborescence->currentItem();
-    if (item->parent() == nullptr){
+    if (item->parent() == nullptr)
+    {
         QSqlDatabase* db = static_cast<BDDTreeItem*>(item)->getDatabase();
         QString itemName = item->text(0);
         delete item;
@@ -349,7 +370,8 @@ void VisualisationBDD::removeCurrentItemFromTree()
         }
         delete db;
     }
-    else{
+    else
+    {
         if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(DELETE)){
             QString nomTable = item->text(0);
 
