@@ -6,8 +6,8 @@
 #include <QtXml>
 #include <iostream>
 
-//#define FILENAME "users.xml"
-#define FILENAME "test.xml"
+#define FILENAME "users.xml"
+//#define FILENAME "test.xml"
 
 class ControleurXML
 {
