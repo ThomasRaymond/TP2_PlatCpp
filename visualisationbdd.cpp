@@ -73,24 +73,40 @@ void VisualisationBDD::clickSelectionFichier()
     // Generate a useless "+[CATransaction synchronize] called within transaction" warning on MacOS
     QString chemin = QFileDialog::getOpenFileName(this, tr("Sélection d'une base de données"), cwd, tr("Fichiers de bases de données (*.sqlite)"));
     ui->inputPath->setText(chemin);
-    if (chemin != "")
+
+    // Check if path is valid
+    if (!QFile::exists(chemin))
     {
-        QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate")); // where delete ?
-
-        db->setDatabaseName(chemin);
-
-        this->currentDatabase = db;
-        UpdateTree(db);
-
-
-        QSqlDatabase::removeDatabase("connec");
-        // TODO handle errors
-        Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
-
-        profil->getDatabases().push_back(*db);
-
-        ControleurXML::updateUser(current_user,current_user);
+        return;
     }
+
+    // Check if DB is already in TreeWidget
+    const std::vector<QSqlDatabase> & databases = profil->getDatabases();
+    for (auto it = databases.begin() ; it < databases.end() ; it++)
+    {
+        if (it->databaseName() == chemin)
+        {
+            QMessageBox::critical(0, "Erreur", "Cette base de données est déjà ouverte !");
+            return;
+        }
+    }
+
+
+    QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate")); // where delete ?
+
+    db->setDatabaseName(chemin);
+
+    this->currentDatabase = db;
+    UpdateTree(db);
+
+
+    QSqlDatabase::removeDatabase("connecUpdate");
+    // TODO handle errors
+    Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
+
+    profil->getDatabases().push_back(*db);
+
+    ControleurXML::updateUser(current_user,current_user);
 }
 
 void VisualisationBDD::clickEffacer()
@@ -300,7 +316,8 @@ void VisualisationBDD::removeCurrentItemFromTree()
     // TODO
     // 1 - le supprimer de l'arbre
     QTreeWidgetItem* item = ui->vueArborescence->currentItem();
-    if (item->parent() == nullptr){
+    if (item->parent() == nullptr)
+    {
         QSqlDatabase* db = static_cast<BDDTreeItem*>(item)->getDatabase();
         QString itemName = item->text(0);
         delete item;
@@ -314,7 +331,8 @@ void VisualisationBDD::removeCurrentItemFromTree()
         }
         delete db;
     }
-    else{
+    else
+    {
         if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(DELETE)){
             QString nomTable = item->text(0);
 
