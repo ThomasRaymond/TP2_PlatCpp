@@ -127,56 +127,60 @@ void VisualisationBDD::clickExecuter()
         return;
     }
 
-    bool ok = currentDatabase->open();
-
-    if (!ok){
+    if (!currentDatabase->open()){
         std::cout << "Erreur ouverture bdd" << std::endl;
         return;
     }
 
+    // permission = READ, WRITE, DELETE depending on the query, -1 if user has no right to execute the query
     int permission = checkRightToExecute(commande);
-    if (permission < 3)
-    {
-        QSqlQuery* retourRequete = new QSqlQuery(*currentDatabase);
-        retourRequete->exec(commande);
-
-        if (retourRequete->size() == 0)
-        {
-            ui->vueTable->clearSpans();
-
-            QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete->lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
-
-        }
-
-        else
-        {
-            if (permission == READ){
-                QSqlQueryModel* modele = new QSqlQueryModel();
-                modele->setQuery(std::move(*retourRequete));
-                if(ui->vueTable->model() != nullptr) static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
-                ui->vueTable->setModel(modele);
-            }
-            else if (permission == DELETE) {
-                ui->vueTable->clearSpans();
-            }
-            else if (permission == WRITE) {
-                if (ui->vueArborescence->currentItem()->parent() != nullptr) {
-                    retourRequete->exec("SELECT * FROM " + ui->vueArborescence->currentItem()->text(0));
-                    QSqlQueryModel* modele = new QSqlQueryModel();
-                    modele->setQuery(std::move(*retourRequete));
-                    if(ui->vueTable->model() != nullptr) static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
-                    ui->vueTable->setModel(modele);
-                }
-                ui->vueTable->clearSpans();
-            }
-        }
-
-    }
-    else
+    if (permission == -1)
     {
         QMessageBox::critical(0, "Erreur d'exécution", "Vous n'avez pas les droits nécéssaires pour exécuter cette requête");
         return;
     }
+    
+    QSqlQuery* retourRequete = new QSqlQuery(*currentDatabase);
+    retourRequete->exec(commande);
+
+    if (retourRequete->size() == 0)
+    {
+        ui->vueTable->clearSpans();
+        QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete->lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
+    }
+    else
+    {
+        if (permission == READ)
+        {
+            QSqlQueryModel* modele = new QSqlQueryModel();
+            modele->setQuery(std::move(*retourRequete));
+            if(ui->vueTable->model() != nullptr)
+            {
+                static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
+            }
+            ui->vueTable->setModel(modele);
+        }
+        else if (permission == DELETE)
+        {
+            ui->vueTable->clearSpans();
+        }
+        else if (permission == WRITE)
+        {
+            if (ui->vueArborescence->currentItem()->parent() != nullptr)
+            {
+                retourRequete->exec("SELECT * FROM " + ui->vueArborescence->currentItem()->text(0));
+                QSqlQueryModel* modele = new QSqlQueryModel();
+                modele->setQuery(std::move(*retourRequete));
+                if(ui->vueTable->model() != nullptr)
+                {
+                    static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
+                }
+                ui->vueTable->setModel(modele);
+            }
+            ui->vueTable->clearSpans();
+        }
+    }
+
     currentDatabase->close();
 }
 
@@ -242,8 +246,7 @@ int VisualisationBDD::checkRightToExecute(QString requete)
 
     }
 
-
-    return 3;
+    return -1;
 }
 
 void VisualisationBDD::CreateTree(Profil* profil)
@@ -262,9 +265,8 @@ void VisualisationBDD::CreateTree(Profil* profil)
         //afficher les noms des tables dans chaque base de données
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE","connecCreate");
         db.setDatabaseName(profil->getDatabases().at(i).databaseName());
-        bool ok = db.open();
 
-        if (ok)
+        if (db.open())
         {
             std::cout << "c'est ouvert" << std::endl;
             QSqlQuery q(db);
