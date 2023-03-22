@@ -134,7 +134,8 @@ void VisualisationBDD::clickExecuter()
         return;
     }
 
-    if (checkRightToExecute(commande))
+    int permission = checkRightToExecute(commande);
+    if (permission < 3)
     {
         QSqlQuery* retourRequete = new QSqlQuery(*currentDatabase);
         retourRequete->exec(commande);
@@ -142,16 +143,32 @@ void VisualisationBDD::clickExecuter()
         if (retourRequete->size() == 0)
         {
             ui->vueTable->clearSpans();
+
             QMessageBox::information(0, "Information", "Le jeu de données retourné est vide :\n" + retourRequete->lastError().text(), QMessageBox::Ok, QMessageBox::Ok);
 
         }
 
         else
         {
-            QSqlQueryModel* modele = new QSqlQueryModel();
-            modele->setQuery(std::move(*retourRequete));
-            if(ui->vueTable->model() != nullptr) static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
-            ui->vueTable->setModel(modele);
+            if (permission == READ){
+                QSqlQueryModel* modele = new QSqlQueryModel();
+                modele->setQuery(std::move(*retourRequete));
+                if(ui->vueTable->model() != nullptr) static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
+                ui->vueTable->setModel(modele);
+            }
+            else if (permission == DELETE) {
+                ui->vueTable->clearSpans();
+            }
+            else if (permission == WRITE) {
+                if (ui->vueArborescence->currentItem()->parent() != nullptr) {
+                    retourRequete->exec("SELECT * FROM " + ui->vueArborescence->currentItem()->text(0));
+                    QSqlQueryModel* modele = new QSqlQueryModel();
+                    modele->setQuery(std::move(*retourRequete));
+                    if(ui->vueTable->model() != nullptr) static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
+                    ui->vueTable->setModel(modele);
+                }
+                ui->vueTable->clearSpans();
+            }
         }
 
     }
@@ -190,7 +207,7 @@ void VisualisationBDD::clickChoixProfil(){
     static_cast<MainWindow*>(this->parent())->lancerChoixProfil(nullptr, CONTEXT_CHANGE_PROFILE);
 }
 
-bool VisualisationBDD::checkRightToExecute(QString requete)
+int VisualisationBDD::checkRightToExecute(QString requete)
 {
     if (requete.contains("ADD", Qt::CaseInsensitive) ||
         requete.contains("ALTER", Qt::CaseInsensitive) ||
@@ -201,7 +218,7 @@ bool VisualisationBDD::checkRightToExecute(QString requete)
 
         if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(WRITE))
         {
-            return true;
+            return WRITE;
         }
 
     }
@@ -211,7 +228,7 @@ bool VisualisationBDD::checkRightToExecute(QString requete)
     {
         if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(DELETE))
         {
-            return true;
+            return DELETE;
         }
 
     }
@@ -220,13 +237,13 @@ bool VisualisationBDD::checkRightToExecute(QString requete)
 
         if (static_cast<MainWindow*>(this->parent())->getUtilisateur()->can(READ))
         {
-            return true;
+            return READ;
         }
 
     }
 
 
-    return false;
+    return 3;
 }
 
 void VisualisationBDD::CreateTree(Profil* profil)
@@ -311,7 +328,6 @@ void VisualisationBDD::rightClickOnTreeItem(QPoint idx)
 
 void VisualisationBDD::removeCurrentItemFromTree()
 {
-    qDebug() << "TODO : del item";
 
     // TODO
     // 1 - le supprimer de l'arbre

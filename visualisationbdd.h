@@ -43,7 +43,7 @@ private:
     QMenu* contextMenu;
     QAction* delAction;
 
-    bool checkRightToExecute(QString requete);
+    int checkRightToExecute(QString requete);
     void CreateTree(Profil* profil);
     void UpdateTree(QSqlDatabase* db);
 };
