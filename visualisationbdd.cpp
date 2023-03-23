@@ -74,7 +74,6 @@ void VisualisationBDD::setDatabase(BDDTreeItem* dbItem){
     }
     dbItem->setBackground(0, QColor(255, 102, 0));
     dbItem->setForeground(0, QColor(255, 255, 255));
-
     this->currentDatabase = dbItem->getDatabase();
 }
 
@@ -104,15 +103,12 @@ void VisualisationBDD::clickSelectionFichier()
     }
 
 
-    QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE","connecUpdate")); // where delete ?
+    QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE",chemin)); // where delete ?
 
     db->setDatabaseName(chemin);
-
-    this->currentDatabase = db;
     UpdateTree(db);
 
 
-    QSqlDatabase::removeDatabase("connecUpdate");
     // TODO handle errors
     Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
 
@@ -138,9 +134,10 @@ void VisualisationBDD::clickExecuter()
         QMessageBox::warning(0, "Erreur d'exécution", "Le champ est vide !");
         return;
     }
-
-    if (!currentDatabase->open()){
-        std::cout << "Erreur ouverture bdd" << std::endl;
+    std::cout<<currentDatabase->databaseName().toStdString() << std::endl;
+    bool isOpen = currentDatabase->open();
+    if (! isOpen){
+        std::cout << currentDatabase->lastError().text().toStdString() << std::endl;
         return;
     }
 
@@ -168,7 +165,8 @@ void VisualisationBDD::clickExecuter()
             modele->setQuery(std::move(*retourRequete));
             if(ui->vueTable->model() != nullptr)
             {
-                static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
+                //static_cast<QSqlQueryModel*>(ui->vueTable->model())->clear();
+                ui->vueTable->clearSpans();
             }
             ui->vueTable->setModel(modele);
         }
@@ -212,9 +210,10 @@ void VisualisationBDD::clickTableArborescence(QTreeWidgetItem* item,int column){
 
     if (item->parent() != nullptr)
     {
+        std::cout<<static_cast<BDDTreeItem*>(item->parent())->text(0).toStdString() << std::endl;
         setDatabase(static_cast<BDDTreeItem*>(item->parent()));
-        //ui->inputSQL->setText("SELECT * FROM " + nom);
-        //clickExecuter();
+        ui->inputSQL->setText("SELECT * FROM " + nom);
+        clickExecuter();
     }
     else if (item->parent() == nullptr)
     {

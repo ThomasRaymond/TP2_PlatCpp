@@ -19,6 +19,10 @@ public:
         setDatabase(database);
     }
 
+    ~BDDTreeItem(){
+        delete database;
+    }
+
     QSqlDatabase* getDatabase() {return database;}
     void setDatabase(QSqlDatabase* database) {this->database = database;}
 };
