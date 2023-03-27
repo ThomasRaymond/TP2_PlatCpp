@@ -64,17 +64,21 @@ void VisualisationBDD::init(){
     ui->vueArborescence->clear();
 
     CreateTree(this->profil);
+
 }
 
 void VisualisationBDD::setDatabase(BDDTreeItem* dbItem){
-    for (int i = 0; i < ui->vueArborescence->topLevelItemCount(); i++){
-        QTreeWidgetItem* it_item = ui->vueArborescence->topLevelItem(i);
-        it_item->setBackground(0, QColor(255, 255, 255));
-        it_item->setForeground(0, QColor(0, 0, 0));
+    if(dbItem != nullptr){
+        for (int i = 0; i < ui->vueArborescence->topLevelItemCount(); i++){
+            QTreeWidgetItem* it_item = ui->vueArborescence->topLevelItem(i);
+            it_item->setBackground(0, QColor(255, 255, 255));
+            it_item->setForeground(0, QColor(0, 0, 0));
+        }
+        dbItem->setBackground(0, QColor(255, 102, 0));
+        dbItem->setForeground(0, QColor(255, 255, 255));
+        this->currentDatabase = dbItem->getDatabase();
     }
-    dbItem->setBackground(0, QColor(255, 102, 0));
-    dbItem->setForeground(0, QColor(255, 255, 255));
-    this->currentDatabase = dbItem->getDatabase();
+
 }
 
 void VisualisationBDD::clickSelectionFichier()
@@ -151,6 +155,8 @@ void VisualisationBDD::clickExecuter()
     
     QSqlQuery* retourRequete = new QSqlQuery(*currentDatabase);
     retourRequete->exec(commande);
+
+
 
     if (retourRequete->size() == 0)
     {
