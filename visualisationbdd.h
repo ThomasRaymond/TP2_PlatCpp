@@ -15,6 +15,7 @@ namespace Ui {
 class VisualisationBDD;
 }
 
+// Classe permettant de gérer la fenêtre de visualisation de la base de données, de l'arborescence et de l'execution de requêtes
 class VisualisationBDD : public QDialog
 {
     Q_OBJECT

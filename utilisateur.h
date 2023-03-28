@@ -10,6 +10,7 @@
 #define WRITE 1
 #define DELETE 2
 
+// Classe permettant de définir un utilisateur
 class Utilisateur
 {
 private:

@@ -9,6 +9,8 @@ namespace Ui {
 class CreationProfil;
 }
 
+// Classe permettant de gérer la fenêtre de création de profil
+
 class CreationProfil : public QDialog
 {
     Q_OBJECT

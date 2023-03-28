@@ -8,6 +8,7 @@
 
 #define FILENAME "users.xml"
 
+// Classe permettant de gérer les utilisateurs et les génération de fichiers XML
 class ControleurXML
 {
 public:

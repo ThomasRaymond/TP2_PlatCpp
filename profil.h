@@ -4,6 +4,7 @@
 #include <string>
 #include <QtSql>
 
+// Classe permettant de définir un profil
 class Profil
 {
 private:

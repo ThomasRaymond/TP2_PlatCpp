@@ -14,6 +14,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class Inscription; }
 QT_END_NAMESPACE
 
+// Classe permettant de gérer la fenêtre d'inscription
 class Inscription : public QDialog
 {
     Q_OBJECT

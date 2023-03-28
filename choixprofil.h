@@ -14,6 +14,7 @@ namespace Ui {
 class ChoixProfil;
 }
 
+// Classe permettant de gérer la fenêtre de choix de profil
 class ChoixProfil : public QDialog
 {
     Q_OBJECT

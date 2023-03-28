@@ -7,6 +7,7 @@
 #include "QtWidgets/qtreewidget.h"
 
 
+// Classe permettant de stocker les informations d'une base de données dans un QTreeWidgetItem
 class BDDTreeItem : public QTreeWidgetItem
 {
 private:

@@ -9,6 +9,8 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class Connexion; }
 QT_END_NAMESPACE
 
+
+// Classe permettant de gérer la fenêtre de connexion
 class Connexion : public QDialog
 {
     Q_OBJECT
