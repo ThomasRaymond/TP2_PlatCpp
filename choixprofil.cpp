@@ -71,5 +71,6 @@ void ChoixProfil::creerProfil()
 void ChoixProfil::enregistrerProfil(QString nomProfil)
 {
     static_cast<MainWindow*>(this->parent())->getUtilisateur()->addProfil(Profil(nomProfil.toStdString()));
+    ControleurXML::updateUser(*static_cast<MainWindow*>(this->parent())->getUtilisateur());
     ui->inputProfil->addItem(nomProfil);
 }

@@ -11,12 +11,13 @@
 class ControleurXML
 {
 public:
-    static std::vector<Utilisateur> parseFile();
-    static bool writeFile(std::vector<Utilisateur>);
+    static std::vector<Utilisateur>& parseFile();
+    static bool writeFile();
     static bool addUser(Utilisateur user);
     static Utilisateur* verifyUser(std::string login, std::string password);
     static int nombreUtilisateurs();
-    static bool updateUser(const Utilisateur & oldUser, const Utilisateur & newUser);
+    static bool updateUser(const Utilisateur & oldUser);
+    static std::vector<Utilisateur> listeUtilisateurs;
 private:
     static QDomDocument openDocument(std::string path);
 

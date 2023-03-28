@@ -114,11 +114,11 @@ void VisualisationBDD::clickSelectionFichier()
 
 
     // TODO handle errors
-    Utilisateur current_user = *((MainWindow*)this->parent())->getUtilisateur();
+    Utilisateur& current_user = *((MainWindow*)this->parent())->getUtilisateur();
 
     profil->getDatabases().push_back(*db);
 
-    ControleurXML::updateUser(current_user,current_user);
+    ControleurXML::updateUser(current_user);
 }
 
 void VisualisationBDD::clickEffacer()
@@ -371,6 +371,7 @@ void VisualisationBDD::removeCurrentItemFromTree()
             if (db->databaseName().compare(db_iterator->databaseName()) == 0){
                 profil->getDatabases().erase(db_iterator);
                 QMessageBox::information(0, "", "La base de données '" + itemName + "' a été supprimée de la liste attachée à votre profil.");
+                ControleurXML::updateUser(*static_cast<MainWindow*>(this->parent())->getUtilisateur());
                 break;
             }
         }

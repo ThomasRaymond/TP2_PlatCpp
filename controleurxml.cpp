@@ -1,8 +1,10 @@
 #include "controleurxml.h"
 
-std::vector<Utilisateur> ControleurXML::parseFile()
+std::vector<Utilisateur> ControleurXML::listeUtilisateurs;
+
+std::vector<Utilisateur>& ControleurXML::parseFile()
 {
-    std::vector<Utilisateur> users;
+
 
     QFile file(FILENAME);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -29,17 +31,17 @@ std::vector<Utilisateur> ControleurXML::parseFile()
     {
         // Check if the child tag name is USER
         if (userComponent.tagName() == "USER")
-            users.push_back(UtilisateurFromQDom(userComponent));
+            listeUtilisateurs.push_back(UtilisateurFromQDom(userComponent));
 
         // Next component
         userComponent = userComponent.nextSibling().toElement();
     }
 
-    return users;
+    return listeUtilisateurs;
 }
 
 
-bool ControleurXML::writeFile(std::vector<Utilisateur> users)
+bool ControleurXML::writeFile()
 {
     // Create a document to write XML
     QDomDocument document;
@@ -47,7 +49,7 @@ bool ControleurXML::writeFile(std::vector<Utilisateur> users)
     // Making the root element
     QDomElement root = document.createElement("USERDATABASE");
 
-    for (auto it = users.begin() ; it < users.end() ; it++)
+    for (auto it = listeUtilisateurs.begin() ; it < listeUtilisateurs.end() ; it++)
     {
         root.appendChild(QDomElemFromUtilisateur(*it,document));
     }
@@ -94,11 +96,8 @@ QDomDocument ControleurXML::openDocument(std::string path)
 
 bool ControleurXML::addUser(Utilisateur user)
 {
-    // Récupèration des utilisateurs existants
-    std::vector<Utilisateur> users = ControleurXML::parseFile();
-
     // Vérification
-    for (auto it = users.begin() ; it < users.end() ; it++)
+    for (auto it = listeUtilisateurs.begin() ; it < listeUtilisateurs.end() ; it++)
     {
         if (*it == user) // Si il existe déjà
         {
@@ -108,10 +107,10 @@ bool ControleurXML::addUser(Utilisateur user)
 
     // Il n'existe pas déjà
     // Ajout du nouvel utilisateur aux utilisateurs existants
-    users.push_back(user);
+    listeUtilisateurs.push_back(user);
 
     // Ecriture du fichier
-    if (!ControleurXML::writeFile(users))
+    if (!ControleurXML::writeFile())
     {
         return false;
     }
@@ -122,15 +121,13 @@ bool ControleurXML::addUser(Utilisateur user)
 
 Utilisateur* ControleurXML::verifyUser(std::string login, std::string password)
 {
-    // Récupèration des utilisateurs existants
-    std::vector<Utilisateur> users = ControleurXML::parseFile();
 
     // Vérification
-    for (auto it = users.begin() ; it < users.end() ; it++)
+    for (auto it = listeUtilisateurs.begin() ; it < listeUtilisateurs.end() ; it++)
     {
         if (it->getMail() == login && it->getPassword() == password) // Si il y a une correspondance
         {
-            return new Utilisateur(*it);
+            return &(*it);
         }
     }
 
@@ -141,24 +138,21 @@ Utilisateur* ControleurXML::verifyUser(std::string login, std::string password)
 int ControleurXML::nombreUtilisateurs()
 {
     // Récupération des utilisateurs existants
-    std::vector<Utilisateur> users = ControleurXML::parseFile();
+    ControleurXML::parseFile();
 
-    return users.size();
+    return listeUtilisateurs.size();
 }
 
 
 // Can use newUser for both if user.mail has not changed
-bool ControleurXML::updateUser(const Utilisateur & oldUser, const Utilisateur & newUser)
+bool ControleurXML::updateUser(const Utilisateur & oldUser)
 {
-    std::vector<Utilisateur> users = ControleurXML::parseFile();
 
-    for (std::vector<Utilisateur>::size_type i = 0 ; i < users.size() ; i++)
+    for (std::vector<Utilisateur>::size_type i = 0 ; i < listeUtilisateurs.size() ; i++)
     {
-        if (users.at(i) == oldUser)
+        if (listeUtilisateurs.at(i) == oldUser)
         {
-            users.erase(users.begin()+i);
-            users.push_back(newUser);
-            ControleurXML::writeFile(users);
+            ControleurXML::writeFile();
             return true;
         }
     }
