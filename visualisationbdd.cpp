@@ -364,7 +364,8 @@ void VisualisationBDD::removeCurrentItemFromTree()
     {
         QSqlDatabase* db = static_cast<BDDTreeItem*>(item)->getDatabase();
         QString itemName = item->text(0);
-        delete item;
+
+        qDebug() << db->databaseName();
 
         for (auto db_iterator = profil->getDatabases().begin(); db_iterator != profil->getDatabases().end(); db_iterator++){
             if (db->databaseName().compare(db_iterator->databaseName()) == 0){
@@ -373,7 +374,8 @@ void VisualisationBDD::removeCurrentItemFromTree()
                 break;
             }
         }
-        delete db;
+        delete item;
+
     }
     else
     {
