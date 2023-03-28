@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    // Initialisation de la fenêtre principale
     MainWindow* main = new MainWindow();
     main->show();
     main->init();

@@ -4,6 +4,11 @@
 #include "ui_visualisationbdd.h"
 #include "visualisationbdd.h"
 
+// Constructeur
+/*
+    * @brief Constructeur de la classe VisualisationBDD
+    * @param parent : QWidget parent
+*/
 VisualisationBDD::VisualisationBDD(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::VisualisationBDD)
@@ -29,6 +34,10 @@ VisualisationBDD::VisualisationBDD(QWidget *parent) :
     connect(delAction, SIGNAL(triggered(bool)), SLOT(removeCurrentItemFromTree()));
 }
 
+// Destructeur
+/*
+    * @brief Destructeur de la classe VisualisationBDD
+*/
 VisualisationBDD::~VisualisationBDD()
 {
     delete ui;
@@ -37,11 +46,21 @@ VisualisationBDD::~VisualisationBDD()
     delete contextMenu;
 }
 
+/*
+    * @brief Fonction permettant de lier la fenêtre de visualisation à un profil courant
+    * @param profil : Profil à lier
+*/
 void VisualisationBDD::attachProfile(Profil* profil)
 {
     this->profil = profil;
 }
 
+/*
+    * @ brief Méthode d'affichage d'une fenêtre de confirmation
+    * @param titre : Titre de la fenêtre
+    * @param description : Description de la fenêtre
+    * @return int : Code de retour de la fenêtre
+*/
 int VisualisationBDD::fenetreConfirmation(QString titre, QString description){
     QMessageBox confirmation;
     confirmation.setText(titre);
@@ -57,6 +76,9 @@ int VisualisationBDD::fenetreConfirmation(QString titre, QString description){
     return confirmation.exec();
 }
 
+/*
+    * @brief Méthode d'initialisation de la fenêtre de visualisation
+*/
 void VisualisationBDD::init(){
     ui->inputPath->clear();
     ui->inputSQL->clear();
@@ -67,6 +89,10 @@ void VisualisationBDD::init(){
 
 }
 
+/*
+    * @brief Méthode de mise à jour de la base de données courante
+    * @param db : Item de l'arborescence représentant la base de données
+*/
 void VisualisationBDD::setDatabase(BDDTreeItem* dbItem){
     if(dbItem != nullptr){
         for (int i = 0; i < ui->vueArborescence->topLevelItemCount(); i++){
@@ -81,6 +107,9 @@ void VisualisationBDD::setDatabase(BDDTreeItem* dbItem){
 
 }
 
+/*
+    * @brief Méthode permettant de chose un nouveau fichier de base de données à ajouté à l'arborescence
+*/
 void VisualisationBDD::clickSelectionFichier()
 {
     QString cwd = QString::fromStdString(std::filesystem::current_path().string());
@@ -121,11 +150,17 @@ void VisualisationBDD::clickSelectionFichier()
     ControleurXML::updateUser(current_user);
 }
 
+/*
+    * @brief Slot permettant de vider le champ de saisie de la requête SQL lors de l'appui sur le bouton "Effacer"
+*/
 void VisualisationBDD::clickEffacer()
 {
     ui->inputSQL->clear();
 }
 
+/*
+    * @brief Slot permettant d'exécuter la requête SQL lors de l'appui sur le bouton "Exécuter"
+*/
 void VisualisationBDD::clickExecuter()
 {
     const QString& commande = ui->inputSQL->text();
@@ -200,6 +235,9 @@ void VisualisationBDD::clickExecuter()
     currentDatabase->close();
 }
 
+/*
+    * @brief Slot permettant de déconnecter l'utilisateur lors de l'appui sur le bouton "Déconnexion"
+*/
 void VisualisationBDD::clickDeconnexion()
 {
     int reponse = fenetreConfirmation("Vous allez être déconnecté.", "Êtes-vous sûr de vouloir procéder à la déconnexion ?");
@@ -211,6 +249,9 @@ void VisualisationBDD::clickDeconnexion()
     }
 }
 
+/*
+    * @brief Slot permettant de selectionner une base de données dans l'arborescence lors d'un clic sur un élément ou d'afficher la table sélectionnée
+*/
 void VisualisationBDD::clickTableArborescence(QTreeWidgetItem* item,int column){
     QString nom = item->text(column);
 
@@ -228,10 +269,18 @@ void VisualisationBDD::clickTableArborescence(QTreeWidgetItem* item,int column){
 
 }
 
+/*
+    * @brief Slot permettant de lancer la fenêtre de choix de profil lors de l'appui sur le bouton "Changer de profil"
+*/
 void VisualisationBDD::clickChoixProfil(){
     static_cast<MainWindow*>(this->parent())->lancerChoixProfil(nullptr, CONTEXT_CHANGE_PROFILE);
 }
 
+/*
+    * @brief Méthode permettant de vérifier si l'utilisateur a les droits d'exécution de la requête SQL
+    * @param requete Requête SQL à vérifier
+    * @return READ si l'utilisateur a les droits de lecture, WRITE si l'utilisateur a les droits d'écriture, DELETE si l'utilisateur a les droits de suppression, -1 si l'utilisateur n'a pas les droits d'exécution
+*/
 int VisualisationBDD::checkRightToExecute(QString requete)
 {
     if (requete.contains("ADD", Qt::CaseInsensitive) ||
@@ -270,6 +319,10 @@ int VisualisationBDD::checkRightToExecute(QString requete)
     return -1;
 }
 
+/*
+    * @brief Méthode permettant de créer l'arborescence des bases de données
+    * @param profil Profil à traiter
+*/
 void VisualisationBDD::CreateTree(Profil* profil)
 {
     ui->vueArborescence->clear();
@@ -313,6 +366,10 @@ void VisualisationBDD::CreateTree(Profil* profil)
     setDatabase(bddItem);
 }
 
+/*
+    * @brief Méthode permettant d'ajouter un item dans l'arborescence des bases de données
+    * @param db : QSqlDatabase
+*/
 void VisualisationBDD::UpdateTree(QSqlDatabase* db)
 {
     QList<QTreeWidgetItem*> elements;
@@ -341,7 +398,10 @@ void VisualisationBDD::UpdateTree(QSqlDatabase* db)
     setDatabase(bddItem);
 }
 
-
+/*
+    * @brief Méthode permettant de supprimer un item de l'arborescence des bases de données lors d'un clic droit
+    * @param idx : QPoint
+*/
 void VisualisationBDD::rightClickOnTreeItem(QPoint idx)
 {
     QModelIndex index = ui->vueArborescence->indexAt(idx);
@@ -354,6 +414,9 @@ void VisualisationBDD::rightClickOnTreeItem(QPoint idx)
     }
 }
 
+/*
+    * @brief Méthode permettant de supprimer un item de l'arborescence des bases de données
+*/
 void VisualisationBDD::removeCurrentItemFromTree()
 {
 

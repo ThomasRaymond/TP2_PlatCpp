@@ -2,6 +2,11 @@
 #include "choixprofil.h"
 #include "ui_creationprofil.h"
 
+// Constructeur
+/*
+    * @brief Constructeur de la classe CreationProfil
+    * @param parent : QWidget parent
+*/
 CreationProfil::CreationProfil(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CreationProfil)
@@ -11,15 +16,25 @@ CreationProfil::CreationProfil(QWidget *parent) :
     connect(ui->boutonEnregistrer, SIGNAL(clicked()), SLOT(clickValider()));
 }
 
+// Destructeur
+/*
+    * @brief Destructeur de la classe CreationProfil
+*/
 CreationProfil::~CreationProfil()
 {
     delete ui;
 }
 
+/*
+    * @brief Slot appelé lors du clic sur le bouton Annuler
+*/
 void CreationProfil::clickAnnuler(){
     this->close();
 }
 
+/*
+    * @brief Slot appelé lors du clic sur le bouton Valider
+*/
 void CreationProfil::clickValider(){
     this->hide();
     QString nom = ui->inputNomProfil->text();

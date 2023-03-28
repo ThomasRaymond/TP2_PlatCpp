@@ -5,6 +5,11 @@
 #include "utilisateur.h"
 #include "controleurxml.h"
 
+// Constructeur
+/*
+    * @brief Constructeur de la classe Inscription
+    * @param parent : QWidget parent
+*/
 Inscription::Inscription(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Inscription)
@@ -14,11 +19,18 @@ Inscription::Inscription(QWidget *parent)
     connect(ui->boutonConnexion, SIGNAL(clicked()), SLOT(clickBoutonConnexion()));
 }
 
+// Destructeur
+/*
+    * @brief Destructeur de la classe Inscription
+*/
 Inscription::~Inscription()
 {
     delete ui;
 }
 
+/*
+    * @brief Vide les champs de la fenêtre
+*/
 void Inscription::clearfields(){
     ui->inputNom->clear();
     ui->inputPrenom->clear();
@@ -27,6 +39,9 @@ void Inscription::clearfields(){
     ui->inputConfirmationMDP->clear();
 }
 
+/*
+    * @brief Slot appelé lors du clic sur le bouton de connexion
+*/
 void Inscription::clickBoutonConnexion()
 {
     this->hide();
@@ -34,6 +49,9 @@ void Inscription::clickBoutonConnexion()
     return;
 }
 
+/*
+    * @brief Slot appelé lors du clic sur le bouton Valider
+*/
 void Inscription::clickBoutonValider(){
 
     QString name = ui->inputNom->text();

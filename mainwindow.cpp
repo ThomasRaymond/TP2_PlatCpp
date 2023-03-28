@@ -4,6 +4,11 @@
 
 #include "connexion.h"
 
+// Constructeur
+/*
+    * @brief Constructeur de la classe MainWindow
+    * @param parent : QWidget parent
+*/
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -18,6 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+// Destructeur
+/*
+    * @brief Destructeur de la classe MainWindow
+*/
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -28,24 +37,49 @@ MainWindow::~MainWindow()
     delete(fenetreChoixProfil);
 }
 
+/*
+    * @brief Getter de l'utilisateur
+    * @return utilisateur : Utilisateur*
+*/
 Utilisateur* MainWindow::getUtilisateur(){
     return this->utilisateur;
 }
 
+/*
+    * @brief Getter de la fenêtre de connexion
+    * @return fenetreConnexion : Connexion*
+*/
 Connexion* MainWindow::getFenetreConnexion(){
     return this->fenetreConnexion;
 }
+
+/*
+    * @brief Getter de la fenêtre d'inscription
+    * @return fenetreInscription : Inscription*
+*/
 Inscription* MainWindow::getFenetreInscription(){
     return this->fenetreInscription;
 }
+
+/*
+    * @brief Getter de la fenêtre de visualisation de la BDD
+    * @return fenetreVisualisationBDD : VisualisationBDD*
+*/
 VisualisationBDD* MainWindow::getFenetreVisualisationBDD(){
     return this->fenetreVisualisationBDD;
 }
 
+/*
+    * @brief Setter de l'utilisateur connecté
+    * @param utilisateur : Utilisateur*
+*/
 void MainWindow::setUtilisateur(Utilisateur* utilisateur){
     this->utilisateur=utilisateur;
 }
 
+/*
+    * @brief Fonction d'initialisation de la fenêtre principale
+*/
 void MainWindow::init(){
     switch (ControleurXML::nombreUtilisateurs())
     {
@@ -81,18 +115,27 @@ void MainWindow::init(){
     }
 }
 
+/*
+    * @brief Méthode lancant la fenêtre de connexion
+*/
 void MainWindow::lancerConnexion()
 {
     this->fenetreConnexion->clearfields();
     this->fenetreConnexion->show();
 }
 
+/*
+    * @brief Méthode lancant la fenêtre d'inscription
+*/
 void MainWindow::lancerInscription()
 {
     this->fenetreInscription->clearfields();
     this->fenetreInscription->show();
 }
 
+/*
+    * @brief Méthode lancant la fenêtre de visualisation de la BDD
+*/
 void MainWindow::lancerApplication(int index)
 {
 
@@ -104,6 +147,9 @@ void MainWindow::lancerApplication(int index)
     this->fenetreVisualisationBDD->show();
 }
 
+/*
+    * @brief Méthode lancant la fenêtre de choix de profil
+*/
 void MainWindow::lancerChoixProfil(Utilisateur* utilisateur , int contexte){
     if (utilisateur != nullptr) setUtilisateur(utilisateur);
     this->fenetreChoixProfil->setContexte(contexte);
@@ -112,12 +158,18 @@ void MainWindow::lancerChoixProfil(Utilisateur* utilisateur , int contexte){
     this->fenetreChoixProfil->show();
 }
 
+/*
+    * @brief Méthode de déconnexion
+*/
 void MainWindow::deconnexion(){
-    delete(this->utilisateur);
     this->utilisateur = nullptr;
     lancerConnexion();
 }
 
+/*
+    * @brief Méthode de fermeture de la fenêtre
+    * @param fenetre : QDialog*
+*/
 void MainWindow::fermerFenetre(QDialog* fenetre)
 {
     fenetre->close();

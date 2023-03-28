@@ -3,6 +3,11 @@
 #include "creationprofil.h"
 #include "mainwindow.h"
 
+// Constructeur
+/*
+    * @brief Constructeur de la classe ChoixProfil
+    * @param parent : QWidget parent
+*/
 ChoixProfil::ChoixProfil(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ChoixProfil)
@@ -13,30 +18,52 @@ ChoixProfil::ChoixProfil(QWidget *parent) :
     connect(ui->boutonNvProfil, SIGNAL(clicked()), SLOT(creerProfil()));
 }
 
+// Destructeur
+/*
+    * @brief Destructeur de la classe ChoixProfil
+*/
 ChoixProfil::~ChoixProfil()
 {
     delete ui;
 }
 
+/*
+    * @brief Ajoute les profils de l'utilisateur à la liste déroulante
+    * @param list : liste des profils de l'utilisateur
+*/
 void ChoixProfil::addListProfiles(std::vector<Profil> list){
     for (auto it = list.begin(); it != list.end(); it++){
         ui->inputProfil->addItem(QString::fromStdString(it->getNomProfil()));
     }
 }
 
+/*
+    * @brief Vide les champs de la fenêtre
+*/
 void ChoixProfil::clearfields()
 {
     ui->inputProfil->clear();
 }
 
+/*
+    * @brief Retourne le contxte d'ouverture de la fenêtre
+    * @return contexte : int
+*/
 int ChoixProfil::getContexte(){
     return this->contexte;
 }
 
+/*
+    * @brief Modifie le contexte d'ouverture de la fenêtre
+    * @param contexte : int
+*/
 void ChoixProfil::setContexte(int contexte){
     this->contexte = contexte;
 }
 
+/*
+    * @brief Slot appelé lors du clic sur le bouton Valider
+*/
 void ChoixProfil::clickValider()
 {
     QString profilSelectionne = ui->inputProfil->currentText();
@@ -50,6 +77,9 @@ void ChoixProfil::clickValider()
     }
 }
 
+/*
+    * @brief Slot appelé lors du clic sur le bouton Annuler
+*/
 void ChoixProfil::clickAnnuler()
 {
     this->hide();
@@ -61,6 +91,9 @@ void ChoixProfil::clickAnnuler()
     }
 }
 
+/*
+    * @brief Slot appelé lors du clic sur le bouton Nouveau Profil
+*/
 void ChoixProfil::creerProfil()
 {
     CreationProfil fenetreCreationProfil(this);
@@ -68,6 +101,10 @@ void ChoixProfil::creerProfil()
 
 }
 
+/*
+    * @brief Ajoute le profil à la liste des profils de l'utilisateur
+    * @param nomProfil : QString
+*/
 void ChoixProfil::enregistrerProfil(QString nomProfil)
 {
     static_cast<MainWindow*>(this->parent())->getUtilisateur()->addProfil(Profil(nomProfil.toStdString()));

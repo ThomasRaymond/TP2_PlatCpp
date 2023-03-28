@@ -1,7 +1,12 @@
 #include "controleurxml.h"
 
+// Attributs statiques : Liste des utilisateurs de l'application
 std::vector<Utilisateur> ControleurXML::listeUtilisateurs;
 
+/*
+    * @brief Méthode affectant la liste des utilisateurs à partir d'un fichier XML
+    * @return listeUtilisateurs : std::vector<Utilisateur>
+*/
 std::vector<Utilisateur>& ControleurXML::parseFile()
 {
 
@@ -40,7 +45,10 @@ std::vector<Utilisateur>& ControleurXML::parseFile()
     return listeUtilisateurs;
 }
 
-
+/*
+    * @brief Méthode permettant d'écrire dans un fichier XML la liste des utilisateurs
+    * @return bool : bool
+*/
 bool ControleurXML::writeFile()
 {
     // Create a document to write XML
@@ -75,6 +83,11 @@ bool ControleurXML::writeFile()
     return true; // TODO
 }
 
+/*
+    * @brief Méthode permettant de créer un élément QDomElement à partir d'un fichier XML
+    * @param path : std::string
+    * @return xmlBOM : QDomDocument
+*/
 QDomDocument ControleurXML::openDocument(std::string path)
 {
     QDomDocument xmlBOM;
@@ -93,7 +106,11 @@ QDomDocument ControleurXML::openDocument(std::string path)
     return xmlBOM;
 }
 
-
+/*
+    * @brief Méthode permettant d'ajouter un utilisateur à la liste des utilisateurs après inscription
+    * @param user : Utilisateur
+    * @return bool : bool
+*/
 bool ControleurXML::addUser(Utilisateur user)
 {
     // Vérification
@@ -118,7 +135,12 @@ bool ControleurXML::addUser(Utilisateur user)
     return true;
 }
 
-
+/*
+    * @brief Méthode permettant d'authentifier un utilisateur
+    * @param login : std::string
+    * @param password : std::string
+    * @return user : Utilisateur*
+*/
 Utilisateur* ControleurXML::verifyUser(std::string login, std::string password)
 {
 
@@ -135,6 +157,10 @@ Utilisateur* ControleurXML::verifyUser(std::string login, std::string password)
 
 }
 
+/*
+    * @brief Méthode permettant de récupérer le nombre d'utilisateurs
+    * @return number : int
+*/
 int ControleurXML::nombreUtilisateurs()
 {
     // Récupération des utilisateurs existants
@@ -144,6 +170,11 @@ int ControleurXML::nombreUtilisateurs()
 }
 
 
+/*
+    * @brief Méthode permettant d'actualiser un utilisateur dans le fichier XML
+    * @param oldUser : Utilisateur
+    * @return  bool : bool
+*/
 // Can use newUser for both if user.mail has not changed
 bool ControleurXML::updateUser(const Utilisateur & oldUser)
 {
@@ -162,6 +193,12 @@ bool ControleurXML::updateUser(const Utilisateur & oldUser)
 
 /* ------------ */
 
+/*
+    * @brief Méthode permettant de créer un QDomElement à partir d'un utilisateur
+    * @param user : Utilisateur
+    * @param document : QDomDocument
+    * @return user_qdom : QDomElement
+*/
 QDomElement ControleurXML::QDomElemFromUtilisateur(Utilisateur & user, QDomDocument & document)
 {
     QDomElement user_qdom = document.createElement("USER");
@@ -199,6 +236,11 @@ QDomElement ControleurXML::QDomElemFromUtilisateur(Utilisateur & user, QDomDocum
     return user_qdom;
 }
 
+/*
+    * @brief Méthode permettant de créer un utilisateur à partir d'un QDomElement
+    * @param qdom : QDomElement
+    * @return user : Utilisateur
+*/
 Utilisateur ControleurXML::UtilisateurFromQDom(QDomElement & qdom)
 {
     Utilisateur user;
@@ -255,6 +297,12 @@ Utilisateur ControleurXML::UtilisateurFromQDom(QDomElement & qdom)
     return user;
 }
 
+/*
+    * @brief Méthode permettant de créer un QDomElement à partir d'un profil
+    * @param profil : Profil
+    * @param document : QDomDocument
+    * @return profil_qdom : QDomElement
+*/
 QDomElement ControleurXML::QDomElemFromProfil(Profil & profil, QDomDocument & document)
 {
     QDomElement profil_qdom = document.createElement("PROFIL");
@@ -271,6 +319,11 @@ QDomElement ControleurXML::QDomElemFromProfil(Profil & profil, QDomDocument & do
     return profil_qdom;
 }
 
+/*
+    * @brief Méthode permettant de créer un profil à partir d'un QDomElement
+    * @param qdom : QDomElement
+    * @return profil : Profil
+*/
 Profil ControleurXML::ProfilFromQDom(QDomElement & qdom)
 {
     Profil profil(qdom.attribute("name").toStdString());
@@ -289,7 +342,12 @@ Profil ControleurXML::ProfilFromQDom(QDomElement & qdom)
     return profil;
 }
 
-
+/*
+    * @brief Méthode permettant de créer un QDomElement à partir d'une base de données
+    * @param database : QSqlDatabase
+    * @param document : QDomDocument
+    * @return database_qdom : QDomElement
+*/
 QDomElement ControleurXML::QDomElemFromDatabase(QSqlDatabase & database, QDomDocument & document)
 {
     QDomElement database_qdom = document.createElement("DATABASE");
@@ -299,6 +357,11 @@ QDomElement ControleurXML::QDomElemFromDatabase(QSqlDatabase & database, QDomDoc
     return database_qdom;
 }
 
+/*
+    * @brief Méthode permettant de créer une base de données à partir d'un QDomElement
+    * @param qdom : QDomElement
+    * @return database : QSqlDatabase
+*/
 QSqlDatabase ControleurXML::DatabaseFromQDom(QDomElement & qdom)
 {
     QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE","connecXML");
