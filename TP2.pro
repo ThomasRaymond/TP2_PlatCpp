@@ -12,7 +12,6 @@ CONFIG += c++17
 SOURCES += \
     choixprofil.cpp \
     connexion.cpp \
-    controleurbdd.cpp \
     controleurxml.cpp \
     creationprofil.cpp \
     inscription.cpp \
@@ -26,7 +25,6 @@ HEADERS += \
     bddtreeitem.h \
     choixprofil.h \
     connexion.h \
-    controleurbdd.h \
     controleurxml.h \
     creationprofil.h \
     droitsutilisateurs.h \
