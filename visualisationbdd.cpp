@@ -191,7 +191,11 @@ void VisualisationBDD::clickExecuter()
     QSqlQuery* retourRequete = new QSqlQuery(*currentDatabase);
     retourRequete->exec(commande);
 
-
+    if(commande.contains("DROP",Qt::CaseInsensitive)||commande.contains("CREATE",Qt::CaseInsensitive))
+    {
+        CreateTree(this->profil);
+        return;
+    }
 
     if (retourRequete->size() == 0)
     {
@@ -327,41 +331,12 @@ void VisualisationBDD::CreateTree(Profil* profil)
 {
     ui->vueArborescence->clear();
     ui->vueArborescence->setColumnCount(1);
-    QList<QTreeWidgetItem*> elements;
-
-    for (std::vector<QSqlDatabase>::size_type i = 0 ; i < profil->getDatabases().size() ; i++)
-    {
-        //afficher le nom de chaque base de données
-        std::string nom = profil->getDatabases().at(i).databaseName().toStdString();
-        elements.append(new BDDTreeItem(&(profil->getDatabases().at(i))));
-
-
-        //afficher les noms des tables dans chaque base de données
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE","connecCreate");
-        db.setDatabaseName(profil->getDatabases().at(i).databaseName());
-
-        if (db.open())
-        {
-            std::cout << "c'est ouvert" << std::endl;
-            QSqlQuery q(db);
-            q.exec("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name");
-            //int j = 0;
-            while(q.next())
-            {
-                QString name = q.value(0).toString();
-                elements.append(new QTreeWidgetItem(elements.at(i), QStringList(QString(name))));
-            }
-        }
-        else
-        {
-            std::cout << "Erreur ouverture BDD" << std::endl;
-        }
-        db.close();
-
-
-    }
-    ui->vueArborescence->insertTopLevelItems(0, elements);
-
+    for(auto db_iterator = profil->getDatabases().begin() ; db_iterator < profil->getDatabases().end() ; db_iterator++)
+       {
+           QSqlDatabase* db = new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE",db_iterator->databaseName()));
+           db->setDatabaseName(db_iterator->databaseName());
+           UpdateTree(db);
+       }
     BDDTreeItem* bddItem = static_cast<BDDTreeItem*>(ui->vueArborescence->topLevelItem(0));
     setDatabase(bddItem);
 }
@@ -390,7 +365,7 @@ void VisualisationBDD::UpdateTree(QSqlDatabase* db)
     }
     else
     {
-        std::cout << "Erreur ouverture bdd" << std::endl;
+        std::cout << "Erreur ouverture bdd" << db->lastError().text().toStdString() << std::endl;
     }
     db->close();
     ui->vueArborescence->insertTopLevelItems(0, elements);
