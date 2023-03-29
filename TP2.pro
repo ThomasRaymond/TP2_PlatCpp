@@ -27,7 +27,6 @@ HEADERS += \
     connexion.h \
     controleurxml.h \
     creationprofil.h \
-    droitsutilisateurs.h \
     inscription.h \
     mainwindow.h \
     profil.h \
