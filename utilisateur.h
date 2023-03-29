@@ -40,6 +40,7 @@ public:
 
     bool addProfil(Profil profil);
     bool removeProfil(Profil profil);
+    bool removeProfil(QString& nomProfil);
 
     bool addPermission(int permission);
     bool removePermission(int permission);

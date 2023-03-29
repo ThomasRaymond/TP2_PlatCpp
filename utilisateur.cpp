@@ -160,6 +160,22 @@ bool Utilisateur::removeProfil(Profil profil)
 }
 
 /*
+    * @brief Supprime un profil à l'utilisateur
+    * @param nomProfil : QString&
+    * @return bool : true si la suppression a été effectué, false sinon
+*/
+bool Utilisateur::removeProfil(QString& nomProfil)
+{
+    for (auto p_iterator = profils.begin(); p_iterator != profils.end(); p_iterator++){
+        if (nomProfil.compare(QString::fromStdString(p_iterator->getNomProfil())) == 0){
+            profils.erase(p_iterator);
+            return true;
+        }
+    }
+    return false;
+}
+
+/*
     * @brief Ajoute une permission à l'utilisateur
     * @param permission : permission à ajouter
     * @return bool : true si l'ajout a été effectué, false sinon

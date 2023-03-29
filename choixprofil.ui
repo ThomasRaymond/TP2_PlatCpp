@@ -70,6 +70,13 @@
      </property>
     </widget>
    </item>
+   <item row="6" column="0">
+    <widget class="QPushButton" name="boutonSupprimer">
+     <property name="text">
+      <string>Supprimer</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

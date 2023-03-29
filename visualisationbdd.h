@@ -25,7 +25,7 @@ public:
     ~VisualisationBDD();
 
     void attachProfile(Profil* profil);
-    int fenetreConfirmation(QString titre, QString description);
+    static int fenetreConfirmation(QString titre, QString description);
     void init();
 
 private slots:

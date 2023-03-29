@@ -16,6 +16,7 @@ ChoixProfil::ChoixProfil(QWidget *parent) :
     connect(ui->boutonValider, SIGNAL(clicked()), SLOT(clickValider()));
     connect(ui->boutonAnnuler, SIGNAL(clicked()), SLOT(clickAnnuler()));
     connect(ui->boutonNvProfil, SIGNAL(clicked()), SLOT(creerProfil()));
+    connect(ui->boutonSupprimer, SIGNAL(clicked()), SLOT(supprimerProfil()));
 }
 
 // Destructeur
@@ -98,9 +99,28 @@ void ChoixProfil::creerProfil()
 {
     CreationProfil fenetreCreationProfil(this);
     fenetreCreationProfil.exec();
-
 }
 
+/*
+    * @brief Slot appelé lors du clic sur le bouton de suppression de profil sélectionné
+*/
+void ChoixProfil::supprimerProfil(){
+
+    if (contexte == CONTEXT_CHANGE_PROFILE) {
+        QMessageBox::information(0, "", "Veuillez réaliser cette opération lors de la connexion seulement.");
+        return;
+    }
+
+    QString nomProfil = ui->inputProfil->currentText();
+    int indexProfil = ui->inputProfil->currentIndex();
+    int confirmation = VisualisationBDD::fenetreConfirmation("Confirmez votre action.", "Êtes vous sûr de vouloir supprimer le profil '" + nomProfil + "' de votre compte ?");
+
+    if (confirmation == QMessageBox::No) return;
+
+    ui->inputProfil->removeItem(indexProfil);
+    static_cast<MainWindow*>(this->parent())->getUtilisateur()->removeProfil(nomProfil);
+    ControleurXML::updateUser(*static_cast<MainWindow*>(this->parent())->getUtilisateur());
+}
 /*
     * @brief Ajoute le profil à la liste des profils de l'utilisateur
     * @param nomProfil : QString

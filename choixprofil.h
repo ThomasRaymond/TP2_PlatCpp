@@ -33,6 +33,7 @@ private slots:
     void clickValider();
     void clickAnnuler();
     void creerProfil();
+    void supprimerProfil();
 
 
 private:
