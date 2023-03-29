@@ -434,11 +434,22 @@ void VisualisationBDD::removeCurrentItemFromTree()
             if (db->databaseName().compare(db_iterator->databaseName()) == 0){
                 profil->getDatabases().erase(db_iterator);
                 QMessageBox::information(0, "", "La base de données '" + itemName + "' a été supprimée de la liste attachée à votre profil.");
+                ui->vueTable->clearSpans();
+                ui->inputSQL->clear();
                 ControleurXML::updateUser(*static_cast<MainWindow*>(this->parent())->getUtilisateur());
                 break;
             }
         }
-        delete item;
+
+        if (ui->vueArborescence->topLevelItemCount() == 1){
+            this->currentDatabase = nullptr;
+            delete item;
+        }
+        else {
+            delete item;
+            clickTableArborescence(ui->vueArborescence->topLevelItem(0), 0);
+        }
+
 
     }
     else
